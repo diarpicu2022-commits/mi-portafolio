@@ -1,13 +1,15 @@
 import type { ReactNode } from "react";
 
+import { ContactForm } from "@/components/contact-form";
 import {
   ContactLinks,
   ExperienceList,
+  ProcessSteps,
   ProjectCard,
   SkillGroups,
   TestimonialCards,
 } from "@/components/portfolio-blocks";
-import { identity, projects } from "@/data/portfolio";
+import { getPortfolio, type Locale } from "@/data/portfolio";
 
 function Section({ id, title, intro, children }: { id: string; title: string; intro?: string; children: ReactNode }) {
   return (
@@ -21,37 +23,41 @@ function Section({ id, title, intro, children }: { id: string; title: string; in
   );
 }
 
-export function ContentSections() {
+export function ContentSections({ locale }: { locale: Locale }) {
+  const { identity, projects, t } = getPortfolio(locale);
+  const s = t.sections;
+
   return (
     <div className="bg-paper text-ink">
       <div className="mx-auto max-w-5xl divide-y-4 divide-dashed divide-forest/20 px-4">
-        <Section id="about" title="Perfil" intro={identity.pitch}>
-          <h3 className="mb-4 font-semibold">Habilidades y stack técnico</h3>
-          <SkillGroups />
+        <Section id="about" title={s.aboutTitle} intro={identity.pitch}>
+          <h3 className="mb-4 font-semibold">{s.skillsTitle}</h3>
+          <SkillGroups locale={locale} />
         </Section>
 
-        <Section id="projects" title="Proyectos" intro="Software, hardware y juegos construidos durante la carrera.">
+        <Section id="projects" title={s.projectsTitle} intro={s.projectsIntro}>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+              <ProjectCard key={project.id} locale={locale} project={project} />
             ))}
           </div>
         </Section>
 
-        <Section id="experience" title="Experiencia">
-          <ExperienceList />
+        <Section id="experience" title={s.experienceTitle}>
+          <ExperienceList locale={locale} />
         </Section>
 
-        <Section
-          id="testimonials"
-          title="Testimonios"
-          intro="Espacios reservados para testimonios reales; se reemplazarán cuando estén confirmados."
-        >
-          <TestimonialCards />
+        <Section id="testimonials" title={s.testimonialsTitle} intro={s.testimonialsIntro}>
+          <TestimonialCards locale={locale} />
         </Section>
 
-        <Section id="contact" title="Contacto" intro="¿Hablamos? Escríbeme o revisa mi código.">
-          <ContactLinks />
+        <Section id="process" title={s.processTitle} intro={s.processIntro}>
+          <ProcessSteps locale={locale} />
+        </Section>
+
+        <Section id="contact" title={s.contactTitle} intro={s.contactIntro}>
+          <ContactLinks locale={locale} />
+          <ContactForm locale={locale} />
         </Section>
       </div>
     </div>

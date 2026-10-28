@@ -44,23 +44,23 @@ export const keyToDirection: Record<string, Direction> = {
 
 /*
  * Map legend:
- *   T tree · W water · R rock (all blocked)
- *   . grass · : path · P player start (walkable)
- *   Any other letter is a zone building (blocked, interactable from an adjacent tile).
+ *   T tree · W water · R rock · n fence · c crops · s sign (all blocked)
+ *   . grass · : path · f flowers · P player start (walkable)
+ *   Any other uppercase letter is a zone building (blocked, interactable from an adjacent tile).
  */
 export const WORLD_LAYOUT = [
   "TTTTTTTTTTTTTTT",
-  "T.F...:...G...T",
-  "T..T..:..WW..TT",
-  "T.....:.......T",
+  "T.F.f.:...G.ccT",
+  "T..T..:..WW.ccT",
+  "Tf....:s....f.T",
   "T:P:L::::::A:.T",
-  "T.....:....WW.T",
-  "T.R...:.......T",
+  "T..f..:....WW.T",
+  "T.R.nn:nn.....T",
   "T..I..:.Z...X.T",
   "TTTTTTTTTTTTTTT",
 ] as const;
 
-export type TileKind = "tree" | "water" | "rock" | "grass" | "path" | "zone";
+export type TileKind = "tree" | "water" | "rock" | "fence" | "crops" | "sign" | "grass" | "flowers" | "path" | "zone";
 
 export type ParsedWorld = {
   width: number;
@@ -74,10 +74,16 @@ const symbolKind: Record<string, TileKind> = {
   T: "tree",
   W: "water",
   R: "rock",
+  n: "fence",
+  c: "crops",
+  s: "sign",
   ".": "grass",
+  f: "flowers",
   ":": "path",
   P: "path",
 };
+
+const walkable = new Set<TileKind>(["grass", "flowers", "path"]);
 
 export function parseWorld(layout: readonly string[]): ParsedWorld {
   const tiles: ParsedWorld["tiles"] = [];
@@ -88,7 +94,7 @@ export function parseWorld(layout: readonly string[]): ParsedWorld {
     [...row].forEach((symbol, x) => {
       const kind = symbolKind[symbol] ?? "zone";
       if (symbol === "P") start = { x, y };
-      if (kind !== "grass" && kind !== "path") blocked.add(tileKey({ x, y }));
+      if (!walkable.has(kind)) blocked.add(tileKey({ x, y }));
       tiles.push({ x, y, kind, symbol });
     });
   });

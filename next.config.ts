@@ -4,6 +4,10 @@ const nextConfig: NextConfig = {
   /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
+  experimental: {
+    // Needed because Spanish and English each have their own root layout.
+    globalNotFound: true,
+  },
   turbopack: {
     rules: {
       "*.css": {

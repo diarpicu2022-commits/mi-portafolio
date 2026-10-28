@@ -29,3 +29,36 @@ test("page has no horizontal scroll and the CV is downloadable", async ({ page, 
   expect(cv.ok()).toBe(true);
   expect(cv.headers()["content-type"]).toContain("pdf");
 });
+
+test("English version works end to end", async ({ page, request }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: "English" }).click();
+  await expect(page).toHaveURL(/\/en$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await page.getByRole("button", { name: "Open Laboratory" }).click();
+  await expect(page.getByRole("dialog", { name: "Laboratory" })).toBeVisible();
+
+  const cv = await request.get("/cv-diego-armando-pinta-cuasquen-en.pdf");
+  expect(cv.ok()).toBe(true);
+});
+
+test("zone progress survives a reload", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Abrir Posada" }).click();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "1");
+  await page.reload();
+  await expect(page.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "1");
+});
+
+test("unknown pages show the themed 404 and social image exists", async ({ page, request }) => {
+  const response = await page.goto("/no-existe");
+  expect(response?.status()).toBe(404);
+  await expect(page.getByRole("heading", { name: /te perdiste/i })).toBeVisible();
+
+  const html = await (await request.get("/")).text();
+  const og = html.match(/property="og:image" content="[^"]*?(\/opengraph-image[^"?]*)/)?.[1];
+  expect(og).toBeTruthy();
+  const image = await request.get(og!);
+  expect(image.headers()["content-type"]).toContain("image/png");
+});
