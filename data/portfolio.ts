@@ -1,3 +1,6 @@
+import { byRecency, formatPeriod, getProjects, type Project } from "@/data/projects";
+
+export type { Project } from "@/data/projects";
 export type Locale = "es" | "en";
 export const locales: Locale[] = ["es", "en"];
 
@@ -11,78 +14,23 @@ export const cvPath: Record<Locale, string> = {
   en: "/cv-diego-armando-pinta-cuasquen-en.pdf",
 };
 
-export type Project = {
-  id: string;
-  name: string;
-  description: string;
-  technologies: string[];
-  /** Exact repository URL. When unknown, the UI links to a search of the GitHub profile instead. */
-  repo?: string;
-  /** Live demo URL; omitted when there is no public demo. */
-  demo?: string;
-  /** Screenshot or GIF under public/, e.g. "/projects/siscan.png". */
-  image?: string;
-};
+export const projectPath = (locale: Locale, id: string) =>
+  locale === "es" ? `/proyectos/${id}` : `/en/projects/${id}`;
 
-type ProjectBase = Omit<Project, "description">;
-
-// Descriptions and stacks are a first draft: confirm them (and add exact `repo`/`demo`/`image`) before publishing.
-const projectBase: ProjectBase[] = [
-  { id: "ecos", name: "Ecos de la Tierra", technologies: ["TypeScript", "React"] },
-  { id: "siscan", name: "SISCAN", technologies: ["ESP32", "C/C++", "REST API", "SQL"] },
-  { id: "agropulse", name: "AgroPulse", technologies: ["Arduino", "ESP32", "TypeScript"] },
-  { id: "campuswatch", name: "CampusWatch / Agenda", technologies: ["TypeScript", "React"] },
-  { id: "notascan", name: "NotaScan", technologies: ["Python", "TypeScript"] },
-  { id: "harmonia", name: "Harmonia", technologies: ["TypeScript"] },
-  { id: "ecovolt", name: "EcoVolt", technologies: ["Arduino", "C/C++"] },
-  { id: "setpasto", name: "SETPasto+", technologies: ["Java", "Spring Boot"] },
-  { id: "tower-defense", name: "Tower Defense", technologies: ["GDScript", "Godot"] },
-  { id: "proxy-ia", name: "Proxy IA", technologies: ["Python", "FastAPI"] },
-];
-
-const projectDescriptions: Record<Locale, Record<string, string>> = {
-  es: {
-    ecos: "Proyecto principal del portafolio: una experiencia interactiva sobre la tierra y la naturaleza, construida de extremo a extremo.",
-    siscan:
-      "Sistema de monitoreo con sensores conectados a microcontroladores que envían lecturas a una aplicación para su consulta.",
-    agropulse:
-      "Plataforma IoT para seguimiento de variables agrícolas, que une hardware de campo con un panel de visualización.",
-    campuswatch: "Herramienta académica para organizar actividades, horarios y pendientes del campus en un solo lugar.",
-    notascan: "Aplicación para digitalizar y organizar notas y apuntes académicos.",
-    harmonia: "Proyecto adicional del archivo, enfocado en una experiencia de usuario cuidada.",
-    ecovolt: "Proyecto de energía que combina electrónica y software para medir y presentar consumo.",
-    setpasto: "Aplicación de servicio para la ciudad de Pasto.",
-    "tower-defense": "Videojuego de estrategia tipo tower defense.",
-    "proxy-ia": "Servicio intermedio para conectar aplicaciones con modelos de inteligencia artificial.",
-  },
-  en: {
-    ecos: "The portfolio's flagship: an interactive experience about the land and nature, built end to end.",
-    siscan: "Monitoring system where microcontroller-connected sensors send readings to an application for review.",
-    agropulse: "IoT platform for tracking farm variables, joining field hardware with a visualization dashboard.",
-    campuswatch: "Academic tool that keeps campus activities, schedules and to-dos in one place.",
-    notascan: "App to digitize and organize class notes.",
-    harmonia: "Additional archive project focused on a polished user experience.",
-    ecovolt: "Energy project combining electronics and software to measure and present consumption.",
-    setpasto: "Service application for the city of Pasto.",
-    "tower-defense": "Tower defense strategy game.",
-    "proxy-ia": "Middleware service that connects applications with artificial intelligence models.",
-  },
-};
-
-export type SectionId = "about" | "projects" | "experience" | "testimonials" | "process" | "contact";
+export type SectionId = "about" | "projects" | "experience" | "education" | "testimonials" | "contact";
 
 type ZoneBase = { id: string; symbol: string; section: SectionId; projectIds?: string[] };
 
 const zoneBase: ZoneBase[] = [
   { id: "lab", symbol: "L", section: "about" },
   { id: "forest", symbol: "F", section: "projects", projectIds: ["ecos"] },
-  { id: "greenhouse", symbol: "G", section: "projects", projectIds: ["siscan", "agropulse"] },
-  { id: "academy", symbol: "A", section: "experience", projectIds: ["campuswatch"] },
+  { id: "greenhouse", symbol: "G", section: "projects", projectIds: ["agropulse", "siscan", "hidromon"] },
+  { id: "academy", symbol: "A", section: "education", projectIds: ["campuswatch"] },
   {
     id: "archive",
     symbol: "X",
     section: "projects",
-    projectIds: ["notascan", "harmonia", "ecovolt", "setpasto", "tower-defense", "proxy-ia"],
+    projectIds: ["notascan", "harmonia", "proxy-ia", "ecovolt", "setpasto", "tower-defense"],
   },
   { id: "inn", symbol: "I", section: "testimonials" },
   { id: "plaza", symbol: "Z", section: "contact" },
@@ -99,22 +47,22 @@ const zoneText: Record<Locale, Record<string, Pick<Zone, "name" | "summary" | "d
     },
     forest: {
       name: "Bosque de Código",
-      summary: "El proyecto insignia del viaje.",
+      summary: "Ecos de la Tierra: un RPG por turnos sobre conciencia ambiental.",
       dialogue: "Las raíces de este bosque son líneas de código. Escucha sus ecos…",
     },
     greenhouse: {
       name: "Invernadero IoT",
-      summary: "Sensores, microcontroladores y datos del campo.",
+      summary: "AgroPulse, SISCAN e HidroMon: sensores, microcontroladores y datos del campo.",
       dialogue: "Cada planta tiene un sensor. Cada sensor cuenta una historia.",
     },
     academy: {
       name: "Academia",
-      summary: "Experiencia académica y herramientas para el campus.",
-      dialogue: "Quinto semestre y contando. Aquí se forjan las bases.",
+      summary: "Formación en dos ingenierías y CampusWatch, la agenda para el campus.",
+      dialogue: "Electrónica en la Universidad de Nariño, Software en la UCC. Dos caminos, un mismo mapa.",
     },
     archive: {
       name: "Archivo",
-      summary: "Terminal con NotaScan y proyectos adicionales.",
+      summary: "NotaScan y el resto del archivo: IA, energía, transporte y juegos.",
       dialogue: "> cargando proyectos… La terminal parpadea y muestra el archivo.",
     },
     inn: {
@@ -136,22 +84,22 @@ const zoneText: Record<Locale, Record<string, Pick<Zone, "name" | "summary" | "d
     },
     forest: {
       name: "Code Forest",
-      summary: "The flagship project of the journey.",
+      summary: "Ecos de la Tierra: a turn-based RPG about environmental awareness.",
       dialogue: "The roots of this forest are lines of code. Listen to their echoes…",
     },
     greenhouse: {
       name: "IoT Greenhouse",
-      summary: "Sensors, microcontrollers and field data.",
+      summary: "AgroPulse, SISCAN and HidroMon: sensors, microcontrollers and field data.",
       dialogue: "Every plant has a sensor. Every sensor tells a story.",
     },
     academy: {
       name: "Academy",
-      summary: "Academic experience and campus tools.",
-      dialogue: "Fifth semester and counting. This is where the foundations are forged.",
+      summary: "Two engineering degrees and CampusWatch, the campus planner.",
+      dialogue: "Electronics at Universidad de Nariño, Software at UCC. Two paths, one map.",
     },
     archive: {
       name: "Archive",
-      summary: "Terminal holding NotaScan and additional projects.",
+      summary: "NotaScan and the rest of the archive: AI, energy, transport and games.",
       dialogue: "> loading projects… The terminal blinks and opens the archive.",
     },
     inn: {
@@ -175,15 +123,15 @@ const ui = {
       about: "Perfil",
       projects: "Proyectos",
       experience: "Experiencia",
-      process: "Proceso",
+      education: "Formación",
       cv: "CV",
       contact: "Contacto",
       switchLanguage: "English",
     },
     hero: {
       kicker: "▶ Nueva partida",
-      role: "Estudiante de Ingeniería de Software",
-      semester: "UCC · quinto semestre",
+      role: "Ingeniería Electrónica + Ingeniería de Software",
+      semester: "UCC · quinto semestre · Universidad de Nariño",
       pressStart: "Presiona Start",
       explore: "Explorar",
       downloadCv: "Descargar CV",
@@ -221,18 +169,38 @@ const ui = {
       demo: "Ver demo",
       noDemo: "Demo no disponible",
       imageAlt: (name: string) => `Captura de ${name}`,
+      caseStudy: "Ver caso de estudio",
+      status: { complete: "Terminado", "in-progress": "En desarrollo", research: "Investigación" },
+    },
+    caseStudy: {
+      back: "← Todos los proyectos",
+      role: "Rol",
+      year: "Periodo",
+      position: "Cargo",
+      status: "Estado",
+      context: "Contexto",
+      challenge: "El reto",
+      approach: "Cómo lo resolví",
+      outcome: "Resultado",
+      stack: "Tecnologías",
+      links: "Código",
+      next: "Siguiente proyecto",
     },
     sections: {
       aboutTitle: "Perfil",
       skillsTitle: "Habilidades y stack técnico",
       projectsTitle: "Proyectos",
-      projectsIntro: "Software, hardware y juegos construidos durante la carrera.",
+      projectsIntro: "Once proyectos, del firmware al frontend. Cada uno tiene su caso de estudio: el reto, cómo lo resolví y el resultado.",
+      caseStudyLink: "Ver caso de estudio",
+      principlesTitle: "Cómo trabajo",
+      languagesTitle: "Idiomas",
       experienceTitle: "Experiencia",
+      experienceIntro:
+        "Sistemas que he construido de principio a fin, con el rol que asumí y el tiempo que les dediqué.",
+      educationTitle: "Formación",
       testimonialsTitle: "Testimonios",
-      testimonialsIntro: "Espacios reservados para testimonios reales; se reemplazarán cuando estén confirmados.",
+      testimonialsIntro: "Lo que dicen docentes y compañeros con los que he trabajado.",
       pending: "Pendiente",
-      processTitle: "Proceso de diseño",
-      processIntro: "Cómo y por qué este portafolio es una aventura 2D.",
       contactTitle: "Contacto",
       contactIntro: "¿Hablamos? Escríbeme o revisa mi código.",
     },
@@ -244,7 +212,7 @@ const ui = {
       hint: "Se abrirá tu aplicación de correo con el mensaje listo para enviar.",
       subject: (name: string) => `Contacto desde el portafolio — ${name}`,
     },
-    footer: { rights: "Pixel art y código originales." },
+    footer: { rights: "Pixel art y código originales.", grid: "Ver retícula" },
   },
   en: {
     skipLink: "Skip to content",
@@ -253,15 +221,15 @@ const ui = {
       about: "Profile",
       projects: "Projects",
       experience: "Experience",
-      process: "Process",
+      education: "Education",
       cv: "CV",
       contact: "Contact",
       switchLanguage: "Español",
     },
     hero: {
       kicker: "▶ New game",
-      role: "Software Engineering student",
-      semester: "UCC · fifth semester",
+      role: "Electronic Engineering + Software Engineering",
+      semester: "UCC · fifth semester · Universidad de Nariño",
       pressStart: "Press Start",
       explore: "Explore",
       downloadCv: "Download CV",
@@ -299,18 +267,37 @@ const ui = {
       demo: "Live demo",
       noDemo: "No demo available",
       imageAlt: (name: string) => `${name} screenshot`,
+      caseStudy: "Read the case study",
+      status: { complete: "Complete", "in-progress": "In progress", research: "Research" },
+    },
+    caseStudy: {
+      back: "← All projects",
+      role: "Role",
+      year: "Period",
+      position: "Position",
+      status: "Status",
+      context: "Context",
+      challenge: "The challenge",
+      approach: "How I solved it",
+      outcome: "Outcome",
+      stack: "Stack",
+      links: "Code",
+      next: "Next project",
     },
     sections: {
       aboutTitle: "Profile",
       skillsTitle: "Skills and tech stack",
       projectsTitle: "Projects",
-      projectsIntro: "Software, hardware and games built during my degree.",
+      projectsIntro: "Eleven projects, from firmware to frontend. Each has its case study: the challenge, how I solved it and the outcome.",
+      caseStudyLink: "Read the case study",
+      principlesTitle: "How I work",
+      languagesTitle: "Languages",
       experienceTitle: "Experience",
+      experienceIntro: "Systems I have built end to end, with the role I took on and the time I put into each.",
+      educationTitle: "Education",
       testimonialsTitle: "Testimonials",
-      testimonialsIntro: "Placeholders for real testimonials; they will be replaced once confirmed.",
+      testimonialsIntro: "What professors and teammates I have worked with say.",
       pending: "Pending",
-      processTitle: "Design process",
-      processIntro: "How and why this portfolio became a 2D adventure.",
       contactTitle: "Contact",
       contactIntro: "Let's talk. Write to me or browse my code.",
     },
@@ -322,7 +309,7 @@ const ui = {
       hint: "Your email app will open with the message ready to send.",
       subject: (name: string) => `Portfolio contact — ${name}`,
     },
-    footer: { rights: "Original pixel art and code." },
+    footer: { rights: "Original pixel art and code.", grid: "Show grid" },
   },
 };
 
@@ -331,31 +318,61 @@ export type UiText = (typeof ui)["es"];
 const localized = {
   es: {
     identity: {
-      role: "Estudiante de Ingeniería de Software",
+      role: "Ingeniería Electrónica + Ingeniería de Software",
       university: "Universidad Cooperativa de Colombia (UCC)",
       semester: "Quinto semestre",
+      tagline: "Del sensor a la interfaz.",
       pitch:
-        "Combino Ingeniería de Software e Ingeniería Electrónica para construir sistemas completos: desde sensores y microcontroladores hasta backend, frontend e interfaces claras.",
+        "Estudio Ingeniería Electrónica e Ingeniería de Software, y me interesa justo donde las dos se cruzan: sistemas completos que empiezan en un sensor o un microcontrolador y terminan en una interfaz donde los datos se ven y se controlan.",
+      motto:
+        "No me basta con que el código compile. Me importa que el resultado resuelva un problema real, automatice un proceso o le haga la vida más fácil a alguien.",
     },
     skillGroups: [
-      { title: "Lenguajes", items: ["C/C++", "Java", "TypeScript", "JavaScript", "Python", "Kotlin", "GDScript"] },
       {
-        title: "Frontend y backend",
-        items: ["React", "Next.js", "Vite", "Tailwind", "Spring Boot", "NestJS", "Express", "FastAPI"],
+        title: "Electrónica",
+        items: ["ESP32", "Arduino", "GPIO, ADC, DAC, PWM, I²C", "Pantallas OLED", "Sensores y actuadores"],
       },
-      { title: "Datos", items: ["PostgreSQL / Supabase", "MongoDB", "Redis", "SQLite"] },
-      { title: "Electrónica", items: ["ESP32", "Arduino", "Control automático"] },
+      { title: "Ingeniería", items: ["MATLAB", "Simulink", "Control automático", "Modelamiento y simulación"] },
+      { title: "Lenguajes", items: ["C/C++", "Java", "TypeScript", "JavaScript", "Python", "Kotlin", "Dart", "GDScript"] },
+      { title: "Backend", items: ["Spring Boot", "NestJS", "Express", "FastAPI"] },
+      {
+        title: "Frontend y apps",
+        items: ["React", "Next.js", "Vite", "Tailwind CSS", "Flutter", "Jetpack Compose", "Tauri", "Godot"],
+      },
+      { title: "Datos", items: ["PostgreSQL (Supabase)", "MongoDB", "Redis", "SQLite", "Room"] },
+      { title: "Despliegue y herramientas", items: ["Docker", "Render", "Vercel", "Git y GitHub", "PlatformIO", "Wokwi"] },
     ],
-    experience: [
+    education: [
       {
+        period: "En curso",
         title: "Ingeniería de Software · quinto semestre",
+        place: "Universidad Cooperativa de Colombia (UCC)",
         detail:
-          "Formación en desarrollo de software, bases de datos y diseño de interfaces, aplicada en proyectos de curso.",
+          "Patrones de software, estructuras de datos, diseño de software, diseño de interfaces y frameworks web.",
       },
       {
-        title: "Proyectos académicos de software y hardware",
+        period: "2021 – 2025",
+        title: "Ingeniería Electrónica",
+        place: "Universidad de Nariño",
         detail:
-          "Desarrollo de sistemas IoT, aplicaciones web y juegos, desde la integración de sensores hasta la interfaz final.",
+          "Profundización en Automatización y Control. Electivas en medición de variables ambientales, regulación de energía eléctrica en Colombia y redes y servicios telemáticos.",
+      },
+    ],
+    languages: [
+      { name: "Español", level: "Nativo" },
+      { name: "Inglés", level: "Eficiencia en inglés aprobada (Universidad de Nariño)" },
+    ],
+    principles: [
+      { title: "Primero el problema", body: "Qué variables se pueden medir, qué decisiones se pueden automatizar y cómo se ve el resultado." },
+      { title: "Medido, no a ojo", body: "Si algo se puede comprobar, lo compruebo ejecutando algo: pruebas, mediciones, simulación." },
+      { title: "Hardware y software como un solo sistema", body: "Cada parte tiene un propósito, del sensor a la interfaz." },
+      {
+        title: "Aprender haciendo",
+        body: "Probar, equivocarme, entender el error y volver a probar. AgroPulse pasó por varias versiones antes de su forma final.",
+      },
+      {
+        title: "Interfaces con criterio",
+        body: "Jerarquía clara, buen contraste, modo claro y oscuro, y nada que parezca sacado de una plantilla.",
       },
     ],
     testimonials: [
@@ -363,54 +380,64 @@ const localized = {
       { quote: "Testimonio pendiente de un compañero de proyecto.", author: "Compañero de equipo", pending: true },
       { quote: "Testimonio pendiente de un usuario o cliente.", author: "Usuario de un proyecto", pending: true },
     ],
-    process: [
-      {
-        title: "1 · Objetivo y público",
-        body: "El público es el profesor del curso y revisores técnicos. El mensaje: alguien que une software y electrónica para construir sistemas completos.",
-      },
-      {
-        title: "2 · Concepto",
-        body: "Un JRPG cenital de consola portátil: cada zona del mapa es una sección del portafolio. Todo el arte es original; no se usan recursos de terceros.",
-      },
-      {
-        title: "3 · Sistema visual",
-        body: "Paleta de bosque, tinta, pergamino y ámbar; tipografía pixel solo en títulos y una sans legible para el texto; tarjetas con borde y sombra dura.",
-      },
-      {
-        title: "4 · Accesibilidad primero",
-        body: "El juego es opcional: todo el contenido existe como secciones normales. Teclado completo, foco visible, diálogos con Escape, controles táctiles etiquetados y respeto a reducir movimiento.",
-      },
-      {
-        title: "5 · Validación",
-        body: "Pruebas unitarias de colisiones y alcance de zonas, pruebas de interacción, pruebas end-to-end en escritorio y móvil, y auditoría Lighthouse.",
-      },
-    ],
   },
   en: {
     identity: {
-      role: "Software Engineering student",
+      role: "Electronic Engineering + Software Engineering",
       university: "Universidad Cooperativa de Colombia (UCC)",
       semester: "Fifth semester",
+      tagline: "From sensor to interface.",
       pitch:
-        "I combine Software Engineering and Electronic Engineering to build complete systems: from sensors and microcontrollers to backend, frontend and clear interfaces.",
+        "I study Electronic Engineering and Software Engineering, and I work right where they meet: complete systems that start at a sensor or a microcontroller and end in an interface where data is seen and controlled.",
+      motto:
+        "Code that compiles is not enough. What matters to me is that the result solves a real problem, automates a process or makes someone's life easier.",
     },
     skillGroups: [
-      { title: "Languages", items: ["C/C++", "Java", "TypeScript", "JavaScript", "Python", "Kotlin", "GDScript"] },
       {
-        title: "Frontend & backend",
-        items: ["React", "Next.js", "Vite", "Tailwind", "Spring Boot", "NestJS", "Express", "FastAPI"],
+        title: "Electronics",
+        items: ["ESP32", "Arduino", "GPIO, ADC, DAC, PWM, I²C", "OLED displays", "Sensors and actuators"],
       },
-      { title: "Data", items: ["PostgreSQL / Supabase", "MongoDB", "Redis", "SQLite"] },
-      { title: "Electronics", items: ["ESP32", "Arduino", "Automatic control"] },
+      { title: "Engineering", items: ["MATLAB", "Simulink", "Automatic control", "Modeling and simulation"] },
+      { title: "Languages", items: ["C/C++", "Java", "TypeScript", "JavaScript", "Python", "Kotlin", "Dart", "GDScript"] },
+      { title: "Backend", items: ["Spring Boot", "NestJS", "Express", "FastAPI"] },
+      {
+        title: "Frontend & apps",
+        items: ["React", "Next.js", "Vite", "Tailwind CSS", "Flutter", "Jetpack Compose", "Tauri", "Godot"],
+      },
+      { title: "Data", items: ["PostgreSQL (Supabase)", "MongoDB", "Redis", "SQLite", "Room"] },
+      { title: "Deployment & tools", items: ["Docker", "Render", "Vercel", "Git & GitHub", "PlatformIO", "Wokwi"] },
     ],
-    experience: [
+    education: [
       {
+        period: "Ongoing",
         title: "Software Engineering · fifth semester",
-        detail: "Training in software development, databases and interface design, applied in course projects.",
+        place: "Universidad Cooperativa de Colombia (UCC)",
+        detail:
+          "Software patterns, data structures, software design, interface design and web frameworks.",
       },
       {
-        title: "Academic software and hardware projects",
-        detail: "Building IoT systems, web apps and games, from sensor integration to the final interface.",
+        period: "2021 – 2025",
+        title: "Electronic Engineering",
+        place: "Universidad de Nariño",
+        detail:
+          "Specialization track in Automation and Control. Electives in environmental variable measurement, electrical energy regulation in Colombia, and networks and telematic services.",
+      },
+    ],
+    languages: [
+      { name: "Spanish", level: "Native" },
+      { name: "English", level: "English proficiency requirement passed (Universidad de Nariño)" },
+    ],
+    principles: [
+      { title: "Problem first", body: "What can be measured, which decisions can be automated and what the result looks like." },
+      { title: "Measured, not eyeballed", body: "If something can be checked, I check it by running something: tests, measurements, simulation." },
+      { title: "Hardware and software as one system", body: "Every part has a purpose, from sensor to interface." },
+      {
+        title: "Learning by doing",
+        body: "Try, get it wrong, understand the mistake and try again. AgroPulse went through several versions before its final form.",
+      },
+      {
+        title: "Interfaces with judgment",
+        body: "Clear hierarchy, good contrast, light and dark modes, and nothing that looks like a template.",
       },
     ],
     testimonials: [
@@ -418,47 +445,14 @@ const localized = {
       { quote: "Testimonial pending from a project teammate.", author: "Teammate", pending: true },
       { quote: "Testimonial pending from a user or client.", author: "Project user", pending: true },
     ],
-    process: [
-      {
-        title: "1 · Goal and audience",
-        body: "The audience is the course professor and technical reviewers. The message: someone who joins software and electronics to build complete systems.",
-      },
-      {
-        title: "2 · Concept",
-        body: "A top-down handheld JRPG: every map zone is a portfolio section. All art is original; no third-party assets are used.",
-      },
-      {
-        title: "3 · Visual system",
-        body: "Forest, ink, parchment and amber palette; pixel type only for headings and a readable sans for body text; cards with hard borders and shadows.",
-      },
-      {
-        title: "4 · Accessibility first",
-        body: "The game is optional: all content also exists as regular sections. Full keyboard support, visible focus, Escape-closable dialogs, labelled touch controls and reduced-motion support.",
-      },
-      {
-        title: "5 · Validation",
-        body: "Unit tests for collisions and zone reachability, interaction tests, end-to-end tests on desktop and mobile, and a Lighthouse audit.",
-      },
-    ],
   },
 };
-
-export const palette = [
-  { name: "Ink", value: "#10263d" },
-  { name: "Forest", value: "#164a3a" },
-  { name: "Emerald", value: "#2f9e6e" },
-  { name: "Parchment", value: "#fff3d4" },
-  { name: "Amber", value: "#e6a23c" },
-];
 
 export type Testimonial = { quote: string; author: string; pending: boolean };
 
 export function getPortfolio(locale: Locale) {
   const text = localized[locale];
-  const projects: Project[] = projectBase.map((project) => ({
-    ...project,
-    description: projectDescriptions[locale][project.id],
-  }));
+  const projects: Project[] = getProjects(locale);
   const zones: Zone[] = zoneBase.map((zone) => ({ ...zone, ...zoneText[locale][zone.id] }));
   const t = ui[locale];
 
@@ -469,15 +463,25 @@ export function getPortfolio(locale: Locale) {
     projects,
     zones,
     skillGroups: text.skillGroups,
-    experience: text.experience.map((item) => ({ ...item, place: text.identity.university })),
+    education: text.education,
+    experience: [...projects].sort(byRecency).map((project) => ({
+      id: project.id,
+      position: project.position,
+      project: project.name,
+      period: formatPeriod(locale, project),
+      summary: project.summary,
+      highlights: project.approach.slice(0, 2),
+      technologies: project.technologies,
+    })),
+    languages: text.languages,
+    principles: text.principles,
     testimonials: text.testimonials as Testimonial[],
-    process: text.process,
     cvPath: cvPath[locale],
     navLinks: [
       { href: "#about", label: t.nav.about },
       { href: "#projects", label: t.nav.projects },
       { href: "#experience", label: t.nav.experience },
-      { href: "#process", label: t.nav.process },
+      { href: "#education", label: t.nav.education },
       { href: cvPath[locale], label: t.nav.cv },
       { href: "#contact", label: t.nav.contact },
     ],
@@ -485,6 +489,3 @@ export function getPortfolio(locale: Locale) {
 }
 
 export type Portfolio = ReturnType<typeof getPortfolio>;
-
-export const repoUrl = (project: Project) =>
-  project.repo ?? `${GITHUB_PROFILE}?tab=repositories&q=${encodeURIComponent(project.name.split(" /")[0])}`;

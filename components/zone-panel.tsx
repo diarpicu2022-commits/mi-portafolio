@@ -5,9 +5,10 @@ import { useEffect, useRef, useState } from "react";
 import { Sprite, playerPixels } from "@/components/pixel-sprites";
 import {
   ContactLinks,
-  ExperienceList,
+  EducationList,
   ProjectCard,
   SkillGroups,
+  projectNumber,
   TestimonialCards,
 } from "@/components/portfolio-blocks";
 import { getPortfolio, type Locale, type Zone } from "@/data/portfolio";
@@ -82,6 +83,7 @@ export function ZonePanel({ locale, zone, onClose }: ZonePanelProps) {
         aria-modal="true"
         aria-labelledby={headingId}
         onKeyDown={handleKeyDown}
+        data-lenis-prevent
         className="pixel-frame max-h-[88vh] w-full max-w-3xl overflow-y-auto bg-paper p-5 text-ink sm:p-7"
       >
         <div className="mb-4 flex items-start justify-between gap-4">
@@ -120,14 +122,20 @@ export function ZonePanel({ locale, zone, onClose }: ZonePanelProps) {
           {zone.id === "lab" && (
             <>
               <p className="leading-7">{identity.pitch}</p>
+              <p className="leading-7">{identity.motto}</p>
               <SkillGroups locale={locale} />
             </>
           )}
-          {zone.id === "academy" && <ExperienceList locale={locale} />}
+          {zone.id === "academy" && <EducationList locale={locale} />}
           {zoneProjects.length > 0 && (
             <div className="grid gap-4 sm:grid-cols-2">
               {zoneProjects.map((project) => (
-                <ProjectCard key={project.id} locale={locale} project={project} />
+                <ProjectCard
+                  key={project.id}
+                  locale={locale}
+                  project={project}
+                  number={projectNumber(projects.indexOf(project))}
+                />
               ))}
             </div>
           )}

@@ -4,7 +4,7 @@ Portafolio de **Diego Armando Pinta Cuasquen** (Ingeniería de Software, UCC) pr
 
 Stack: Next.js (App Router), React, TypeScript y Tailwind CSS. Disponible en español (`/`) e inglés (`/en`).
 
-Incluye: animación de caminar, progreso de zonas con logro, diálogos estilo JRPG, sonidos 8-bit opcionales (Web Audio, sin archivos), modo noche, formulario de contacto, sección de proceso de diseño, imagen para redes sociales, página 404 temática y CV en PDF en ambos idiomas.
+Incluye: experiencia y formación reales, un caso de estudio por proyecto (`/proyectos/<id>` y `/en/projects/<id>`), animación de caminar, progreso de zonas con logro, diálogos estilo JRPG, sonidos 8-bit opcionales, modo noche, desplazamiento suave con Lenis y GSAP en escritorio, retícula visible a voluntad, formulario de contacto, imagen para redes sociales, página 404 temática y CV en PDF en ambos idiomas.
 
 ## Desarrollo local
 
@@ -24,13 +24,14 @@ Abre http://localhost:3000.
 
 ## Editar el contenido
 
-Todo el texto vive en `data/portfolio.ts`, en español e inglés (identidad, proyectos, habilidades, experiencia, testimonios, proceso, zonas y textos de la interfaz). El mapa está en `lib/world.ts` (`WORLD_LAYOUT`) y el pixel art en `components/pixel-sprites.tsx`; editar contenido no afecta al movimiento.
+El texto vive en `data/portfolio.ts` (identidad, habilidades, formación, idiomas, testimonios, zonas y textos de la interfaz) y en `data/projects.ts` (cada proyecto con su cargo, periodo y caso de estudio), en español e inglés. Todo dato sale de los repositorios de cada proyecto; la experiencia se genera a partir de los proyectos. El mapa está en `lib/world.ts` (`WORLD_LAYOUT`) y el pixel art en `components/pixel-sprites.tsx`; editar contenido no afecta al movimiento.
 
-En `projectBase` (dentro de `data/portfolio.ts`) cada proyecto acepta:
+En `data/projects.ts` cada proyecto tiene:
 
-- `repo`: URL exacta del repositorio. Sin ella, la tarjeta enlaza a una búsqueda en el perfil de GitHub.
-- `demo`: URL de la demo. Sin ella, se muestra "Demo no disponible".
-- `image`: captura o GIF guardado en `public/`, por ejemplo `"/projects/siscan.png"`.
+- `start` y `end` (`"YYYY-MM"` o `"present"`): periodo de trabajo, mostrado como experiencia.
+- `links`: repositorios exactos.
+- `demo` (opcional): URL de una demo pública. Sin ella, se muestra "Demo no disponible".
+- `image` (opcional): captura o GIF guardado en `public/`, por ejemplo `"/projects/agropulse.png"`.
 
 Tras cambiar los datos, regenera los dos CV (español e inglés):
 
@@ -49,7 +50,7 @@ npm run build
 
 `npm test` ejecuta las pruebas unitarias y de componentes (Vitest). `npm run e2e` compila, levanta el sitio y ejecuta Playwright en escritorio y móvil.
 
-Última auditoría Lighthouse (build de producción local): 100 en accesibilidad, buenas prácticas y SEO en móvil y escritorio; rendimiento 100 en escritorio y 97 en móvil.
+Última auditoría Lighthouse (build de producción local): 100 en accesibilidad, buenas prácticas y SEO en todas las páginas; rendimiento 100 en escritorio, 94 en la portada móvil y 99 en los casos de estudio móviles.
 
 ## Despliegue
 

@@ -1,15 +1,23 @@
 import Image from "next/image";
+import Link from "next/link";
 
-import { getPortfolio, palette, repoUrl, type Locale, type Project } from "@/data/portfolio";
+import { getPortfolio, projectPath, type Locale, type Project } from "@/data/portfolio";
 
 const externalLink = { target: "_blank", rel: "noopener noreferrer" } as const;
 
 type LocaleProps = { locale: Locale };
 
-export function ProjectCard({ locale, project }: LocaleProps & { project: Project }) {
+export const projectNumber = (index: number) => String(index + 1).padStart(2, "0");
+
+export function ProjectCard({
+  locale,
+  project,
+  number,
+  featured = false,
+}: LocaleProps & { project: Project; number: string; featured?: boolean }) {
   const { t } = getPortfolio(locale);
   return (
-    <article className="pixel-card flex flex-col gap-3 p-4">
+    <article className={`pixel-card flex flex-col gap-3 p-4 ${featured ? "sm:col-span-2 sm:p-6" : ""}`} data-reveal="fade">
       {project.image && (
         <Image
           src={project.image}
@@ -19,8 +27,16 @@ export function ProjectCard({ locale, project }: LocaleProps & { project: Projec
           className="aspect-video w-full border-2 border-ink object-cover"
         />
       )}
-      <h3 className="font-pixel text-xs leading-relaxed text-forest">{project.name}</h3>
-      <p className="text-sm leading-6">{project.description}</p>
+      <div className="flex items-baseline justify-between gap-3">
+        <span className="font-pixel text-[0.6rem] text-forest/70" aria-hidden>
+          {number}
+        </span>
+        <span className={`status-badge status-${project.status}`}>{t.card.status[project.status]}</span>
+      </div>
+      <h3 className={`font-pixel leading-relaxed text-forest ${featured ? "text-sm sm:text-base" : "text-xs"}`}>
+        {project.name}
+      </h3>
+      <p className={`leading-6 ${featured ? "text-base" : "text-sm"}`}>{project.summary}</p>
       <ul className="flex flex-wrap gap-2" aria-label={t.card.techOf(project.name)}>
         {project.technologies.map((tech) => (
           <li key={tech} className="rounded-sm bg-forest/10 px-2 py-0.5 text-xs font-medium text-forest">
@@ -28,17 +44,26 @@ export function ProjectCard({ locale, project }: LocaleProps & { project: Projec
           </li>
         ))}
       </ul>
-      <div className="mt-auto flex flex-wrap gap-3 text-sm">
-        <a className="pixel-link" href={repoUrl(project)} {...externalLink}>
-          {project.repo ? t.card.repo : t.card.searchRepo}
-        </a>
-        {project.demo ? (
-          <a className="pixel-link" href={project.demo} {...externalLink}>
-            {t.card.demo}
-          </a>
-        ) : (
-          <span className="text-ink/70">{t.card.noDemo}</span>
-        )}
+      <div className="mt-auto flex flex-col gap-2 pt-1 text-sm">
+        <Link className="pixel-link" href={projectPath(locale, project.id)}>
+          <span className="sr-only">{`${t.card.caseStudy}: ${project.name}`}</span>
+          <span aria-hidden>{t.card.caseStudy} →</span>
+        </Link>
+        <div className="flex flex-wrap gap-x-3 gap-y-1">
+          {project.links.map((link) => (
+            <a key={link.url} className="pixel-link font-semibold" href={link.url} {...externalLink}>
+              {link.label}
+              <span className="sr-only"> · {project.name} (GitHub)</span>
+            </a>
+          ))}
+          {project.demo ? (
+            <a className="pixel-link" href={project.demo} {...externalLink}>
+              {t.card.demo}
+            </a>
+          ) : (
+            <span className="text-ink/70">{t.card.noDemo}</span>
+          )}
+        </div>
       </div>
     </article>
   );
@@ -47,9 +72,9 @@ export function ProjectCard({ locale, project }: LocaleProps & { project: Projec
 export function SkillGroups({ locale }: LocaleProps) {
   const { skillGroups } = getPortfolio(locale);
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {skillGroups.map((group) => (
-        <div key={group.title} className="pixel-card p-4">
+        <div key={group.title} className="pixel-card p-4" data-reveal="fade">
           <h3 className="mb-3 font-pixel text-[0.65rem] text-forest">{group.title}</h3>
           <ul className="flex flex-wrap gap-2">
             {group.items.map((item) => (
@@ -65,17 +90,84 @@ export function SkillGroups({ locale }: LocaleProps) {
 }
 
 export function ExperienceList({ locale }: LocaleProps) {
-  const { experience } = getPortfolio(locale);
+  const { experience, t } = getPortfolio(locale);
   return (
     <ol className="grid gap-4">
       {experience.map((item) => (
-        <li key={item.title} className="pixel-card p-4">
-          <h3 className="font-semibold">{item.title}</h3>
-          <p className="text-sm text-forest">{item.place}</p>
-          <p className="mt-2 text-sm leading-6">{item.detail}</p>
+        <li key={item.id} className="pixel-card grid gap-2 p-4 sm:grid-cols-[10rem_1fr] sm:gap-6 sm:p-5" data-reveal="fade">
+          <p className="font-pixel text-[0.6rem] leading-relaxed text-forest">{item.period}</p>
+          <div>
+            <h3 className="font-semibold">{item.position}</h3>
+            <p className="text-sm font-semibold text-forest">
+              <Link className="pixel-link" href={projectPath(locale, item.id)}>
+                {item.project}
+                <span className="sr-only">: {t.sections.caseStudyLink}</span>
+              </Link>
+            </p>
+            <p className="mt-2 text-sm leading-6">{item.summary}</p>
+            <ul className="mt-2 grid gap-1 text-sm leading-6">
+              {item.highlights.map((highlight) => (
+                <li key={highlight} className="flex gap-2">
+                  <span aria-hidden className="text-amber">
+                    ▸
+                  </span>
+                  <span>{highlight}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </li>
       ))}
     </ol>
+  );
+}
+
+export function EducationList({ locale }: LocaleProps) {
+  const { education } = getPortfolio(locale);
+  return (
+    <ol className="grid gap-4">
+      {education.map((item) => (
+        <li key={item.title} className="pixel-card grid gap-2 p-4 sm:grid-cols-[10rem_1fr] sm:gap-6 sm:p-5" data-reveal="fade">
+          <p className="font-pixel text-[0.6rem] leading-relaxed text-forest">{item.period}</p>
+          <div>
+            <h3 className="font-semibold">{item.title}</h3>
+            <p className="text-sm text-forest">{item.place}</p>
+            <p className="mt-2 text-sm leading-6">{item.detail}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+export function Principles({ locale }: LocaleProps) {
+  const { principles } = getPortfolio(locale);
+  return (
+    <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {principles.map((item, index) => (
+        <li key={item.title} className="border-t-4 border-ink pt-3" data-reveal>
+          <p className="font-pixel mb-2 text-[0.6rem] text-forest/70" aria-hidden>
+            {projectNumber(index)}
+          </p>
+          <h4 className="font-semibold">{item.title}</h4>
+          <p className="mt-1 text-sm leading-6">{item.body}</p>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+export function Languages({ locale }: LocaleProps) {
+  const { languages } = getPortfolio(locale);
+  return (
+    <dl className="grid gap-3 sm:grid-cols-2">
+      {languages.map((item) => (
+        <div key={item.name} className="pixel-card p-4">
+          <dt className="font-semibold">{item.name}</dt>
+          <dd className="text-sm">{item.level}</dd>
+        </div>
+      ))}
+    </dl>
   );
 }
 
@@ -98,32 +190,6 @@ export function TestimonialCards({ locale }: LocaleProps) {
   );
 }
 
-export function ProcessSteps({ locale }: LocaleProps) {
-  const { process } = getPortfolio(locale);
-  return (
-    <div className="grid gap-6">
-      <ul className="flex flex-wrap gap-3" aria-label="Palette">
-        {palette.map((color) => (
-          <li key={color.name} className="flex items-center gap-2 text-sm">
-            <span aria-hidden className="size-8 border-3 border-ink" style={{ background: color.value }} />
-            <span>
-              {color.name} <code className="text-xs text-ink/70">{color.value}</code>
-            </span>
-          </li>
-        ))}
-      </ul>
-      <ol className="grid gap-4 md:grid-cols-2">
-        {process.map((step) => (
-          <li key={step.title} className="pixel-card p-4">
-            <h3 className="font-pixel mb-2 text-[0.65rem] leading-relaxed text-forest">{step.title}</h3>
-            <p className="text-sm leading-6">{step.body}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  );
-}
-
 export function ContactLinks({ locale }: LocaleProps) {
   const { identity, cvPath, t } = getPortfolio(locale);
   return (
@@ -134,7 +200,7 @@ export function ContactLinks({ locale }: LocaleProps) {
       <a className="pixel-button" href={identity.github} {...externalLink}>
         GitHub
       </a>
-      <a className="pixel-button pixel-button-amber" href={cvPath} download>
+      <a className="pixel-button pixel-button-amber" href={cvPath} download data-magnetic>
         {t.hero.downloadCv}
       </a>
     </div>

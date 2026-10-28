@@ -22,22 +22,23 @@ export function PortfolioPage({ locale }: { locale: Locale }) {
           >
             <div>
               <p className="font-pixel mb-4 text-[0.65rem] text-amber">{t.hero.kicker}</p>
-              <h1 id="hero-title" className="font-pixel text-xl leading-relaxed sm:text-3xl">
+              <h1 id="hero-title" className="font-pixel display-title">
                 Diecu&apos;s Engineering Quest
               </h1>
-              <p className="mt-4 text-lg font-semibold">{identity.name}</p>
+              <p className="lead mt-5 font-semibold text-amber">{identity.tagline}</p>
+              <p className="mt-3 text-lg font-semibold">{identity.name}</p>
               <p className="text-paper/80">
                 {t.hero.role} · {t.hero.semester}
               </p>
               <p className="mt-4 max-w-2xl leading-7 text-paper/90">{identity.pitch}</p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <a className="pixel-button pixel-button-amber" href="#explore">
+                <a className="pixel-button pixel-button-amber" href="#explore" data-magnetic>
                   {t.hero.explore}
                 </a>
-                <a className="pixel-button" href={cvPath} download>
+                <a className="pixel-button" href={cvPath} download data-magnetic>
                   {t.hero.downloadCv}
                 </a>
-                <a className="pixel-button" href={identity.github} target="_blank" rel="noopener noreferrer">
+                <a className="pixel-button" href={identity.github} target="_blank" rel="noopener noreferrer" data-magnetic>
                   GitHub
                 </a>
               </div>

@@ -22,6 +22,58 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Lenis drives smooth scrolling itself; native smooth scroll would fight it. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+html.lenis {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* Fluid type scale: grows continuously with the viewport between a readable floor and a ceiling. */
+.display-title {
+  font-size: clamp(1.4rem, 0.9rem + 3.2vw, 3.4rem);
+  line-height: 1.25;
+}
+.section-title {
+  font-size: clamp(0.9rem, 0.75rem + 0.9vw, 1.35rem);
+  line-height: 1.5;
+}
+.lead {
+  font-size: clamp(1rem, 0.94rem + 0.35vw, 1.2rem);
+  line-height: 1.75;
+}
+
+.status-badge {
+  border: 2px solid var(--ink);
+  padding: 0 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.status-complete {
+  background: #d7f0e1;
+}
+.status-in-progress {
+  background: #ffe7b8;
+}
+.status-research {
+  background: #d6e9f8;
+}
+
+.next-project:hover .display-title,
+.next-project:focus-visible .display-title {
+  color: var(--amber);
+}
+
+.grid-column {
+  background: rgb(230 162 60 / 0.14);
+  border-inline: 1px solid rgb(230 162 60 / 0.5);
+}
+
 body {
   background: var(--forest);
   color: var(--ink);
@@ -288,6 +340,31 @@ body {
     ". up ."
     "left . right"
     ". down .";
+}
+
+/* Scroll reveals: only elements below the fold get .reveal-pending, added by JavaScript. */
+.reveal-pending {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Cards holding links only fade, so a click never misses a target that is still moving. */
+.reveal-pending[data-reveal="fade"] {
+  transform: none;
+}
+.reveal-pending.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Printing never waits for scroll reveals. */
+@media print {
+  .reveal-pending {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
