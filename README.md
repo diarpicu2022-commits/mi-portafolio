@@ -6,6 +6,8 @@ Stack: Next.js (App Router), React, TypeScript y Tailwind CSS. Disponible en esp
 
 Incluye: experiencia y formación reales, un caso de estudio por proyecto (`/proyectos/<id>` y `/en/projects/<id>`), animación de caminar, progreso de zonas con logro, diálogos estilo JRPG, sonidos 8-bit opcionales, modo noche, desplazamiento suave con Lenis y GSAP en escritorio, retícula visible a voluntad, formulario de contacto, imagen para redes sociales, página 404 temática y CV en PDF en ambos idiomas.
 
+Estado completo (qué está hecho, cómo se verificó y qué falta): [`docs/ESTADO-DEL-PROYECTO.md`](docs/ESTADO-DEL-PROYECTO.md).
+
 ## Desarrollo local
 
 ```bash
