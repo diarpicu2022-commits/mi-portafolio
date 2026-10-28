@@ -56,3 +56,32 @@ Se implementó el plan de `.research/plan-previo.md` sobre el scaffold de Next.j
 - Descripciones definitivas (en ambos idiomas), `repo` y `demo` exactos; luego `npm run cv`.
 - Testimonios reales.
 - Desplegar en Vercel y activar Analytics.
+
+## 2026-10-28 · Contenido real y enfoque profesional
+
+**Contenido**
+- Proyectos reescritos a partir de sus repositorios (README, manifiestos y código): AgroPulse, SISCAN, Ecos de la Tierra, NotaScan, CampusWatch / Agenda, HidroMon, Harmonia, Proxy IA, EcoVolt, SETPasto+ y Tower Defense, con enlaces exactos a cada repositorio.
+- Los proyectos se presentan como experiencia: cargo, periodo (tomado del historial de commits) y logros. Sin referencias a materias ni talleres.
+- Formación aparte: Ingeniería de Software en la UCC (en curso) e Ingeniería Electrónica en la Universidad de Nariño (2021–2025, profundización en Automatización y Control). Idiomas y «Cómo trabajo».
+- Se quitó la sección «Proceso de diseño»: el portafolio es para conocer a Diego, no para explicar el portafolio.
+- CV de dos páginas rehecho con experiencia, formación, habilidades e idiomas reales.
+
+**Diseño y movimiento** (a partir del informe de portafolios premium)
+- Caso de estudio por proyecto: contexto, reto, cómo lo resolví y resultado, en ambos idiomas.
+- Índice numerado, tipografía fluida con `clamp()` y retícula de 12 columnas visible a voluntad.
+- Apariciones al hacer scroll con IntersectionObserver; en escritorio, Lenis y GSAP sincronizados en un mismo ticker y botones magnéticos con `quickTo`. Nada de esto corre con «reducir movimiento».
+- Descartado WebGL/WebGPU: el informe pondera diseño y usabilidad con un 70 % y el portafolio ya tiene su propia identidad 2D.
+
+**Errores encontrados y corregidos**
+- Las apariciones usaban `visibility: hidden` y sacaban enlaces del orden de tabulación: ahora solo opacidad, y el foco revela al instante.
+- Al pulsar un edificio, el mapa tomaba el foco y hacía scroll antes del clic: ahora `preventScroll`.
+- `scroll-behavior: smooth` competía con Lenis en cada scroll programático.
+
+**Verificación**
+- `npm run lint`, `npm test` (31), `npm run e2e` (16, dos veces seguidas) y `npm run build` sin errores.
+- Lighthouse: accesibilidad, buenas prácticas y SEO 100 en todas las páginas; rendimiento 100 escritorio, 94 portada móvil, 99 casos de estudio móviles.
+
+**Pendiente de Diego**
+- Ajustar los periodos de los proyectos subidos en un solo día (Tower Defense, Harmonia, Proxy IA, EcoVolt, SETPasto+, HidroMon) al tiempo real que tomaron.
+- Confirmar las demos publicadas (por ejemplo AgroPulse y Harmonia en Vercel) y añadirlas en `demo`.
+- Capturas de cada proyecto y testimonios reales.

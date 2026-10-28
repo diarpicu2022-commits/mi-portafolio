@@ -14,7 +14,7 @@ describe("PortfolioPage (es)", () => {
     render(<PortfolioPage locale="es" />);
     const nav = screen.getByRole("navigation", { name: /principal/i });
     expect(within(nav).getByRole("link", { name: /proyectos/i })).toHaveAttribute("href", "#projects");
-    for (const name of ["Perfil", "Proyectos", "Experiencia", "Testimonios", "Proceso de diseño", "Contacto"]) {
+    for (const name of ["Perfil", "Proyectos", "Experiencia", "Formación", "Testimonios", "Contacto"]) {
       expect(screen.getByRole("heading", { level: 2, name })).toBeVisible();
     }
   });
@@ -40,6 +40,38 @@ describe("PortfolioPage (es)", () => {
     expect(container.querySelector('a[href^="tel:"]')).toBeNull();
   });
 
+  it("numbers every project and links each one to its case study and repository", () => {
+    render(<PortfolioPage locale="es" />);
+    const section = screen.getByRole("region", { name: "Proyectos" });
+    for (const project of getPortfolio("es").projects) {
+      expect(within(section).getByRole("link", { name: `Ver caso de estudio: ${project.name}` })).toHaveAttribute(
+        "href",
+        `/proyectos/${project.id}`,
+      );
+    }
+    within(section)
+      .getAllByRole("link", { name: /\(GitHub\)/ })
+      .forEach((link) => expect(link.getAttribute("href")).toMatch(/^https:\/\/github\.com\/diarpicu2022-commits\//));
+  });
+
+  it("presents projects as work experience with a position and a period, newest first", () => {
+    render(<PortfolioPage locale="es" />);
+    const experience = screen.getByRole("region", { name: "Experiencia" });
+    const entries = within(experience).getAllByRole("listitem").filter((item) => item.querySelector("h3"));
+    expect(entries).toHaveLength(getPortfolio("es").projects.length);
+    expect(entries[0]).toHaveTextContent("actualidad");
+    expect(within(experience).getByRole("heading", { name: "Desarrollador IoT full stack" })).toBeInTheDocument();
+    expect(within(experience).getByText("mar 2026 – may 2026")).toBeInTheDocument();
+  });
+
+  it("keeps education separate, real and free of course framing or private data", () => {
+    const { container } = render(<PortfolioPage locale="es" />);
+    const education = screen.getByRole("region", { name: "Formación" });
+    expect(education).toHaveTextContent("Universidad de Nariño");
+    expect(education).toHaveTextContent("Universidad Cooperativa de Colombia");
+    expect(container.textContent).not.toMatch(/\+57|1004234190|Proceso de diseño|Proyecto final|cuarto semestre/);
+  });
+
   it("links to the English version", () => {
     render(<PortfolioPage locale="es" />);
     expect(screen.getByRole("link", { name: "English" })).toHaveAttribute("href", "/en");
@@ -50,7 +82,7 @@ describe("PortfolioPage (en)", () => {
   it("renders English content and the English CV", () => {
     render(<PortfolioPage locale="en" />);
     expect(screen.getByRole("navigation", { name: "Main navigation" })).toBeInTheDocument();
-    for (const name of ["Profile", "Projects", "Experience", "Testimonials", "Design process", "Contact"]) {
+    for (const name of ["Profile", "Projects", "Experience", "Education", "Testimonials", "Contact"]) {
       expect(screen.getByRole("heading", { level: 2, name })).toBeVisible();
     }
     screen
@@ -63,7 +95,7 @@ describe("PortfolioPage (en)", () => {
     const es = getPortfolio("es");
     const en = getPortfolio("en");
     expect(en.projects.map((p) => p.id)).toEqual(es.projects.map((p) => p.id));
-    expect(en.projects.every((p) => p.description)).toBe(true);
+    expect(en.projects.every((p) => p.summary && p.challenge && p.approach.length && p.outcome.length)).toBe(true);
     expect(en.zones.every((z) => z.name && z.summary && z.dialogue)).toBe(true);
   });
 });

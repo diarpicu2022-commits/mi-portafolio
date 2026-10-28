@@ -193,7 +193,8 @@ export function PortfolioWorld({ locale }: { locale: Locale }) {
         aria-label={t.world.mapLabel}
         aria-describedby="world-status"
         onKeyDown={handleKeyDown}
-        onPointerDown={() => mapRef.current?.focus()}
+        // preventScroll: scrolling here would move the building out from under the pointer before the click lands.
+        onPointerDown={() => mapRef.current?.focus({ preventScroll: true })}
         className="pixel-frame overflow-hidden bg-forest focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-amber"
       >
         <WorldCanvas

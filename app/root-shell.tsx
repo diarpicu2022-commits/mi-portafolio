@@ -2,6 +2,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Geist, Press_Start_2P } from "next/font/google";
 import type { ReactNode } from "react";
 
+import { MotionProvider } from "@/components/motion-provider";
 import type { Locale } from "@/data/portfolio";
 import "./globals.css";
 
@@ -22,6 +23,7 @@ export function RootShell({ lang, children }: { lang: Locale; children: ReactNod
     <html lang={lang} className={`${geistSans.variable} ${pixelFont.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         {children}
+        <MotionProvider />
         {/* Only report analytics from Vercel deployments; elsewhere the script would 404. */}
         {process.env.VERCEL && <Analytics />}
       </body>

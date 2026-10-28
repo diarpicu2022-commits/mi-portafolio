@@ -44,10 +44,12 @@ test("English version works end to end", async ({ page, request }) => {
 
 test("zone progress survives a reload", async ({ page }) => {
   await page.goto("/");
+  await page.waitForLoadState("networkidle");
   await page.getByRole("button", { name: "Abrir Posada" }).click();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "1");
   await page.reload();
+  await page.waitForLoadState("networkidle");
   await expect(page.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "1");
 });
 
@@ -61,4 +63,26 @@ test("unknown pages show the themed 404 and social image exists", async ({ page,
   expect(og).toBeTruthy();
   const image = await request.get(og!);
   expect(image.headers()["content-type"]).toContain("image/png");
+});
+
+test("case studies are reachable from the project list and keep the language", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  await page.getByRole("link", { name: "Ver caso de estudio: AgroPulse" }).click();
+  await expect(page).toHaveURL(/\/proyectos\/agropulse$/);
+  await expect(page.getByRole("heading", { level: 1, name: "AgroPulse" })).toBeVisible();
+  await page.getByRole("link", { name: "English" }).click();
+  await expect(page).toHaveURL(/\/en\/projects\/agropulse$/);
+  await expect(page.getByRole("heading", { name: "The challenge" })).toBeVisible();
+  await page.getByRole("navigation", { name: "Next project" }).getByRole("link").click();
+  await expect(page).toHaveURL(/\/en\/projects\/siscan$/);
+});
+
+test("content stays visible with reduced motion", async ({ browser }) => {
+  const context = await browser.newContext({ reducedMotion: "reduce" });
+  const page = await context.newPage();
+  await page.goto("/proyectos/ecos");
+  await expect(page.getByRole("heading", { name: "Resultado" })).toBeVisible();
+  await expect(page.locator("html")).not.toHaveClass(/lenis/);
+  await context.close();
 });

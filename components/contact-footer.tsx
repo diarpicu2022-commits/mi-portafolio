@@ -1,3 +1,4 @@
+import { GridToggle } from "@/components/grid-toggle";
 import { getPortfolio, type Locale } from "@/data/portfolio";
 
 export function ContactFooter({ locale }: { locale: Locale }) {
@@ -9,7 +10,7 @@ export function ContactFooter({ locale }: { locale: Locale }) {
         <p>
           © 2026 {identity.name}. {t.footer.rights}
         </p>
-        <ul className="flex flex-wrap gap-4">
+        <ul className="flex flex-wrap items-center gap-4">
           <li>
             <a className="nav-link" href={`mailto:${identity.email}`}>
               {identity.email}
@@ -24,6 +25,9 @@ export function ContactFooter({ locale }: { locale: Locale }) {
             <a className="nav-link" href={cvPath} download>
               {t.hero.downloadCv}
             </a>
+          </li>
+          <li>
+            <GridToggle label={t.footer.grid} />
           </li>
         </ul>
       </div>
