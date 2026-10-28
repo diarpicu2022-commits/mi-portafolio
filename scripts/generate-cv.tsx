@@ -1,12 +1,17 @@
 /**
- * Generates public/cv-diego-armando-pinta-cuasquen.pdf from data/portfolio.ts.
+ * Generates the Spanish and English CV PDFs in public/ from data/portfolio.ts.
  * Run with: npm run cv
  */
 import path from "node:path";
 
 import { Document, Link, Page, StyleSheet, Text, View, renderToFile } from "@react-pdf/renderer";
 
-import { CV_PATH, experience, identity, projects, skillGroups } from "../data/portfolio";
+import { getPortfolio, locales, type Locale } from "../data/portfolio";
+
+const headings: Record<Locale, { profile: string; stack: string; experience: string; projects: string }> = {
+  es: { profile: "Perfil", stack: "Stack técnico", experience: "Formación y experiencia", projects: "Proyectos seleccionados" },
+  en: { profile: "Profile", stack: "Tech stack", experience: "Education and experience", projects: "Selected projects" },
+};
 
 const colors = { ink: "#10263d", forest: "#164a3a", amber: "#e6a23c", muted: "#4b5563" };
 
@@ -34,7 +39,9 @@ const styles = StyleSheet.create({
   muted: { color: colors.muted },
 });
 
-function Cv() {
+function Cv({ locale }: { locale: Locale }) {
+  const { identity, skillGroups, experience, projects } = getPortfolio(locale);
+  const h = headings[locale];
   return (
     <Document title={`CV · ${identity.name}`} author={identity.name}>
       <Page size="A4" style={styles.page}>
@@ -54,12 +61,12 @@ function Cv() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>Perfil</Text>
+          <Text style={styles.heading}>{h.profile}</Text>
           <Text>{identity.pitch}</Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>Stack técnico</Text>
+          <Text style={styles.heading}>{h.stack}</Text>
           {skillGroups.map((group) => (
             <View key={group.title} style={styles.row}>
               <Text style={styles.label}>{group.title}</Text>
@@ -69,7 +76,7 @@ function Cv() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>Formación y experiencia</Text>
+          <Text style={styles.heading}>{h.experience}</Text>
           {experience.map((item) => (
             <View key={item.title} style={styles.item}>
               <Text style={styles.itemTitle}>{item.title}</Text>
@@ -80,7 +87,7 @@ function Cv() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>Proyectos seleccionados</Text>
+          <Text style={styles.heading}>{h.projects}</Text>
           {projects.map((project) => (
             <View key={project.id} style={styles.item} wrap={false}>
               <Text>
@@ -96,5 +103,8 @@ function Cv() {
   );
 }
 
-const output = path.join(process.cwd(), "public", CV_PATH);
-renderToFile(<Cv />, output).then(() => console.log(`CV generado en ${output}`));
+for (const locale of locales) {
+  const output = path.join(process.cwd(), "public", getPortfolio(locale).cvPath);
+  await renderToFile(<Cv locale={locale} />, output);
+  console.log(`CV (${locale}) → ${output}`);
+}

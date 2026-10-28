@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { zones } from "@/data/portfolio";
+import { getPortfolio } from "@/data/portfolio";
 import { WORLD_LAYOUT, movePlayer, nearestZone, parseWorld, tileKey, type GridPoint } from "@/lib/world";
 
 describe("world rules", () => {
@@ -47,7 +47,7 @@ describe("world layout", () => {
       }
     }
 
-    for (const zone of zones) {
+    for (const zone of getPortfolio("es").zones) {
       const tiles = world.tiles.filter((tile) => tile.symbol === zone.symbol);
       expect(tiles, zone.name).toHaveLength(1);
       const [{ x, y }] = tiles;

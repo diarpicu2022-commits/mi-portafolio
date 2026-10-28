@@ -134,8 +134,34 @@ body {
 .tile-rock {
   background-color: #3f9b5f;
 }
-.tile-water {
+.tile-water,
+.tile-crops {
   background-color: #1d5f8c;
+}
+.tile-crops {
+  background-color: #6b4423;
+}
+
+/* Night mode: darken the world, light up the windows. */
+.night-overlay {
+  z-index: 5;
+  background: radial-gradient(circle at 50% 40%, rgb(40 60 120 / 0.35), rgb(10 20 50 / 0.65));
+  opacity: 0;
+  transition: opacity 400ms;
+}
+.is-night .night-overlay {
+  opacity: 1;
+}
+.is-night {
+  --window: #ffd166;
+}
+.is-night .zone-building svg {
+  position: relative;
+  z-index: 6;
+  filter: brightness(0.75) drop-shadow(0 0 4px rgb(255 209 102 / 0.6));
+}
+.is-night .zone-building.is-near svg {
+  filter: brightness(0.9) drop-shadow(0 0 4px var(--amber)) drop-shadow(0 0 2px var(--amber));
 }
 
 .zone-building {
@@ -159,6 +185,10 @@ body {
   pointer-events: none;
 }
 
+/* Labels stay readable above the player and the night overlay. */
+.zone-label {
+  z-index: 25;
+}
 .player {
   z-index: 20;
   transition:
@@ -182,6 +212,74 @@ body {
 @keyframes bob {
   50% {
     transform: translate(-50%, -3px);
+  }
+}
+
+.achievement {
+  background: var(--amber);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  animation: pop 300ms steps(3);
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.8);
+  }
+}
+
+.dialogue-box {
+  background: var(--ink);
+  color: var(--paper);
+  border: 4px double var(--paper);
+  outline: 3px solid var(--ink);
+}
+.caret {
+  animation: blink 600ms steps(2) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.pixel-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: #fff;
+  border: 3px solid var(--ink);
+  font-weight: 400;
+}
+
+.title-scene-art {
+  background: #3f9b5f;
+  border: 4px solid var(--ink);
+  box-shadow:
+    0 0 0 4px var(--paper),
+    0 0 0 8px var(--ink);
+  image-rendering: pixelated;
+}
+.title-hero {
+  animation: bob-hero 900ms steps(2) infinite;
+}
+.press-start {
+  animation: blink-color 1s steps(2) infinite;
+}
+
+@keyframes blink-color {
+  50% {
+    color: var(--paper);
+  }
+}
+.title-scene:hover .title-scene-art {
+  transform: translate(-2px, -2px);
+}
+
+@keyframes bob-hero {
+  50% {
+    transform: translateY(-6%);
   }
 }
 
