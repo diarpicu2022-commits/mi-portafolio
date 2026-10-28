@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Diecu's Engineering Quest
 
-## Getting Started
+Portafolio de **Diego Armando Pinta Cuasquen** (Ingeniería de Software, UCC) presentado como una aventura 2D cenital en pixel art. El visitante recorre un mapa y cada edificio abre una sección: Laboratorio (perfil y habilidades), Bosque de Código, Invernadero IoT, Academia, Archivo, Posada (testimonios) y Plaza (contacto). Todo el contenido también está disponible en secciones convencionales, sin jugar.
 
-First, run the development server:
+Stack: Next.js (App Router), React, TypeScript y Tailwind CSS.
+
+## Desarrollo local
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Controles
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Flechas o WASD: mover al personaje (con el mapa enfocado).
+- E o Enter junto a un edificio: abrir su panel. Escape lo cierra.
+- Móvil: cruceta táctil y botón **Entrar**. También se puede hacer clic en cada edificio.
 
-## Learn More
+## Editar el contenido
 
-To learn more about Next.js, take a look at the following resources:
+Todo el texto vive en `data/portfolio.ts` (identidad, proyectos, habilidades, experiencia, testimonios y zonas). El mapa está en `lib/world.ts` (`WORLD_LAYOUT`); editar contenido no afecta al movimiento.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Para enlazar el repositorio exacto o la demo de un proyecto, añade `repo` o `demo` a su entrada. Sin `repo`, la tarjeta enlaza a una búsqueda en el perfil de GitHub; sin `demo`, muestra "Demo no disponible".
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Tras cambiar los datos, regenera el CV:
 
-## Deploy on Vercel
+```bash
+npm run cv
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Pruebas
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run lint
+npm test
+npm run e2e
+npm run build
+```
+
+`npm test` ejecuta las pruebas unitarias y de componentes (Vitest). `npm run e2e` compila, levanta el sitio y ejecuta Playwright en escritorio y móvil.
+
+## Despliegue
+
+1. Sube el repositorio a GitHub.
+2. En [Vercel](https://vercel.com/new), importa el repositorio; la configuración de Next.js se detecta sola.
+3. Cada push a la rama principal publica una nueva versión.
