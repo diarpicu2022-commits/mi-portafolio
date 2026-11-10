@@ -46,8 +46,15 @@ export function Navegacion({ locale, alternate }: { locale: Locale; alternate?: 
     <header className="nav-ed sup-papel">
       <nav aria-label={t.nav.label} className="reticula h-full items-center">
         <div className="col-span-full flex items-center justify-between gap-e16">
-          <a href={alternate ? homePath[locale] : "#contenido"} className="nav-ed-enlace voz-texto-fuerte -ml-e8 text-17">
-            {nombre} {apellido}
+          <a href={alternate ? homePath[locale] : "#contenido"} className="marca2 -ml-e8">
+            <span aria-hidden="true" className="marca2-mono voz-titular">
+              {nombre[0]}
+              {apellido[0]}
+            </span>
+            <span className="marca2-nombre voz-titular">
+              {nombre} {apellido}
+              <span aria-hidden="true" className="marca2-punto" />
+            </span>
           </a>
 
           <ul className="hidden items-center gap-e4 lg:flex">
@@ -62,7 +69,7 @@ export function Navegacion({ locale, alternate }: { locale: Locale; alternate?: 
 
           <div className="hidden items-center gap-e12 lg:flex">
             {idioma}
-            <a href={cvPath} download className="boton-ed boton-ed-secundario">
+            <a href={cvPath} download className="boton-ed boton-ed-nav">
               {t.hero.downloadCv}
               <FlechaDiagonal tamano={16} />
             </a>
@@ -73,7 +80,7 @@ export function Navegacion({ locale, alternate }: { locale: Locale; alternate?: 
             <button
               ref={boton}
               type="button"
-              className="boton-ed boton-ed-secundario"
+              className="boton-ed boton-ed-nav"
               aria-expanded={abierto}
               aria-controls={idPanel}
               onClick={() => setAbierto((valor) => !valor)}
@@ -94,7 +101,7 @@ export function Navegacion({ locale, alternate }: { locale: Locale; alternate?: 
             </li>
           ))}
         </ul>
-        <div className="mt-e40 flex flex-wrap items-center gap-e16 border-t border-tinta pt-e24">
+        <div className="mt-e40 flex flex-wrap items-center gap-e16 pt-e24">
           <a href={cvPath} download className="boton-ed boton-ed-primario" onClick={() => setAbierto(false)}>
             {t.hero.downloadCv}
             <FlechaDiagonal tamano={16} />
