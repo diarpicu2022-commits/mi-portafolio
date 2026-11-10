@@ -7,6 +7,8 @@ export const locales: Locale[] = ["es", "en"];
 export const GITHUB_PROFILE = "https://github.com/diarpicu2022-commits";
 export const EMAIL = "diarpicu2022@gmail.com";
 export const NAME = "Diego Armando Pinta Cuasquen";
+/** URL pública del portafolio, tomada del campo «homepage» del repositorio mi-portafolio en GitHub. La usa el CV. */
+export const PORTFOLIO_URL = "https://mi-portafolio-beta-kohl.vercel.app";
 
 /**
  * Retrato de la portada. Para cambiar la foto se reemplaza el archivo y se actualizan ancho y alto

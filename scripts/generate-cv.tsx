@@ -1,179 +1,175 @@
 /**
- * Generates the Spanish and English CV PDFs in public/ from data/portfolio.ts.
- * Run with: npm run cv
+ * Genera los CV en español e inglés en public/ desde data/portfolio.ts y data/projects.ts.
+ * Uso: npm run cv
+ *
+ * Pensado para quien contrata y para filtros automáticos: una sola columna, orden de lectura lineal,
+ * texto real seleccionable, contacto arriba y enlaces vivos. Mismo sistema que el sitio:
+ * Archivo (texto y titular condensado), IBM Plex Mono (datos), papel, tinta y un solo acento rojo.
+ * Las fuentes son las instancias estáticas de assets/fuentes (scripts/fuentes-estaticas.py).
  */
 import path from "node:path";
 
-import { Document, Link, Page, StyleSheet, Text, View, renderToFile } from "@react-pdf/renderer";
+import { Document, Font, Link, Page, StyleSheet, Text, View, renderToFile } from "@react-pdf/renderer";
 
-import { getPortfolio, locales, type Locale } from "../data/portfolio";
+import { PORTFOLIO_URL, getPortfolio, locales, projectPath, type Locale } from "../data/portfolio";
 
-const headings: Record<
-  Locale,
-  {
-    contact: string;
-    education: string;
-    skills: string;
-    languages: string;
-    profile: string;
-    principles: string;
-    experience: string;
-  }
-> = {
-  es: {
-    contact: "Contacto",
-    education: "Formación",
-    skills: "Habilidades",
-    languages: "Idiomas",
-    profile: "Perfil",
-    principles: "Cómo trabajo",
-    experience: "Experiencia",
-  },
-  en: {
-    contact: "Contact",
-    education: "Education",
-    skills: "Skills",
-    languages: "Languages",
-    profile: "Profile",
-    principles: "How I work",
-    experience: "Experience",
-  },
+const fuente = (archivo: string) => path.join(process.cwd(), "assets", "fuentes", archivo);
+Font.register({
+  family: "Archivo",
+  fonts: [
+    { src: fuente("Archivo-Regular.ttf"), fontWeight: 400 },
+    { src: fuente("Archivo-SemiBold.ttf"), fontWeight: 600 },
+  ],
+});
+Font.register({ family: "Titular", src: fuente("Archivo-Condensada-Black.ttf"), fontWeight: 900 });
+Font.register({
+  family: "Plex",
+  fonts: [
+    { src: fuente("IBMPlexMono-Regular.ttf"), fontWeight: 400 },
+    { src: fuente("IBMPlexMono-Medium.ttf"), fontWeight: 500 },
+  ],
+});
+// Sin guiones automáticos: un filtro automático lee mejor las palabras enteras.
+Font.registerHyphenationCallback((palabra) => [palabra]);
+
+const titulos: Record<Locale, Record<"perfil" | "experiencia" | "formacion" | "habilidades" | "idiomas", string>> = {
+  es: { perfil: "Perfil", experiencia: "Experiencia", formacion: "Formación", habilidades: "Habilidades", idiomas: "Idiomas" },
+  en: { perfil: "Profile", experiencia: "Experience", formacion: "Education", habilidades: "Skills", idiomas: "Languages" },
+};
+const etiquetas: Record<Locale, { caso: string; codigo: string; portafolio: string }> = {
+  es: { caso: "Caso de estudio", codigo: "Código", portafolio: "Portafolio" },
+  en: { caso: "Case study", codigo: "Code", portafolio: "Portfolio" },
 };
 
-const colors = { ink: "#10263d", forest: "#164a3a", amber: "#b7791f", muted: "#4b5563", side: "#f4efe1" };
+const C = { papel: "#F1ECE2", tinta: "#121211", gris: "#5A554C", rojo: "#D92B1F" };
 
-const styles = StyleSheet.create({
-  page: { flexDirection: "row", fontSize: 8.6, fontFamily: "Helvetica", color: colors.ink, lineHeight: 1.4, paddingVertical: 30 },
-  sideBackground: { position: "absolute", top: 0, bottom: 0, left: 0, width: 178, backgroundColor: colors.side },
-  side: { width: 178, paddingHorizontal: 18 },
-  main: { flex: 1, paddingHorizontal: 24 },
-  name: { fontSize: 19, fontFamily: "Helvetica-Bold", color: colors.forest, lineHeight: 1.15 },
-  tagline: { fontSize: 10.5, color: colors.amber, fontFamily: "Helvetica-Bold", marginTop: 4 },
-  role: { fontSize: 9.5, marginTop: 3 },
-  rule: { borderBottomWidth: 2, borderBottomColor: "#e6a23c", marginTop: 8, marginBottom: 10 },
-  heading: {
-    fontSize: 9,
-    fontFamily: "Helvetica-Bold",
-    color: colors.forest,
-    textTransform: "uppercase",
-    letterSpacing: 1,
-    marginBottom: 5,
-  },
-  section: { marginBottom: 11 },
-  link: { color: colors.forest, textDecoration: "none" },
-  bold: { fontFamily: "Helvetica-Bold" },
-  muted: { color: colors.muted },
-  small: { fontSize: 7.8 },
-  item: { marginBottom: 6 },
-  skillTitle: { fontFamily: "Helvetica-Bold", fontSize: 8, marginTop: 3 },
-  projectHead: { flexDirection: "row", justifyContent: "space-between" },
-  bullet: { flexDirection: "row", marginBottom: 2 },
-  bulletMark: { width: 8, color: colors.amber },
+const s = StyleSheet.create({
+  pagina: { backgroundColor: C.papel, color: C.tinta, fontFamily: "Archivo", fontSize: 9.5, lineHeight: 1.4, paddingVertical: 40, paddingHorizontal: 44 },
+  rotulo: { fontFamily: "Plex", fontSize: 8.5, color: C.gris },
+  nombre: { fontFamily: "Titular", fontWeight: 900, fontSize: 34, lineHeight: 0.9, textTransform: "uppercase", marginTop: 6 },
+  frase: { flexDirection: "row", alignItems: "center", marginTop: 8 },
+  bloque: { width: 9, height: 9, backgroundColor: C.rojo, marginRight: 6 },
+  fraseTexto: { fontWeight: 600, fontSize: 11 },
+  contacto: { flexDirection: "row", flexWrap: "wrap", marginTop: 8, fontFamily: "Plex", fontSize: 8.5 },
+  enlace: { color: C.tinta, textDecoration: "underline", marginRight: 14 },
+  seccion: { marginTop: 14 },
+  cabeza: { flexDirection: "row", alignItems: "center", borderTopWidth: 1, borderTopColor: C.tinta, paddingTop: 5, marginBottom: 6 },
+  cuadrado: { width: 5, height: 5, backgroundColor: C.tinta, marginRight: 6 },
+  cabezaTexto: { fontFamily: "Plex", fontWeight: 500, fontSize: 8.5, textTransform: "uppercase" },
+  puesto: { marginBottom: 8 },
+  puestoCabeza: { flexDirection: "row", justifyContent: "space-between" },
+  puestoTitulo: { fontWeight: 600, fontSize: 10, flex: 1, paddingRight: 8 },
+  dato: { fontFamily: "Plex", fontSize: 8, color: C.gris },
+  tecnologias: { fontFamily: "Plex", fontSize: 8, color: C.gris, marginTop: 1 },
+  vinculos: { flexDirection: "row", fontFamily: "Plex", fontSize: 8, marginTop: 1 },
+  fila: { flexDirection: "row", marginBottom: 2 },
+  filaRotulo: { fontWeight: 600, width: 140, paddingRight: 8 },
+  filaValor: { flex: 1 },
 });
 
+function Cabeza({ children }: { children: string }) {
+  // minPresenceAhead evita que un título de sección quede solo al final de una página.
+  return (
+    <View style={s.cabeza} minPresenceAhead={60}>
+      <View style={s.cuadrado} />
+      <Text style={s.cabezaTexto}>{children}</Text>
+    </View>
+  );
+}
+
 function Cv({ locale }: { locale: Locale }) {
-  const { identity, skillGroups, education, experience, projects, languages, principles } = getPortfolio(locale);
-  const repoOf = (id: string) => projects.find((project) => project.id === id)!.links[0].url;
-  const h = headings[locale];
+  const { identity, skillGroups, education, experience, projects, languages } = getPortfolio(locale);
+  const t = titulos[locale];
+  const e = etiquetas[locale];
+  const porId = new Map(projects.map((p) => [p.id, p]));
+  const portafolio = `${PORTFOLIO_URL}${locale === "es" ? "" : "/en"}`;
 
   return (
-    <Document title={`CV · ${identity.name}`} author={identity.name} subject={identity.tagline}>
-      <Page size="A4" style={styles.page}>
-        {/* Painted on every page so the sidebar column stays continuous. */}
-        <View fixed style={styles.sideBackground} />
-        <View style={styles.side}>
-          <View style={styles.section}>
-            <Text style={styles.heading}>{h.contact}</Text>
-            <Link src={`mailto:${identity.email}`} style={styles.link}>
-              {identity.email}
-            </Link>
-            <Link src={identity.github} style={[styles.link, styles.small]}>
-              {identity.github.replace("https://", "")}
-            </Link>
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.heading}>{h.education}</Text>
-            {education.map((item) => (
-              <View key={item.title} style={styles.item}>
-                <Text style={styles.bold}>{item.title}</Text>
-                <Text>{item.place}</Text>
-                <Text style={[styles.muted, styles.small]}>{item.period}</Text>
-              </View>
-            ))}
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.heading}>{h.skills}</Text>
-            {skillGroups.map((group) => (
-              <View key={group.title}>
-                <Text style={styles.skillTitle}>{group.title}</Text>
-                <Text style={styles.small}>{group.items.join(" · ")}</Text>
-              </View>
-            ))}
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.heading}>{h.languages}</Text>
-            {languages.map((item) => (
-              <Text key={item.name} style={{ marginBottom: 2 }}>
-                <Text style={styles.bold}>{item.name}: </Text>
-                {item.level}
-              </Text>
-            ))}
-          </View>
+    <Document title={`CV · ${identity.name}`} author={identity.name} subject={identity.role} language={locale}>
+      <Page size="A4" style={s.pagina}>
+        <Text style={s.rotulo}>{identity.role}</Text>
+        <Text style={s.nombre}>{identity.name}</Text>
+        <View style={s.frase}>
+          <View style={s.bloque} />
+          <Text style={s.fraseTexto}>{identity.tagline}</Text>
+        </View>
+        <View style={s.contacto}>
+          <Link src={`mailto:${identity.email}`} style={s.enlace}>
+            {identity.email}
+          </Link>
+          <Link src={identity.github} style={s.enlace}>
+            {identity.github.replace("https://", "")}
+          </Link>
+          <Link src={portafolio} style={s.enlace}>
+            {portafolio.replace("https://", "")}
+          </Link>
         </View>
 
-        <View style={styles.main}>
-          <Text style={styles.name}>{identity.name}</Text>
-          <Text style={styles.tagline}>{identity.tagline}</Text>
-          <Text style={styles.role}>{identity.role}</Text>
-          <View style={styles.rule} />
+        <View style={s.seccion}>
+          <Cabeza>{t.perfil}</Cabeza>
+          <Text>{identity.pitch}</Text>
+        </View>
 
-          <View style={styles.section}>
-            <Text style={styles.heading}>{h.profile}</Text>
-            <Text>{identity.pitch}</Text>
-            <Text style={{ marginTop: 3 }}>{identity.motto}</Text>
-          </View>
-
-          <View style={styles.section}>
-            <Text style={styles.heading}>{h.experience}</Text>
-            {experience.map((item) => (
-              <View key={item.id} style={styles.item} wrap={false}>
-                <View style={styles.projectHead}>
-                  <Text style={styles.bold}>
-                    {item.position} · <Text style={{ color: colors.forest }}>{item.project}</Text>
+        <View style={s.seccion}>
+          <Cabeza>{t.experiencia}</Cabeza>
+          {experience.map((item) => {
+            const p = porId.get(item.id)!;
+            return (
+              <View key={item.id} style={s.puesto} wrap={false}>
+                <View style={s.puestoCabeza}>
+                  <Text style={s.puestoTitulo}>
+                    {item.position}, {item.project}
                   </Text>
-                  <Text style={[styles.muted, styles.small]}>{item.period}</Text>
+                  <Text style={s.dato}>{item.period}</Text>
                 </View>
                 <Text>{item.summary}</Text>
-                {item.highlights.map((highlight) => (
-                  <View key={highlight} style={styles.bullet}>
-                    <Text style={styles.bulletMark}>•</Text>
-                    <Text style={{ flex: 1 }}>{highlight}</Text>
-                  </View>
-                ))}
-                <Text style={[styles.muted, styles.small]}>{item.technologies.join(" · ")}</Text>
-                <Link src={repoOf(item.id)} style={[styles.link, styles.small]}>
-                  {repoOf(item.id).replace("https://", "")}
-                </Link>
+                <Text>{p.outcome[0]}</Text>
+                <Text style={s.tecnologias}>{item.technologies.join(", ")}</Text>
+                <View style={s.vinculos}>
+                  <Link src={`${PORTFOLIO_URL}${projectPath(locale, item.id)}`} style={s.enlace}>
+                    {e.caso}
+                  </Link>
+                  <Link src={p.links[0].url} style={s.enlace}>
+                    {e.codigo}: {p.links[0].url.replace("https://", "")}
+                  </Link>
+                </View>
               </View>
-            ))}
-          </View>
+            );
+          })}
+        </View>
 
-          <View style={styles.section} wrap={false}>
-            <Text style={styles.heading}>{h.principles}</Text>
-            {principles.map((item) => (
-              <View key={item.title} style={styles.bullet}>
-                <Text style={styles.bulletMark}>•</Text>
-                <Text style={{ flex: 1 }}>
-                  <Text style={styles.bold}>{item.title}. </Text>
-                  {item.body}
-                </Text>
+        <View style={s.seccion} wrap={false}>
+          <Cabeza>{t.formacion}</Cabeza>
+          {education.map((item) => (
+            <View key={item.title} style={s.puesto}>
+              <View style={s.puestoCabeza}>
+                <Text style={s.puestoTitulo}>{item.title}</Text>
+                <Text style={s.dato}>{item.period}</Text>
               </View>
-            ))}
-          </View>
+              <Text>{item.place}</Text>
+              <Text style={{ color: C.gris }}>{item.detail}</Text>
+            </View>
+          ))}
+        </View>
 
+        <View style={s.seccion} wrap={false}>
+          <Cabeza>{t.habilidades}</Cabeza>
+          {skillGroups.map((g) => (
+            <View key={g.title} style={s.fila}>
+              <Text style={s.filaRotulo}>{g.title}</Text>
+              <Text style={s.filaValor}>{g.items.join(", ")}</Text>
+            </View>
+          ))}
+        </View>
+
+        <View style={s.seccion} wrap={false}>
+          <Cabeza>{t.idiomas}</Cabeza>
+          {languages.map((l) => (
+            <View key={l.name} style={s.fila}>
+              <Text style={s.filaRotulo}>{l.name}</Text>
+              <Text style={s.filaValor}>{l.level}</Text>
+            </View>
+          ))}
         </View>
       </Page>
     </Document>
