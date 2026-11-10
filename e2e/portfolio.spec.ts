@@ -257,3 +257,23 @@ test("a technology links to the project that uses it, and experience shows each 
     await expect(fila.locator(".cronologia-miniatura img, .cronologia-miniatura .esquema-mini")).toHaveCount(1);
   }
 });
+
+test("search engines get a sitemap with both languages, robots, structured data and per-project images", async ({ page, request }) => {
+  const sitemap = await (await request.get("/sitemap.xml")).text();
+  expect(sitemap).toContain("/proyectos/agropulse");
+  expect(sitemap).toContain('hreflang="en"');
+  const robots = await (await request.get("/robots.txt")).text();
+  expect(robots).toContain("Disallow: /sistema");
+  await page.goto("/");
+  await expect(page).toHaveTitle(/Diego Armando Pinta Cuasquen/);
+  await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute("href", /\/en$/);
+  const persona = JSON.parse((await page.locator('script[type="application/ld+json"]').textContent())!);
+  expect(persona["@type"]).toBe("Person");
+  expect(JSON.stringify(persona)).not.toMatch(/telephone|\+57/);
+  const html = await (await request.get("/proyectos/agropulse")).text();
+  const og = html.match(/property="og:image" content="[^"]*?(\/proyectos\/agropulse\/opengraph-image[^"?]*)/)?.[1];
+  expect(og).toBeTruthy();
+  expect((await request.get(og!)).headers()["content-type"]).toContain("image/png");
+  const cv = await request.get("/cv-diego-armando-pinta-cuasquen.pdf");
+  expect(cv.ok()).toBe(true);
+});

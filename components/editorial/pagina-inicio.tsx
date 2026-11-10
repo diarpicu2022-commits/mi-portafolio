@@ -10,7 +10,8 @@ import { Pie } from "@/components/editorial/pie";
 import { Portada } from "@/components/editorial/portada";
 import { Seccion } from "@/components/editorial/seccion";
 import { SelectorProyectos } from "@/components/editorial/selector-proyectos";
-import { getPortfolio, type Locale } from "@/data/portfolio";
+import { siteUrl } from "@/app/site-metadata";
+import { getPortfolio, homePath, type Locale } from "@/data/portfolio";
 
 /**
  * Página de inicio del rediseño. Orden de 8.7. Todo el texto sale de data/.
@@ -28,6 +29,23 @@ export function PaginaInicio({ locale }: { locale: Locale }) {
         {t.skipLink}
       </a>
       <Navegacion locale={locale} />
+      <script
+        type="application/ld+json"
+        // Datos estructurados Person solo con datos públicos ya presentes en el sitio. Sin teléfono.
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: identity.name,
+            email: `mailto:${identity.email}`,
+            url: `${siteUrl}${homePath[locale]}`,
+            sameAs: [identity.github],
+            jobTitle: identity.role,
+            alumniOf: education.map((e) => ({ "@type": "CollegeOrUniversity", name: e.place })),
+            knowsLanguage: languages.map((l) => l.name),
+          }).replace(/</g, "\\u003c"),
+        }}
+      />
 
       <main id="contenido" tabIndex={-1} className="sup-papel voz-texto w-full flex-1 outline-none">
         <Portada locale={locale} projectsHref={`#${anchors.projects}`} />
