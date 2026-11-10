@@ -113,7 +113,9 @@ export async function renderProjectOgImage(locale: Locale, id: string) {
   const i = projects.findIndex((p) => p.id === id);
   const p = projects[i];
   const numero = String(i + 1).padStart(2, "0");
-  const imagen = p.image ? await imagenPng(p.image.src.replace(/^\//, ""), 560) : null;
+  // Captura real, luego ilustración (enmienda 14), luego esquema.
+  const fuenteImagen = p.image ?? p.ilustracion;
+  const imagen = fuenteImagen ? await imagenPng(fuenteImagen.src.replace(/^\//, ""), 560) : null;
   const escala = imagen ? Math.min(1, 520 / imagen.width, 470 / imagen.height) : 1;
 
   return new ImageResponse(
@@ -121,7 +123,15 @@ export async function renderProjectOgImage(locale: Locale, id: string) {
       <div style={{ width: "100%", height: "100%", display: "flex", background: C.negro, position: "relative" }}>
         <div style={{ position: "absolute", left: 640, top: 100, width: 500, height: 470, background: C.rojo }} />
         <div style={{ position: "absolute", left: 610, top: 70, display: "flex" }}>
-          {imagen ? (
+          {imagen && !p.image ? (
+            <div style={{ display: "flex", flexDirection: "column", background: C.papel, border: `2px solid ${C.tinta}` }}>
+              <div style={{ fontFamily: "Dato", fontSize: 18, color: C.tinta, padding: "8px 12px", borderBottom: `2px solid ${C.tinta}` }}>
+                {t.card.illustration}
+              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element -- Satori, sin next/image. */}
+              <img src={imagen.src} width={imagen.width * escala} height={imagen.height * escala} alt="" />
+            </div>
+          ) : imagen ? (
             // eslint-disable-next-line @next/next/no-img-element -- Satori, sin next/image.
             <img src={imagen.src} width={imagen.width * escala} height={imagen.height * escala} alt="" />
           ) : (

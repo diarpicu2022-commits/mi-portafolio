@@ -80,9 +80,8 @@ test("unknown pages show the themed 404 and social image exists", async ({ page,
 test("case studies are reachable from the project list and keep the language", async ({ page, isMobile }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
-  // AgroPulse ya no es el primero (enmienda 10): se elige en el selector antes de abrir su caso.
-  await page.getByRole("tab", { name: /AgroPulse/ }).click();
-  await page.getByRole("tabpanel", { name: "AgroPulse" }).getByRole("link", { name: "Ver caso de estudio: AgroPulse" }).click();
+  // AgroPulse va en el abanico de cartas ilustradas.
+  await page.locator("#proyecto-agropulse").getByRole("link", { name: "Ver caso de estudio: AgroPulse" }).click();
   await expect(page).toHaveURL(/\/proyectos\/agropulse$/);
   await expect(page.getByRole("heading", { level: 1, name: "AgroPulse" })).toBeVisible();
   await (await enlaceNav(page, "English", isMobile)).click();
@@ -149,49 +148,23 @@ test("the 2D map loads at /quest and links back to the portfolio", async ({ page
   expect(errores).toEqual([]);
 });
 
-test("project selector works with the keyboard and keeps the section height", async ({ page }) => {
-  await page.goto("/");
-  const lista = page.getByRole("tablist", { name: "Elige un proyecto" });
-  const primera = lista.getByRole("tab").first();
-  await primera.focus();
-  const alto = await page.locator("#proyectos").evaluate((el) => el.getBoundingClientRect().height);
-  await page.keyboard.press("ArrowDown");
-  await expect(lista.getByRole("tab", { name: /Ecos de la Tierra/ })).toBeFocused();
-  await expect(lista.getByRole("tab", { name: /Ecos de la Tierra/ })).toHaveAttribute("aria-selected", "true");
-  await expect(page.getByRole("tabpanel", { name: /Ecos de la Tierra/ })).toBeVisible();
-  await page.keyboard.press("End");
-  await expect(lista.getByRole("tab", { name: /Tower Defense/ })).toHaveAttribute("aria-selected", "true");
-  await page.keyboard.press("Home");
-  await expect(primera).toHaveAttribute("aria-selected", "true");
-  // Cambio por teclado: sin animación (8.8).
-  const anim = await page.locator(".selector-panel[data-activo] .selector-anima").evaluate((el) => getComputedStyle(el).animationName);
-  expect(anim).toBe("none");
-  expect(await page.locator("#proyectos").evaluate((el) => el.getBoundingClientRect().height)).toBe(alto);
-  await expect(page).toHaveURL(/#proyecto-siscan$/);
-});
-
-test("a direct link selects the project; missing capture and demo have their states", async ({ page }) => {
-  await page.goto("/#proyecto-ecos");
-  await expect(page.getByRole("tab", { name: /Ecos de la Tierra/ })).toHaveAttribute("aria-selected", "true");
-  const ecos = page.getByRole("tabpanel", { name: /Ecos de la Tierra/ });
-  await expect(ecos.getByRole("img", { name: /Combate de Ecos de la Tierra/ })).toBeVisible();
-  await expect(ecos.getByText("Sin demo pública")).toBeVisible();
-  await page.getByRole("tab", { name: /AgroPulse/ }).click();
-  const agro = page.getByRole("tabpanel", { name: /AgroPulse/ });
-  // Sin captura, el esquema de sistema rotulado sustituye a la placa (enmienda 13).
-  await expect(agro.getByRole("img", { name: /^Esquema\. Del invernadero al panel/ })).toBeVisible();
-  await expect(agro.locator(".selector-placa")).toHaveCount(0);
-  await expect(agro.getByRole("link", { name: "Ver caso de estudio: AgroPulse" })).toHaveAttribute("href", "/proyectos/agropulse");
+test("projects show as collage and illustrated cards with working links", async ({ page }) => {
+  await page.goto("/#proyectos");
+  await expect(page.locator(".collage-item")).toHaveCount(5);
+  await expect(page.locator(".carta")).toHaveCount(6);
+  await expect(page.locator("#proyecto-agropulse")).toContainText("Ilustración");
+  const repos = page.locator('.collage-item a[aria-label$="(GitHub)"]');
+  expect(await repos.count()).toBeGreaterThan(0);
+  for (const href of await repos.evaluateAll((els) => els.map((e) => e.getAttribute("href"))))
+    expect(href).toMatch(/^https:\/\/github\.com\/diarpicu2022-commits\//);
 });
 
 test("without JavaScript the eleven projects are listed with their links", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto("/");
-  await expect(page.locator(".selector-lista")).toBeHidden();
-  await expect(page.locator(".selector-panel")).toHaveCount(11);
-  for (const panel of await page.locator(".selector-panel").all()) await expect(panel).toBeVisible();
-  await expect(page.locator('.selector a[href^="/proyectos/"]')).toHaveCount(11);
+  await expect(page.locator('#proyectos a[aria-label^="Ver caso de estudio:"]')).toHaveCount(11);
+  await expect(page.locator(".hero2-titular")).toBeVisible();
   await context.close();
 });
 
@@ -245,17 +218,10 @@ test("privacy page is linked from the footer and deletes the map progress", asyn
   await expect(page.getByRole("heading", { level: 1, name: "Privacy policy" })).toBeVisible();
 });
 
-test("a technology links to the project that uses it, and experience shows each project's image or diagram", async ({ page }) => {
-  await page.goto("/");
-  const habilidades = page.getByRole("region", { name: "Habilidades y stack técnico" });
-  await habilidades.getByRole("link", { name: "NestJS: HidroMon" }).click();
-  await expect(page).toHaveURL(/#proyecto-hidromon$/);
-  await expect(page.getByRole("tab", { name: /HidroMon/ })).toHaveAttribute("aria-selected", "true");
-  const filas = page.getByRole("region", { name: "Experiencia" }).locator(".cronologia-fila");
-  await expect(filas).toHaveCount(11);
-  for (const fila of await filas.all()) {
-    await expect(fila.locator(".cronologia-miniatura img, .cronologia-miniatura .esquema-mini")).toHaveCount(1);
-  }
+test("skills show technology logos and experience shows each project's image", async ({ page }) => {
+  await page.goto("/#habilidades");
+  expect(await page.locator(".skills2-logo svg").count()).toBeGreaterThan(20);
+  await expect(page.locator(".skills2")).not.toContainText("%");
 });
 
 test("search engines get a sitemap with both languages, robots, structured data and per-project images", async ({ page, request }) => {

@@ -266,6 +266,10 @@ Aprobadas por Diego el 10 de noviembre de 2026, al delegar las decisiones de dis
 12. Habilidades y experiencia ganan punto de entrada. En habilidades, una cifra real por grupo o tecnología contada desde `data/projects.ts`, con enlace a esos proyectos. En experiencia, la miniatura real o el esquema del proyecto en cada fila.
 13. Forma nueva en el repertorio, el esquema de sistema. Su único trabajo es mostrar cómo está armado un proyecto que no tiene captura. Sustituye a la placa roja como imagen principal y se retira cuando llegue una captura real. Siempre va rotulado «Esquema» («Diagram») y nunca se presenta como captura.
 
+Aprobada por Diego el 10 de noviembre de 2026. Él aportó la imagen y delegó cómo usarla.
+
+14. Forma nueva en el repertorio, la ilustración de proyecto. Su único trabajo es dar cara a un proyecto sin captura en los sitios donde se elige: el selector, la miniatura de experiencia y la imagen para redes del caso. Va rotulada «Ilustración» («Illustration») y nunca se presenta como captura. El esquema de sistema se queda en la página de caso, donde explica. Prioridad en selector, experiencia e imagen para redes: captura real, ilustración, esquema y placa. Prioridad en la página de caso: captura real y esquema, con la ilustración como cabecera secundaria solo si mejora la página. Las seis ilustraciones las generó Diego con IA (ChatGPT) en una sola hoja con la paleta del sitio.
+
 Foto. Diego va a tomarse una nueva o a buscar el original. La portada debe aceptar el cambio con solo reemplazar el archivo en `public/retrato/`. Mientras tanto sigue el tope de 560 px de alto.
 
 ## 9. Legal y privacidad
@@ -762,3 +766,11 @@ Las comparativas están en `docs/pantallazos/rediseno/Comparativa final 1440.png
 - Testimonios sigue siendo un estado pendiente. Es honesto, pero no convence hasta que haya tres testimonios reales.
 - Seis de once proyectos se apoyan en esquemas. Explican el sistema, pero una captura real convence más.
 - La página en celular mide 14042 px. Habilidades y experiencia la alargan porque cada enlace mide 44 px.
+
+## 17. Ilustraciones de proyecto
+
+10 de noviembre de 2026. Alcance reducido por Diego: integrar las ilustraciones en selector, experiencia e imagen para redes, y cerrar ahí.
+
+- Hecho. Seis recortes de 740 × 330 px desde la hoja de 1586 × 992 px, sin la decoración de las esquinas, con el crema llevado al papel del sitio (`scripts/recortar-ilustraciones.py`). Campo `ilustracion` en `data/projects.ts`. Prioridad captura, ilustración, esquema y placa en selector, experiencia e imagen para redes, con el rótulo «Ilustración».
+- Verificado. Lint, test, e2e y build, y una captura del selector a 1440 con un proyecto ilustrado (`Selector 1440 con ilustración.png`).
+- Sin hacer. La ilustración como cabecera secundaria de la página de caso, la verificación completa (resolución, alto, contraste y anchos) y la actualización de ESTADO e HISTORIAL.

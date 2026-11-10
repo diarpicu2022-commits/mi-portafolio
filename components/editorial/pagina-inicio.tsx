@@ -9,7 +9,9 @@ import { Navegacion } from "@/components/editorial/navegacion";
 import { Pie } from "@/components/editorial/pie";
 import { Portada } from "@/components/editorial/portada";
 import { Seccion } from "@/components/editorial/seccion";
-import { SelectorProyectos } from "@/components/editorial/selector-proyectos";
+import { GaleriaProyectos } from "@/components/editorial/galeria-proyectos";
+import { CintaTecnologias } from "@/components/editorial/cinta-tecnologias";
+import { Revelar } from "@/components/editorial/revelar";
 import { siteUrl } from "@/app/site-metadata";
 import { getPortfolio, homePath, type Locale } from "@/data/portfolio";
 
@@ -49,6 +51,8 @@ export function PaginaInicio({ locale }: { locale: Locale }) {
 
       <main id="contenido" tabIndex={-1} className="sup-papel voz-texto w-full flex-1 outline-none">
         <Portada locale={locale} projectsHref={`#${anchors.projects}`} />
+        <CintaTecnologias locale={locale} />
+        <Revelar />
 
         {/* Perfil: una entrada grande, la cita del lema al margen y los principios como índice editorial. */}
         <Seccion id={anchors.about} rotulo={`${identity.semester} · ${identity.university}`} titulo={s.aboutTitle}>
@@ -82,7 +86,7 @@ export function PaginaInicio({ locale }: { locale: Locale }) {
 
         <Seccion id={anchors.projects} rotulo={`${projects.length} ${t.portada.projects}`} titulo={s.projectsTitle} oscura>
           <p className="medida col-span-full text-17 text-gris-claro">{s.projectsIntro}</p>
-          <SelectorProyectos locale={locale} />
+          <GaleriaProyectos locale={locale} />
         </Seccion>
 
         {/* Cuarto punto de entrada (8.6): el único corte diagonal del sitio. */}

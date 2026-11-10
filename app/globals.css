@@ -1156,6 +1156,43 @@
   color: var(--rojo);
 }
 
+/* Ilustración de proyecto (enmienda 14): ficha de papel con filete y rótulo. */
+.ilustracion {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  max-width: 100%;
+  background: var(--papel);
+  color: var(--tinta);
+  border: var(--filete) solid var(--tinta);
+}
+.ilustracion figcaption {
+  padding: var(--e-4) var(--e-12);
+  border-bottom: var(--filete) solid var(--tinta);
+}
+.ilustracion img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+}
+.selector-ilustracion {
+  position: relative;
+  z-index: 1;
+}
+/* Miniatura de experiencia: el dibujo entero, el rótulo en la franja de arriba. */
+.cronologia-miniatura .ilustracion-mini {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.cronologia-miniatura .ilustracion-mini img {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  object-fit: contain;
+}
+
 /* Entrada una sola vez (8.8). Solo transform y opacity, en CSS: se ve aunque no corra JavaScript. */
 @media (prefers-reduced-motion: no-preference) {
   .portada-linea {

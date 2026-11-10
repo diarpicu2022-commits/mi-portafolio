@@ -34,12 +34,20 @@ export type Project = {
   image?: ProjectImage;
   /** Esquema de sistema cuando no hay captura. Si llega una captura, manda la captura. */
   esquema?: Esquema;
+  /** Ilustración cuando no hay captura. Manda sobre el esquema en selector, experiencia e imagen para redes. */
+  ilustracion?: ProjectIlustracion;
 } & CaseStudy;
 
 export type ProjectImage = { src: string; width: number; height: number; alt: string };
 
 /** Texto en los dos idiomas. Los nombres técnicos (ESP32, Spring Boot) se repiten igual en ambos. */
 type Bilingue = Record<Locale, string>;
+
+/**
+ * Ilustración de proyecto (enmienda 14): da cara a un proyecto sin captura donde se elige.
+ * Generada con IA por Diego. Siempre rotulada «Ilustración», nunca como captura.
+ */
+export type ProjectIlustracion = { src: string; width: number; height: number; alt: string };
 type NodoBase = { etiqueta: Bilingue; detalle: Bilingue };
 type EtapaBase = { nodos: NodoBase[]; enlace?: Bilingue };
 /**
@@ -53,8 +61,9 @@ export type Esquema = {
   etapas: { nodos: { etiqueta: string; detalle: string }[]; enlace?: string }[];
 };
 
-type ProjectBase = Omit<Project, keyof CaseStudy | "image" | "esquema"> & {
+type ProjectBase = Omit<Project, keyof CaseStudy | "image" | "esquema" | "ilustracion"> & {
   image?: Omit<ProjectImage, "alt"> & { alt: Record<Locale, string> };
+  ilustracion?: Omit<ProjectIlustracion, "alt"> & { alt: Bilingue };
   esquema?: EsquemaBase;
 };
 
@@ -181,6 +190,16 @@ const base: ProjectBase[] = [
         { nodos: [{ etiqueta: { es: "Supabase", en: "Supabase" }, detalle: { es: "PostgreSQL", en: "PostgreSQL" } }, { etiqueta: { es: "Panel web", en: "Dashboard" }, detalle: { es: "React 18 en Vercel", en: "React 18 on Vercel" } }, { etiqueta: { es: "Alertas", en: "Alerts" }, detalle: { es: "correo con SendGrid", en: "email via SendGrid" } }] },
       ],
     },
+    // Ilustración generada con IA por Diego (hoja «Infografía tecnológica minimalista»), recortada en scripts y llevada al papel.
+    ilustracion: {
+      src: "/projects/ilustraciones/agropulse.webp",
+      width: 740,
+      height: 330,
+      alt: {
+        es: "Ilustración de un invernadero con plantas, un sensor de temperatura y humedad y una placa electrónica con antena wifi.",
+        en: "Illustration of a greenhouse with plants, a temperature and humidity sensor and an electronic board with a wifi antenna.",
+      },
+    },
   },
   {
     id: "hidromon",
@@ -201,6 +220,16 @@ const base: ProjectBase[] = [
         { nodos: [{ etiqueta: { es: "Alerta", en: "Alert" }, detalle: { es: "Alta o Baja", en: "High or Low" } }] },
       ],
     },
+    // Ilustración generada con IA por Diego (hoja «Infografía tecnológica minimalista»), recortada en scripts y llevada al papel.
+    ilustracion: {
+      src: "/projects/ilustraciones/hidromon.webp",
+      width: 740,
+      height: 330,
+      alt: {
+        es: "Ilustración de una planta en tierra con una sonda de humedad y una gráfica de barras que sube.",
+        en: "Illustration of a plant in soil with a moisture probe and a rising bar chart.",
+      },
+    },
   },
   {
     id: "harmonia",
@@ -218,6 +247,16 @@ const base: ProjectBase[] = [
         { nodos: [{ etiqueta: { es: "API", en: "API" }, detalle: { es: "Express, Passport con Google OAuth", en: "Express, Passport with Google OAuth" } }], enlace: { es: "datos, caché e IA", en: "data, cache and AI" } },
         { nodos: [{ etiqueta: { es: "MongoDB", en: "MongoDB" }, detalle: { es: "Mongoose", en: "Mongoose" } }, { etiqueta: { es: "Redis", en: "Redis" }, detalle: { es: "caché", en: "cache" } }, { etiqueta: { es: "Groq", en: "Groq" }, detalle: { es: "agente musical", en: "music agent" } }] },
       ],
+    },
+    // Ilustración generada con IA por Diego (hoja «Infografía tecnológica minimalista»), recortada en scripts y llevada al papel.
+    ilustracion: {
+      src: "/projects/ilustraciones/harmonia.webp",
+      width: 740,
+      height: 330,
+      alt: {
+        es: "Ilustración de un disco de vinilo atravesado por una onda de sonido que termina en barras de ecualizador.",
+        en: "Illustration of a vinyl record crossed by a sound wave that ends in equalizer bars.",
+      },
     },
   },
   {
@@ -242,6 +281,16 @@ const base: ProjectBase[] = [
         { nodos: [{ etiqueta: { es: "Generación", en: "Generation" }, detalle: { es: "servicio simulado", en: "mock service" } }] },
       ],
     },
+    // Ilustración generada con IA por Diego (hoja «Infografía tecnológica minimalista»), recortada en scripts y llevada al papel.
+    ilustracion: {
+      src: "/projects/ilustraciones/proxy-ia.webp",
+      width: 740,
+      height: 330,
+      alt: {
+        es: "Ilustración de tres flechas que entran a una compuerta con un engranaje y salen por tres carriles.",
+        en: "Illustration of three arrows entering a gate with a gear and leaving through three lanes.",
+      },
+    },
   },
   {
     id: "ecovolt",
@@ -261,6 +310,16 @@ const base: ProjectBase[] = [
         { nodos: [{ etiqueta: { es: "SQLite", en: "SQLite" }, detalle: { es: "conexión única", en: "single connection" } }] },
       ],
     },
+    // Ilustración generada con IA por Diego (hoja «Infografía tecnológica minimalista»), recortada en scripts y llevada al papel.
+    ilustracion: {
+      src: "/projects/ilustraciones/ecovolt.webp",
+      width: 740,
+      height: 330,
+      alt: {
+        es: "Ilustración de un panel solar bajo el sol con una línea de producción que sube.",
+        en: "Illustration of a solar panel under the sun with a production line going up.",
+      },
+    },
   },
   {
     id: "tower-defense",
@@ -279,6 +338,16 @@ const base: ProjectBase[] = [
         { nodos: [{ etiqueta: { es: "RapidFire", en: "RapidFire" }, detalle: { es: "velocidad ×1.5", en: "speed ×1.5" } }, { etiqueta: { es: "FreezingShot", en: "FreezingShot" }, detalle: { es: "congela", en: "freezes" } }, { etiqueta: { es: "Shield", en: "Shield" }, detalle: { es: "escudo", en: "shield" } }, { etiqueta: { es: "GoldGenerator", en: "GoldGenerator" }, detalle: { es: "oro por baja", en: "gold per kill" } }], enlace: { es: "se apilan", en: "they stack" } },
         { nodos: [{ etiqueta: { es: "Torre mejorada", en: "Upgraded tower" }, detalle: { es: "Shield(Freeze(RapidFire(Base)))", en: "Shield(Freeze(RapidFire(Base)))" } }] },
       ],
+    },
+    // Ilustración generada con IA por Diego (hoja «Infografía tecnológica minimalista»), recortada en scripts y llevada al papel.
+    ilustracion: {
+      src: "/projects/ilustraciones/tower-defense.webp",
+      width: 740,
+      height: 330,
+      alt: {
+        es: "Ilustración de una torre en el centro de una cuadrícula, rodeada de anillos de alcance.",
+        en: "Illustration of a tower in the middle of a grid, surrounded by range rings.",
+      },
     },
   },
 ];
@@ -644,6 +713,7 @@ export function getProjects(locale: Locale): Project[] {
   return base.map((project) => ({
     ...project,
     image: project.image && { ...project.image, alt: project.image.alt[locale] },
+    ilustracion: project.ilustracion && { ...project.ilustracion, alt: project.ilustracion.alt[locale] },
     esquema: project.esquema && {
       titulo: project.esquema.titulo[locale],
       etapas: project.esquema.etapas.map((e) => ({
