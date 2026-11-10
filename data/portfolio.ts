@@ -433,6 +433,35 @@ const localized = {
       university: "Universidad Cooperativa de Colombia (UCC)",
       semester: "Quinto semestre",
       tagline: "Del sensor a la interfaz.",
+      pasantia: {
+        rotulo: "Experiencia profesional",
+        cargo: "Pasante de ingeniería",
+        lugar: "Gobernación de Nariño",
+        periodo: "jul 2025 – oct 2026",
+        etapas: [
+          {
+            nombre: "Subsecretaría de Innovación",
+            periodo: "jul 2025 – dic 2025",
+            logros: [
+              "Diseñé en Autodesk Inventor la carcasa del dispositivo NPK, un sensor de nutrientes del suelo, y la llevé a prototipo con impresión 3D.",
+              "Reparé la PCB del NPK, cambié su pantalla OLED y arreglé la conexión del GPS, al que le sumé el registro de fecha.",
+              "Armé en la web de la Subsecretaría la página del NPK con dashboard de datos, ficha técnica, manual, formulario de solicitud y gestión de roles.",
+              "Programé gafas de realidad virtual con aplicaciones educativas y apoyé el stand en la Cumbre CIOS Nariño, La Mejor Taza 2025 y la BioExpo 2025.",
+            ],
+          },
+          {
+            nombre: "Centro de Innovación Social de Nariño (CISNA), Secretaría TIC",
+            periodo: "may 2026 – oct 2026",
+            logros: [
+              "Diseñé e implementé un secador híbrido solar-eléctrico con control automatizado para café pergamino, mi trabajo de grado.",
+              "Ensayo piloto con 2 lotes pareados, 221 horas y cerca de 139.800 lecturas de sensores.",
+              "El café se secó un 12 % más rápido que al aire libre, y el pronóstico del punto de retiro bajó el error mediano de 42,6 h a 7,6 h.",
+              "Trabajo de grado sustentado el 5 de noviembre de 2026 con calificación Meritoria (90/100).",
+            ],
+          },
+        ],
+        tecnologias: ["ESP32", "Autodesk Inventor", "Impresión 3D", "PCB", "Sensores", "Control automático", "Web", "Realidad virtual"],
+      },
       pitch:
         "Estudio Ingeniería Electrónica e Ingeniería de Software, y me interesa justo donde las dos se cruzan: sistemas completos que empiezan en un sensor o un microcontrolador y terminan en una interfaz donde los datos se ven y se controlan.",
       motto:
@@ -466,7 +495,14 @@ const localized = {
         title: "Ingeniería Electrónica",
         place: "Universidad de Nariño",
         detail:
-          "Profundización en Automatización y Control. Electivas en medición de variables ambientales, regulación de energía eléctrica en Colombia y redes y servicios telemáticos.",
+          "Profundización en Automatización y Control. Trabajo de grado por pasantía, un secador de café solar-eléctrico con control automatizado, aprobado como Meritorio (90/100). Ceremonia de grado en diciembre de 2026.",
+      },
+      {
+        period: "2020",
+        title: "Técnico en Producción de Cafés Especiales",
+        place: "SENA, Regional Nariño",
+        detail:
+          "Formación técnica en el proceso del café especial. Cursos cortos del SENA en soporte técnico de equipos de cómputo (2017), postcosecha de frutas y hortalizas (2018) e inglés básico (2022).",
       },
     ],
     languages: [
@@ -498,6 +534,35 @@ const localized = {
       university: "Universidad Cooperativa de Colombia (UCC)",
       semester: "Fifth semester",
       tagline: "From sensor to interface.",
+      pasantia: {
+        rotulo: "Professional experience",
+        cargo: "Engineering intern",
+        lugar: "Government of Nariño",
+        periodo: "Jul 2025 – Oct 2026",
+        etapas: [
+          {
+            nombre: "Innovation Office",
+            periodo: "Jul 2025 – Dec 2025",
+            logros: [
+              "Designed the enclosure of the NPK device, a soil nutrient sensor, in Autodesk Inventor and took it to a 3D printed prototype.",
+              "Repaired the NPK board, replaced its OLED screen and fixed the GPS connection, adding date logging.",
+              "Built the NPK page on the office website with a data dashboard, datasheet, manual, request form and role management.",
+              "Set up virtual reality headsets with educational apps and staffed the stand at Cumbre CIOS Nariño, La Mejor Taza 2025 and BioExpo 2025.",
+            ],
+          },
+          {
+            nombre: "Nariño Social Innovation Center (CISNA), ICT Office",
+            periodo: "May 2026 – Oct 2026",
+            logros: [
+              "Designed and built a hybrid solar-electric dryer with automated control for parchment coffee, my degree project.",
+              "Pilot trial with 2 paired batches, 221 hours and about 139,800 sensor readings.",
+              "Coffee dried 12% faster than in open air, and the harvest point forecast cut the median error from 42.6 h to 7.6 h.",
+              "Degree project defended on 5 November 2026 with a Meritorious grade (90/100).",
+            ],
+          },
+        ],
+        tecnologias: ["ESP32", "Autodesk Inventor", "3D printing", "PCB", "Sensors", "Automatic control", "Web", "Virtual reality"],
+      },
       pitch:
         "I study Electronic Engineering and Software Engineering, and I work right where they meet: complete systems that start at a sensor or a microcontroller and end in an interface where data is seen and controlled.",
       motto:
@@ -531,7 +596,14 @@ const localized = {
         title: "Electronic Engineering",
         place: "Universidad de Nariño",
         detail:
-          "Specialization track in Automation and Control. Electives in environmental variable measurement, electrical energy regulation in Colombia, and networks and telematic services.",
+          "Specialization track in Automation and Control. Degree project through an internship, a solar-electric coffee dryer with automated control, graded Meritorious (90/100). Graduation ceremony in December 2026.",
+      },
+      {
+        period: "2020",
+        title: "Technician in Specialty Coffee Production",
+        place: "SENA, Nariño",
+        detail:
+          "Technical training in the specialty coffee process. Short SENA courses in computer maintenance (2017), fruit and vegetable post-harvest (2018) and basic English (2022).",
       },
     ],
     languages: [
@@ -574,6 +646,7 @@ export function getPortfolio(locale: Locale) {
     projects,
     zones,
     skillGroups: text.skillGroups,
+    pasantia: text.identity.pasantia,
     education: text.education,
     experience: [...projects].sort(byRecency).map((project) => ({
       id: project.id,

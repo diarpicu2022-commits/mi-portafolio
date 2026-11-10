@@ -7,7 +7,7 @@ import { getPortfolio, type Locale } from "@/data/portfolio";
  * Sin rojo: el bloque rojo de la pantalla es del selector o de la portada.
  */
 export function FranjaDual({ locale }: { locale: Locale }) {
-  const { identity, education, t } = getPortfolio(locale);
+  const { education, t } = getPortfolio(locale);
   // Formación en el orden de los datos: la primera es Software (en curso), la segunda Electrónica.
   const software = education.find((e) => /software/i.test(e.title))!;
   const electronica = education.find((e) => !/software/i.test(e.title))!;
@@ -24,7 +24,7 @@ export function FranjaDual({ locale }: { locale: Locale }) {
             </span>
           </p>
         </div>
-        <p className="franja-lema voz-titular">{identity.tagline}</p>
+        <p className="franja-lema voz-titular">{locale === "es" ? "Dos carreras, un solo sistema." : "Two degrees, one system."}</p>
         <div className="franja-software">
           <p className="franja-palabra voz-titular">{t.franja.software}</p>
           <p className="franja-detalle voz-dato text-13">

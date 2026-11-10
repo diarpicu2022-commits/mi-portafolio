@@ -41,7 +41,7 @@
   animation: entraFoto 900ms 400ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .hero2-cinta {
-  position: absolute; left: 2%; top: 20%; z-index: 2;
+  position: absolute; left: 2%; top: 52%; z-index: 2;
   background: #f6f1e4; color: var(--tinta); padding: 8px 16px;
   font-family: var(--font-marcador), cursive; font-size: 18px;
   transform: rotate(-7deg); box-shadow: 2px 3px 0 rgba(18, 18, 17, 0.2);
@@ -156,8 +156,7 @@
 @media (min-width: 1200px) { .skills2 { grid-template-columns: repeat(4, 1fr); } .skills2-grupo:first-child { grid-column: span 2; } }
 
 /* ---------- Aparición al hacer scroll ---------- */
-.revelar-on [data-revelar], .revelar-on .seccion-ed .filete-seccion, .revelar-on .seccion-ed h2 { opacity: 0; transform: translateY(32px); transition: opacity 700ms ease-out, transform 700ms cubic-bezier(0.16, 1, 0.3, 1); }
-.revelar-on .revelado { opacity: 1 !important; transform: none !important; }
+
 
 @keyframes sube { from { opacity: 0; transform: translateY(60%); } to { opacity: 1; transform: none; } }
 @keyframes barre { from { transform: scaleX(0); } to { transform: scaleX(1); } }
@@ -191,7 +190,7 @@
 
 /* Botones en píldora: primario rojo, secundario texto con flecha en círculo, navegación negro. */
 .boton-ed { border: 0 !important; border-radius: 999px; min-height: 48px; padding: 0 24px; gap: 12px; font-weight: 600; transition: transform 200ms ease-out, background-color 200ms ease-out, color 200ms ease-out; }
-.boton-ed:hover { transform: translateY(-2px); }
+@media (hover: hover) and (pointer: fine) { .boton-ed:hover { transform: translateY(-2px); } }
 .boton-ed svg { transition: transform 200ms ease-out; }
 .boton-ed:hover svg { transform: translate(2px, -2px); }
 .boton-ed-primario { background: var(--rojo-texto) !important; color: var(--papel) !important; }
@@ -230,3 +229,67 @@
 /* Formularios: campo relleno con línea suave abajo (el borde de 3:1 lo da el fondo). */
 input, textarea, select { border: 0 !important; border-radius: 12px; background: #fffdf8 !important; box-shadow: inset 0 0 0 1px rgba(18, 18, 17, 0.35); }
 input:focus-visible, textarea:focus-visible { box-shadow: inset 0 0 0 2px var(--tinta); }
+
+/* ================= Versión 4: tipografía de rótulos, movimiento y pasantía ================= */
+/* Rótulos y datos en Archivo en vez de la monoespaciada. */
+.voz-dato, .voz-dato-fuerte { font-family: var(--font-archivo), sans-serif !important; font-variation-settings: "wdth" 100; letter-spacing: 0.02em; }
+.voz-dato { font-weight: 500; }
+.voz-dato-fuerte { font-weight: 700; }
+.filete-seccion { font-weight: 700; letter-spacing: 0.12em; }
+
+/* El número del primer proyecto no se monta sobre el texto de introducción. */
+.collage-lista { padding-top: 112px; }
+
+/* Aparición escalonada: usa translate para no pisar el giro de las cartas ni los hover. */
+.revelar-on [data-revelar]:not(.revelado), .revelar-on .seccion-ed .filete-seccion:not(.revelado), .revelar-on .seccion-ed h2:not(.revelado),
+.revelar-on .cronologia-fila:not(.revelado), .revelar-on .skills2-logo:not(.revelado), .revelar-on .skills2-chip:not(.revelado),
+.revelar-on .perfil-entrada:not(.revelado), .revelar-on .perfil-margen:not(.revelado), .revelar-on .pasantia-logros li:not(.revelado),
+.revelar-on .seccion-ed .reticula > p:not(.revelado), .revelar-on #testimonios li:not(.revelado), .revelar-on #testimonials li:not(.revelado),
+.revelar-on #formacion article:not(.revelado), .revelar-on #education article:not(.revelado) { opacity: 0; translate: 0 36px; }
+[data-revelar], .filete-seccion, .seccion-ed h2, .cronologia-fila, .skills2-logo, .skills2-chip, .perfil-entrada, .perfil-margen, .pasantia-logros li, .seccion-ed .reticula > p, #testimonios li, #testimonials li, #formacion article, #education article {
+  transition: opacity 700ms ease-out, translate 800ms cubic-bezier(0.16, 1, 0.3, 1), transform 200ms ease-out, background-color 200ms;
+}
+.seccion-ed h2 { transition-duration: 700ms, 900ms, 200ms, 200ms; }
+.revelar-on .seccion-ed h2:not(.revelado) { translate: -60px 0; }
+
+/* Movimiento ligado al scroll (Chrome, Edge, Safari reciente). Sin soporte queda estático y legible. */
+@supports (animation-timeline: view()) {
+  .franja-hardware { animation: franjaIzq linear both; animation-timeline: view(); animation-range: entry 0% cover 55%; }
+  .franja-software { animation: franjaDer linear both; animation-timeline: view(); animation-range: entry 10% cover 60%; }
+  .franja-lema { animation: franjaLema linear both; animation-timeline: view(); animation-range: entry 20% cover 55%; }
+  .franja-palabra { animation: franjaDeriva linear both; animation-timeline: view(); animation-range: cover 0% cover 100%; }
+  .collage-num { animation: subeNum linear both; animation-timeline: view(); animation-range: entry 0% exit 100%; }
+  .collage-bloque { animation: derivaBloque linear both; animation-timeline: view(); animation-range: entry 0% exit 100%; }
+  .seccion-ed h2 { animation: titularDeriva linear both; animation-timeline: view(); animation-range: entry 0% exit 100%; }
+}
+@keyframes franjaIzq { from { opacity: 0; transform: translateX(-35%); } to { opacity: 1; transform: none; } }
+@keyframes franjaDer { from { opacity: 0; transform: translateX(35%); } to { opacity: 1; transform: none; } }
+@keyframes franjaLema { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: none; } }
+@keyframes franjaDeriva { from { translate: -2% 0; } to { translate: 2% 0; } }
+@keyframes subeNum { from { translate: 0 60px; } to { translate: 0 -80px; } }
+@keyframes derivaBloque { from { translate: -24px 30px; } to { translate: 24px -30px; } }
+@keyframes titularDeriva { from { transform: translateX(0); } to { transform: translateX(-3%); } }
+
+/* Pasantía destacada. */
+.pasantia { background: var(--tinta); color: var(--papel); border-radius: 28px; padding: 32px 24px; display: flex; flex-direction: column; gap: 16px; position: relative; overflow: hidden; }
+.pasantia::after { content: ""; position: absolute; right: -70px; bottom: -70px; width: 220px; height: 220px; border-radius: 50%; background: var(--rojo); opacity: 0.9; }
+.pasantia > * { position: relative; z-index: 1; }
+.pasantia-cabeza { display: flex; justify-content: space-between; gap: 16px; color: var(--gris-claro); }
+.pasantia-rotulo { color: var(--papel); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; }
+.pasantia-cargo { font-size: clamp(44px, 7vw, 88px); line-height: 0.88; }
+.pasantia-logros { display: grid; gap: 12px; color: #d8d2c6; max-width: 70ch; }
+.pasantia-logros li { padding-left: 22px; position: relative; }
+.pasantia-logros li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 10px; height: 10px; background: var(--rojo-claro); border-radius: 50%; }
+@media (min-width: 900px) { .pasantia { padding: 48px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .franja-hardware, .franja-software, .franja-lema, .franja-palabra, .collage-num, .collage-bloque, .seccion-ed h2 { animation: none !important; }
+  .revelar-on * { translate: none !important; opacity: 1 !important; }
+}
+
+.franja { overflow: clip; }
+
+.pasantia-etapas { display: grid; gap: 28px; }
+.pasantia-etapa { display: flex; flex-direction: column; gap: 10px; border-radius: 20px; background: rgba(241, 236, 226, 0.06); padding: 20px; }
+.pasantia-periodo { color: var(--rojo-claro); font-weight: 700; }
+@media (min-width: 900px) { .pasantia-etapas { grid-template-columns: 1fr 1fr; } }

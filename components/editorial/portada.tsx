@@ -7,6 +7,8 @@ const texto = {
   es: {
     lineas: [["DEL ", "SENSOR"], ["A LA"], ["INTERFAZ", "."]],
     hola: "Hola, soy",
+    intro:
+      "Diseño el circuito, escribo el firmware y le hago la interfaz a quien lo va a usar. Soy técnico del SENA en cafés especiales y mi trabajo de grado, hecho en mi pasantía en la Gobernación de Nariño, fue un secador de café solar-eléctrico que salió Meritorio.",
     cinta: "Electrónica + Software",
     disponible: "Abierto a prácticas y proyectos",
     bajar: "Bajar",
@@ -14,6 +16,8 @@ const texto = {
   en: {
     lineas: [["FROM ", "SENSOR"], ["TO THE"], ["INTERFACE", "."]],
     hola: "Hi, I'm",
+    intro:
+      "I design the circuit, write the firmware and build the interface for whoever will use it. I'm a SENA specialty coffee technician, and my degree project, built during my internship at the Government of Nariño, was a solar-electric coffee dryer graded Meritorious.",
     cinta: "Electronics + Software",
     disponible: "Open to internships and projects",
     bajar: "Scroll",
@@ -67,7 +71,7 @@ export function Portada({ locale, projectsHref = "#proyectos" }: { locale: Local
 
         <div className="hero2-intro">
           <p className="text-17 leading-relaxed">
-            {x.hola} <strong>{nombre} {apellido}</strong>. {identity.pitch}
+            {x.hola} <strong>{nombre} {apellido}</strong>. {x.intro}
           </p>
           <dl className="hero2-cifras">
             <div>
@@ -99,9 +103,6 @@ export function Portada({ locale, projectsHref = "#proyectos" }: { locale: Local
             className="hero2-retrato"
           />
           <span aria-hidden="true" className="hero2-cinta">{x.cinta}</span>
-          <span aria-hidden="true" className="hero2-firma">
-            {nombre} {apellido}
-          </span>
           <span aria-hidden="true" className="hero2-bajar voz-dato">
             {x.bajar}
           </span>

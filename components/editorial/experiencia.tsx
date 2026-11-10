@@ -11,10 +11,37 @@ import { getPortfolio, projectPath, type Locale } from "@/data/portfolio";
  * Con puntero fino la miniatura de la fila señalada se amplía (200 ms, transform). En táctil y teclado todo se ve igual.
  */
 export function Experiencia({ locale }: { locale: Locale }) {
-  const { experience, projects, t } = getPortfolio(locale);
+  const { experience, projects, pasantia, t } = getPortfolio(locale);
   const porId = new Map(projects.map((p) => [p.id, p]));
 
   return (
+    <div className="col-span-full grid grid-cols-subgrid gap-y-e40">
+    <article className="pasantia col-span-full" data-revelar>
+      <div className="pasantia-cabeza">
+        <p className="voz-dato text-13 pasantia-rotulo">{pasantia.rotulo}</p>
+        <p className="voz-dato text-13">{pasantia.periodo}</p>
+      </div>
+      <h3 className="voz-titular pasantia-cargo">{pasantia.cargo}</h3>
+      <p className="text-21 voz-texto-fuerte">{pasantia.lugar}</p>
+      <div className="pasantia-etapas">
+        {pasantia.etapas.map((etapa) => (
+          <section key={etapa.nombre} className="pasantia-etapa">
+            <p className="voz-dato text-13 pasantia-periodo">{etapa.periodo}</p>
+            <h4 className="voz-texto-fuerte text-17">{etapa.nombre}</h4>
+            <ul className="pasantia-logros">
+              {etapa.logros.map((l) => (
+                <li key={l} className="text-15">{l}</li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+      <ul className="collage-tags pasantia-tags voz-dato text-13" aria-label="Herramientas">
+        {pasantia.tecnologias.map((tech) => (
+          <li key={tech}>{tech}</li>
+        ))}
+      </ul>
+    </article>
     <ol className="cronologia col-span-full">
       {experience.map((item) => {
         const p = porId.get(item.id)!;
@@ -58,5 +85,6 @@ export function Experiencia({ locale }: { locale: Locale }) {
         );
       })}
     </ol>
+    </div>
   );
 }
