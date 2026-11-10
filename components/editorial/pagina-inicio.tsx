@@ -1,13 +1,15 @@
 import Image from "next/image";
 
 import { ContactForm } from "@/components/contact-form";
+import { Experiencia } from "@/components/editorial/experiencia";
 import { FranjaDual } from "@/components/editorial/franja-dual";
+import { Habilidades } from "@/components/editorial/habilidades";
 import { FlechaDiagonal } from "@/components/editorial/iconos";
 import { Navegacion } from "@/components/editorial/navegacion";
 import { Portada } from "@/components/editorial/portada";
 import { Seccion } from "@/components/editorial/seccion";
 import { SelectorProyectos } from "@/components/editorial/selector-proyectos";
-import { getPortfolio, projectPath, type Locale } from "@/data/portfolio";
+import { getPortfolio, type Locale } from "@/data/portfolio";
 import { privacyPath } from "@/data/privacidad";
 
 /**
@@ -16,7 +18,7 @@ import { privacyPath } from "@/data/privacidad";
  */
 export function PaginaInicio({ locale }: { locale: Locale }) {
   const p = getPortfolio(locale);
-  const { identity, projects, experience, education, languages, principles, skillGroups, testimonials, anchors, t } = p;
+  const { identity, projects, education, languages, principles, testimonials, anchors, t } = p;
   const s = t.sections;
   const [principal, ...resto] = principles;
 
@@ -33,7 +35,18 @@ export function PaginaInicio({ locale }: { locale: Locale }) {
         {/* Perfil: una entrada grande, la cita del lema al margen y los principios como índice editorial. */}
         <Seccion id={anchors.about} rotulo={`${identity.semester} · ${identity.university}`} titulo={s.aboutTitle}>
           <p className="perfil-entrada voz-texto-fuerte col-span-full lg:col-span-8">{identity.pitch}</p>
-          <blockquote className="perfil-lema col-span-full text-17 lg:col-span-4 lg:col-start-9">{identity.motto}</blockquote>
+          <div className="perfil-margen col-span-full lg:col-span-4 lg:col-start-9">
+            <blockquote className="perfil-lema text-17">{identity.motto}</blockquote>
+            <p className="perfil-contacto">
+              <a className="nav-ed-enlace -ml-e8 text-15 underline underline-offset-4" href={`mailto:${identity.email}`}>
+                {identity.email}
+              </a>
+              <a className="nav-ed-enlace gap-e4 text-15" href={p.cvPath} download>
+                {t.hero.downloadCv}
+                <FlechaDiagonal tamano={16} />
+              </a>
+            </p>
+          </div>
           <div className="col-span-full flex flex-col gap-e24 pt-e40">
             <h3 className="voz-dato-fuerte text-13">{s.principlesTitle}</h3>
             <p className="perfil-principal voz-titular">{principal.title}</p>
@@ -57,43 +70,14 @@ export function PaginaInicio({ locale }: { locale: Locale }) {
         {/* Cuarto punto de entrada (8.6): el único corte diagonal del sitio. */}
         <FranjaDual locale={locale} />
 
-        {/* Habilidades: hoja de especificaciones en voz dato. */}
+        {/* Habilidades: cifra real de proyectos por grupo y cada tecnología enlazada a sus proyectos (enmienda 12). */}
         <Seccion id={anchors.skills} rotulo={identity.role} titulo={s.skillsTitle}>
-          <table className="especificaciones voz-dato col-span-full lg:col-span-10">
-            <tbody>
-              {skillGroups.map((grupo) => (
-                <tr key={grupo.title}>
-                  <th scope="row" className="voz-dato-fuerte text-13">
-                    {grupo.title}
-                  </th>
-                  <td className="text-15">{grupo.items.join(" / ")}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Habilidades locale={locale} />
         </Seccion>
 
-        {/* Experiencia: tabla cronológica, periodo en mono a la izquierda. */}
+        {/* Experiencia: miniatura o esquema, periodo, cargo, logro y caso (enmienda 12). */}
         <Seccion id={anchors.experience} rotulo={s.experienceIntro} titulo={s.experienceTitle}>
-          <ol className="cronologia col-span-full">
-            {experience.map((item) => (
-              <li key={item.id} className="cronologia-fila">
-                <p className="cronologia-periodo voz-dato text-13">{item.period}</p>
-                <div className="cronologia-cargo">
-                  {/* El resumen ya está en el selector: aquí la fila queda en una línea de lectura. */}
-                  <h3 className="voz-texto-fuerte text-17">{item.position}</h3>
-                </div>
-                <a
-                  className="cronologia-caso nav-ed-enlace gap-e4 text-15"
-                  href={projectPath(locale, item.id)}
-                  aria-label={`${t.card.caseStudy}: ${item.project}`}
-                >
-                  {item.project}
-                  <FlechaDiagonal tamano={16} />
-                </a>
-              </li>
-            ))}
-          </ol>
+          <Experiencia locale={locale} />
         </Seccion>
 
         {/* Formación: dos entradas grandes lado a lado, idiomas al pie. */}

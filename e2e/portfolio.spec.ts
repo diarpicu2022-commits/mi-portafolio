@@ -243,3 +243,16 @@ test("privacy page is linked from the footer and deletes the map progress", asyn
   await expect(page).toHaveURL(/\/en\/privacy$/);
   await expect(page.getByRole("heading", { level: 1, name: "Privacy policy" })).toBeVisible();
 });
+
+test("a technology links to the project that uses it, and experience shows each project's image or diagram", async ({ page }) => {
+  await page.goto("/");
+  const habilidades = page.getByRole("region", { name: "Habilidades y stack técnico" });
+  await habilidades.getByRole("link", { name: "NestJS: HidroMon" }).click();
+  await expect(page).toHaveURL(/#proyecto-hidromon$/);
+  await expect(page.getByRole("tab", { name: /HidroMon/ })).toHaveAttribute("aria-selected", "true");
+  const filas = page.getByRole("region", { name: "Experiencia" }).locator(".cronologia-fila");
+  await expect(filas).toHaveCount(11);
+  for (const fila of await filas.all()) {
+    await expect(fila.locator(".cronologia-miniatura img, .cronologia-miniatura .esquema-mini")).toHaveCount(1);
+  }
+});

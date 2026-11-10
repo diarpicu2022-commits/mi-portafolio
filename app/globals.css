@@ -677,8 +677,18 @@
   /* Archivo 600 promedia 0.5 em por carácter: 29 em son unos 58 caracteres. */
   max-width: 29em;
 }
-.perfil-lema {
+.perfil-margen {
   align-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-16);
+}
+.perfil-contacto {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--e-24);
+}
+.perfil-lema {
   max-width: 26em;
   border-top: var(--filete) solid var(--tinta);
   padding-top: var(--e-16);
@@ -738,29 +748,68 @@
   margin-top: var(--e-12);
 }
 
-/* Habilidades: hoja de especificaciones. */
-.especificaciones {
+/* Habilidades (enmienda 12): cifra real por grupo y tecnologías enlazadas a sus proyectos. */
+.habilidades {
+  display: grid;
+  gap: var(--e-40) var(--e-24);
+}
+@media (min-width: 768px) {
+  .habilidades {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .habilidades {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  /* El grupo con más proyectos abre a doble ancho: la prueba más fuerte entra primero. */
+  .habilidad:first-child {
+    grid-column: span 2;
+  }
+}
+.habilidad {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-4);
   border-top: var(--filete) solid var(--tinta);
-  border-collapse: collapse;
+  padding-top: var(--e-16);
 }
-.especificaciones th {
-  text-align: left;
-  vertical-align: baseline;
-  padding: var(--e-16) var(--e-24) var(--e-16) 0;
-  white-space: nowrap;
+.habilidad-cifra {
+  font-size: clamp(var(--titular-min), 9vw, 104px);
 }
-.especificaciones td {
-  padding-block: var(--e-16);
+.habilidad:first-child .habilidad-cifra {
+  font-size: clamp(var(--titular-min), 14vw, 168px);
 }
-@media (max-width: 767px) {
-  .especificaciones th,
-  .especificaciones td {
-    display: block;
-    padding: 0;
-  }
-  .especificaciones th {
-    padding-top: var(--e-16);
-  }
+.habilidad-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--e-16);
+  padding-top: var(--e-12);
+}
+.habilidad-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-4);
+}
+.habilidad-sin-prueba {
+  color: var(--gris);
+  min-height: 44px;
+}
+.habilidad-enlaces {
+  display: inline-flex;
+}
+.habilidad-enlace {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  text-decoration: underline;
+  text-underline-offset: var(--e-4);
+}
+.habilidad-enlace:hover {
+  background: var(--tinta);
+  color: var(--papel);
 }
 
 /* Experiencia: tabla cronológica. */
@@ -778,14 +827,39 @@
   row-gap: var(--e-4);
   align-items: baseline;
 }
+.cronologia-miniatura,
 .cronologia-periodo,
 .cronologia-cargo,
 .cronologia-caso {
   grid-column: 1 / -1;
 }
+.cronologia-miniatura {
+  width: 160px;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: var(--filete) solid var(--tinta);
+  background: var(--papel);
+  align-self: start;
+}
+.cronologia-miniatura img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+.cronologia-miniatura .esquema-mini {
+  border: 0;
+  height: 100%;
+  justify-content: space-between;
+}
 @media (min-width: 768px) {
-  .cronologia-periodo {
+  .cronologia-miniatura {
     grid-column: 1 / 3;
+    grid-row: span 2;
+    width: 100%;
+  }
+  .cronologia-periodo {
+    grid-column: 3 / 7;
   }
   .cronologia-cargo {
     grid-column: 3 / 7;
@@ -793,17 +867,33 @@
   .cronologia-caso {
     grid-column: 7 / -1;
     justify-self: end;
+    grid-row: 1;
   }
 }
 @media (min-width: 1024px) {
+  .cronologia-miniatura {
+    grid-column: 1 / 3;
+  }
   .cronologia-periodo {
-    grid-column: 1 / 4;
+    grid-column: 3 / 5;
+    grid-row: 1;
   }
   .cronologia-cargo {
-    grid-column: 4 / 10;
+    grid-column: 5 / 11;
+    grid-row: 1;
   }
   .cronologia-caso {
-    grid-column: 10 / -1;
+    grid-column: 11 / -1;
+  }
+}
+/* Con puntero fino la miniatura de la fila señalada se amplía. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .cronologia-miniatura > * {
+    transition: transform var(--dur-selector) var(--curva-salida);
+    transform-origin: top left;
+  }
+  .cronologia-fila:hover .cronologia-miniatura > * {
+    transform: scale(1.06);
   }
 }
 
