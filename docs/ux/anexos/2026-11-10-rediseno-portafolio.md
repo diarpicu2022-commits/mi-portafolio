@@ -495,3 +495,62 @@ Diego autorizó usar capturas de sus carpetas de proyectos. Se buscaron en `Proy
 - Se descartaron también la hoja de calificaciones impresa de NotaScan y la pantalla de equipo de SISCAN, que no aporta frente al inicio.
 - AgroPulse, CampusWatch, HidroMon, Harmonia, Proxy IA, EcoVolt, SETPasto+ y Tower Defense no tienen capturas en esas carpetas. `App Smartwacht` solo guarda un zip del sistema de diseño. Esos ocho proyectos van con la placa tipográfica de 8.9.
 
+### 14.2 Selector
+
+Qué se hizo.
+
+- Pestañas verticales dentro de la sección de proyectos, sobre negro. Lista numerada a la izquierda, captura sobre el bloque rojo al centro y ficha a la derecha.
+- La pestaña elegida se invierte a papel y cruza el canal hacia el escenario, como el cursor de una pantalla de selección.
+- La ficha va en voz dato con número, nombre, resumen, cargo, periodo, estado, tecnologías, caso de estudio, repositorios y demo. Ningún proyecto tiene demo, así que los once dicen «Sin demo pública».
+- Sin captura, el bloque lleva el nombre en titular condensado color papel (8.9).
+- En celular la lista es una tira de números con `scroll-snap`. La captura va debajo y la ficha después. En tablet la lista sigue vertical y la ficha baja debajo del escenario.
+- Teclado. Flechas arriba y abajo (también izquierda y derecha), Inicio y Fin. El foco se mueve con la selección y solo la pestaña elegida entra en el orden de Tab.
+- El proyecto elegido se escribe en la dirección (`#proyecto-ecos`, `#project-ecos` en inglés) y un enlace con ese fragmento lo abre.
+- Los once paneles comparten la misma celda y solo el elegido es visible. Por eso el alto no cambia al elegir.
+- Las capturas se cargan cuando se elige su proyecto. Sin JavaScript una hoja dentro de `<noscript>` muestra los once proyectos seguidos, sin bloques rojos.
+
+Medidas antes de componer (3.3). El nombre más largo es «CampusWatch / Agenda». La lista de tecnologías más larga es la de AgroPulse, con 9 elementos. El cargo más largo tiene 53 caracteres. Con 15 px el nombre más largo cabe en una línea en la lista de 206 px a 1024 y de 243 px a 768. En la ficha de 206 px a 1024 el cargo y las tecnologías ocupan varias líneas. Eso alarga la sección a 1156 px en ese ancho, pero no desborda.
+
+| Ancho | Alto de la sección con los 11 | Escenario | Ficha | Placa |
+|---|---|---|---|---|
+| 390 | 1242 px, igual con los 11 | 350 × 263 | 350 de ancho | 42 px |
+| 768 | 1385 px, igual con los 11 | 421 × 484 | 421 de ancho | 50.5 px |
+| 1024 | 1156 px, igual con los 11 | 436 × 484 | 206 de ancho | 52.3 px |
+| 1440 | 937 px, igual con los 11 | 644 × 484 | 310 de ancho | 77.3 px |
+
+Resolución efectiva. Ninguna captura se amplía. A 1440 Ecos se pinta a 600 × 338 desde un archivo de 640 px, NotaScan a 600 × 375 desde 640 px y SISCAN a 200 × 444 desde 640 px.
+
+Carga inicial. Solo baja el retrato de la portada (31 KB). El primer proyecto no tiene captura y las demás bajan al elegirlas.
+
+Contraste sobre el render, igual en los cuatro anchos.
+
+| Texto | Medido |
+|---|---|
+| Pestaña elegida, negro sobre papel | 16.52 |
+| Pestaña sin elegir, gris claro sobre negro | 7.29 |
+| Número, nombre y valores de la ficha | 16.52 |
+| Resumen, rótulos de dato y «Sin demo pública» | 7.29 |
+| Botón del caso | 16.52 a 16.62 |
+| Placa, papel sobre rojo, de 42 a 77 px | 4.13 |
+
+Interacción medida a 1440.
+
+- El Tab llega a la lista después de los botones de la portada. Las flechas, Inicio y Fin cambian la selección y mueven el foco. El contorno es de 2 px.
+- Cambio por teclado sin animación. Cambio con clic con `selector-entra` de 200 ms y `ease-out`.
+- Con movimiento reducido el clic no anima.
+- Sin JavaScript se ven los 11 paneles con 11 enlaces a caso, 15 a repositorios y las 3 capturas. La lista y los bloques rojos se ocultan.
+- Sin scroll horizontal en los cuatro anchos. Pestañas de 44 px como mínimo. Consola limpia.
+- En la página completa sigue habiendo como máximo un bloque rojo visible por pantalla, sin tramos vacíos de más de 380 px y con márgenes de 20, 40 y 64 px.
+
+Pruebas. `npm run lint` sin errores. `npm test` 35 de 35. `npm run e2e` 28 de 28, con tres nuevas del selector (teclado y alto, enlace directo con estados sin captura y sin demo, y sin JavaScript). `npm run build` correcto.
+
+Capturas en `docs/pantallazos/rediseno/`. Son `Selector 390 primero sin captura ni demo.png`, `Selector 390 con captura.png` y las mismas para 768, 1024 y 1440, más `Selector 1440 sin JavaScript.png` y `Selector comparativa.png`.
+
+### 14.3 Crítica y puntos donde el contrato no alcanza
+
+1. Al lado de la pantalla de selección de la referencia y de Tetsuo el selector se lee como pantalla de selección y no como tabla. Es más sobrio que la referencia, que tiene barras, retratos y diagonales que aquí no entran.
+2. El número del elegido no puede pasar de 28 px. La escala de texto es fija y la enmienda 5 deja el titular con cifras solo en la portada. Un número gigante como en las referencias de juego exigiría otra enmienda.
+3. Ocho de once proyectos no tienen captura. El selector se apoya mucho en la placa roja. Cuando lleguen capturas de esos repositorios se agregan en `data/projects.ts`.
+4. A 1024 px la ficha mide 206 px de ancho y la sección crece a 1156 px. Una ficha más ancha quitaría columnas al escenario.
+5. Las capturas ya no se cargan de golpe, pero sin JavaScript sí bajan las tres al llegar a la sección.
+

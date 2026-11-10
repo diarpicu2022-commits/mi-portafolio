@@ -35,6 +35,19 @@ describe("PortfolioPage (es)", () => {
     expect(boton).toHaveFocus();
   });
 
+  it("selects projects as tabs and says when there is no public demo", async () => {
+    const user = userEvent.setup();
+    render(<PortfolioPage locale="es" />);
+    const tabs = screen.getAllByRole("tab");
+    expect(tabs).toHaveLength(getPortfolio("es").projects.length);
+    expect(tabs[0]).toHaveAttribute("aria-selected", "true");
+    tabs[0].focus();
+    await user.keyboard("{ArrowDown}");
+    expect(tabs[1]).toHaveAttribute("aria-selected", "true");
+    expect(tabs[1]).toHaveFocus();
+    expect(screen.getAllByText("Sin demo pública")).toHaveLength(getPortfolio("es").projects.filter((p) => !p.demo).length);
+  });
+
   it("moves the 2D map to /quest and says the site uses no cookies", () => {
     render(<PortfolioPage locale="es" />);
     expect(screen.queryByRole("application")).toBeNull();

@@ -3,8 +3,8 @@ import { FlechaDiagonal } from "@/components/editorial/iconos";
 import { Navegacion } from "@/components/editorial/navegacion";
 import { Portada } from "@/components/editorial/portada";
 import { Seccion } from "@/components/editorial/seccion";
-import { projectNumber } from "@/components/portfolio-blocks";
-import { getPortfolio, projectPath, type Locale } from "@/data/portfolio";
+import { SelectorProyectos } from "@/components/editorial/selector-proyectos";
+import { getPortfolio, type Locale } from "@/data/portfolio";
 
 /**
  * Página de inicio del rediseño (paso 3, esqueleto). Orden de 8.7.
@@ -46,54 +46,7 @@ export function PaginaInicio({ locale }: { locale: Locale }) {
 
         <Seccion id={anchors.projects} rotulo={`${projects.length} ${t.portada.projects}`} titulo={s.projectsTitle} oscura>
           <p className="medida col-span-full text-17 text-gris-claro">{s.projectsIntro}</p>
-          <ol className="col-span-full flex flex-col gap-e40">
-            {projects.map((project, index) => (
-              <li key={project.id} className="grid grid-cols-subgrid gap-y-e12" style={{ gridColumn: "1 / -1" }}>
-                <span aria-hidden="true" className="voz-dato-fuerte col-span-1 text-21">
-                  {projectNumber(index)}
-                </span>
-                <div className="col-span-3 md:col-span-4 lg:col-span-6">
-                  <h3 className="voz-texto-fuerte text-21">{project.name}</h3>
-                  <p className="medida text-15 text-gris-claro">{project.summary}</p>
-                  <p className="voz-dato pt-e8 text-13 text-gris-claro">
-                    {t.card.status[project.status]} · {project.technologies.slice(0, 4).join(", ")}
-                  </p>
-                </div>
-                <ul className="col-span-full flex flex-wrap content-start gap-x-e16 md:col-start-2 md:col-span-7 lg:col-start-8 lg:col-span-5">
-                  <li>
-                    <a className="nav-ed-enlace -ml-e8 text-15 underline underline-offset-4" href={projectPath(locale, project.id)}
-                      aria-label={`${t.card.caseStudy}: ${project.name}`}
-                    >
-                      {t.card.caseStudy}
-                    </a>
-                  </li>
-                  {project.links.map((link) => (
-                    <li key={link.url}>
-                      <a
-                        className="nav-ed-enlace gap-e4 text-15"
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {link.label}
-                        <span className="sr-only"> · {project.name} (GitHub)</span>
-                        <FlechaDiagonal tamano={16} />
-                      </a>
-                    </li>
-                  ))}
-                  {project.demo && (
-                    <li>
-                      <a className="nav-ed-enlace gap-e4 text-15" href={project.demo} target="_blank" rel="noopener noreferrer">
-                        {t.card.demo}
-                        <span className="sr-only"> · {project.name}</span>
-                        <FlechaDiagonal tamano={16} />
-                      </a>
-                    </li>
-                  )}
-                </ul>
-              </li>
-            ))}
-          </ol>
+          <SelectorProyectos locale={locale} />
         </Seccion>
 
         <Seccion id={anchors.skills} rotulo={identity.role} titulo={s.skillsTitle}>

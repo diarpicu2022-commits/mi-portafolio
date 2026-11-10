@@ -449,6 +449,202 @@
   font-size: var(--t-17);
 }
 
+/* Selector de proyectos (paso 4). Sobre negro, dentro de la sección de proyectos. */
+.selector {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: var(--e-24);
+  /* Alto del escenario: once pestañas de 44 px, la lista y el escenario miden lo mismo. */
+  --escenario-alto: calc(11 * 44px);
+}
+.selector-lista {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: var(--e-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  /* Deja ver el foco de la primera y la última pestaña. */
+  padding: var(--e-4);
+  margin: calc(-1 * var(--e-4));
+}
+.selector-pestana {
+  /* Contiene al nombre oculto de celular: si no, se sale de la tira y crea scroll horizontal. */
+  position: relative;
+  flex: none;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  gap: var(--e-12);
+  min-width: 44px;
+  min-height: 44px;
+  padding-inline: var(--e-12);
+  color: var(--gris-claro);
+  text-align: left;
+  border: var(--filete) solid transparent;
+}
+.selector-pestana:hover {
+  color: var(--papel);
+}
+.selector-pestana[aria-selected="true"] {
+  background: var(--papel);
+  color: var(--negro);
+}
+.selector-pestana-numero {
+  font-size: var(--t-15);
+}
+.selector-pestana-nombre {
+  /* En celular solo se ve el número; el nombre queda para lectores de pantalla. */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.selector-paneles {
+  grid-column: 1 / -1;
+  display: grid;
+}
+.selector-panel {
+  grid-row: 1;
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-24);
+}
+.selector-panel:not([data-activo]) {
+  visibility: hidden;
+}
+.selector-escenario {
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 4 / 3;
+}
+.selector-bloque {
+  position: absolute;
+  inset: var(--e-24) 0 0 var(--e-24);
+  background: var(--rojo);
+}
+.selector-captura {
+  position: absolute;
+  inset: 0 var(--e-24) var(--e-24) 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.selector-captura img {
+  /* Nunca más grande que el archivo: ancho y alto automáticos con tope en el hueco. */
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+.selector-placa {
+  position: absolute;
+  inset: var(--e-24) 0 0 var(--e-24);
+  display: flex;
+  align-items: flex-end;
+  padding: var(--e-24);
+  color: var(--papel);
+  /* Placa sin captura (8.9). Papel sobre rojo 4.13, solo en titular de 40 px o más. */
+  font-size: clamp(var(--titular-min), 12cqi, 104px);
+  overflow-wrap: anywhere;
+}
+.selector-ficha {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-16);
+}
+.selector-nombre {
+  font-size: var(--titular-min);
+}
+.selector-datos {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--e-8) var(--e-16);
+}
+.selector-datos dt {
+  color: var(--gris-claro);
+}
+
+@media (min-width: 768px) {
+  .selector {
+    row-gap: 0;
+  }
+  .selector-lista {
+    grid-column: 1 / 4;
+    flex-direction: column;
+    gap: 0;
+    overflow: visible;
+    align-self: start;
+  }
+  .selector-pestana {
+    width: 100%;
+  }
+  /* La pestaña elegida cruza el canal y toca el escenario: une la lista con el proyecto. */
+  .selector-pestana[aria-selected="true"] {
+    width: calc(100% + var(--ret-canal));
+  }
+  .selector-pestana-nombre {
+    position: static;
+    width: auto;
+    height: auto;
+    clip-path: none;
+    white-space: normal;
+    font-size: var(--t-15);
+  }
+  .selector-paneles {
+    grid-column: 4 / -1;
+  }
+  .selector-escenario {
+    aspect-ratio: auto;
+    height: var(--escenario-alto);
+  }
+}
+
+@media (min-width: 1024px) {
+  .selector-paneles {
+    grid-template-columns: subgrid;
+  }
+  .selector-panel {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-items: start;
+  }
+  .selector-escenario {
+    grid-column: 1 / 7;
+  }
+  .selector-ficha {
+    grid-column: 7 / -1;
+  }
+  .selector-bloque,
+  .selector-placa {
+    inset: var(--e-40) 0 0 var(--e-40);
+  }
+  .selector-captura {
+    inset: 0 var(--e-40) var(--e-40) 0;
+  }
+}
+
+/* Cambio de proyecto con puntero: 200 ms ease-out. Con teclado o con movimiento reducido, sin animación (8.8). */
+@media (prefers-reduced-motion: no-preference) {
+  .selector-panel[data-animar] .selector-anima {
+    animation: selector-entra var(--dur-selector) var(--curva-salida);
+  }
+}
+@keyframes selector-entra {
+  from {
+    opacity: 0;
+    transform: translateY(var(--e-8));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Entrada una sola vez (8.8). Solo transform y opacity, en CSS: se ve aunque no corra JavaScript. */
 @media (prefers-reduced-motion: no-preference) {
   .portada-linea {

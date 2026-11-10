@@ -145,3 +145,48 @@ test("the 2D map loads at /quest and links back to the portfolio", async ({ page
   await expect(page.getByRole("application")).toBeVisible();
   expect(errores).toEqual([]);
 });
+
+test("project selector works with the keyboard and keeps the section height", async ({ page }) => {
+  await page.goto("/");
+  const lista = page.getByRole("tablist", { name: "Elige un proyecto" });
+  const primera = lista.getByRole("tab").first();
+  await primera.focus();
+  const alto = await page.locator("#proyectos").evaluate((el) => el.getBoundingClientRect().height);
+  await page.keyboard.press("ArrowDown");
+  await expect(lista.getByRole("tab", { name: /SISCAN/ })).toBeFocused();
+  await expect(lista.getByRole("tab", { name: /SISCAN/ })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("tabpanel", { name: /SISCAN/ })).toBeVisible();
+  await page.keyboard.press("End");
+  await expect(lista.getByRole("tab", { name: /Tower Defense/ })).toHaveAttribute("aria-selected", "true");
+  await page.keyboard.press("Home");
+  await expect(primera).toHaveAttribute("aria-selected", "true");
+  // Cambio por teclado: sin animación (8.8).
+  const anim = await page.locator(".selector-panel[data-activo] .selector-anima").evaluate((el) => getComputedStyle(el).animationName);
+  expect(anim).toBe("none");
+  expect(await page.locator("#proyectos").evaluate((el) => el.getBoundingClientRect().height)).toBe(alto);
+  await expect(page).toHaveURL(/#proyecto-agropulse$/);
+});
+
+test("a direct link selects the project; missing capture and demo have their states", async ({ page }) => {
+  await page.goto("/#proyecto-ecos");
+  await expect(page.getByRole("tab", { name: /Ecos de la Tierra/ })).toHaveAttribute("aria-selected", "true");
+  const ecos = page.getByRole("tabpanel", { name: /Ecos de la Tierra/ });
+  await expect(ecos.getByRole("img", { name: /Combate de Ecos de la Tierra/ })).toBeVisible();
+  await expect(ecos.getByText("Sin demo pública")).toBeVisible();
+  await page.getByRole("tab", { name: /AgroPulse/ }).click();
+  const agro = page.getByRole("tabpanel", { name: /AgroPulse/ });
+  await expect(agro.locator(".selector-placa")).toHaveText("AgroPulse");
+  await expect(agro.getByRole("img")).toHaveCount(0);
+  await expect(agro.getByRole("link", { name: "Ver caso de estudio: AgroPulse" })).toHaveAttribute("href", "/proyectos/agropulse");
+});
+
+test("without JavaScript the eleven projects are listed with their links", async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto("/");
+  await expect(page.locator(".selector-lista")).toBeHidden();
+  await expect(page.locator(".selector-panel")).toHaveCount(11);
+  for (const panel of await page.locator(".selector-panel").all()) await expect(panel).toBeVisible();
+  await expect(page.locator('.selector a[href^="/proyectos/"]')).toHaveCount(11);
+  await context.close();
+});
