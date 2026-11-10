@@ -325,3 +325,76 @@ Coinciden con la tabla 8.2. El rojo sobre papel solo vale para texto de 24 px o 
 - Recorrido por teclado completo y reduced motion de la portada, que aún no existe.
 - La comparativa contra referentes se hace en el paso de portada, porque esta hoja no es una pieza de marca.
 
+## 12. Verificación del paso 2
+
+Paso 2, portada. 10 de noviembre de 2026. Vista previa en `/sistema/portada` y `/en/sistema/portada`, las dos con `noindex, nofollow`. La página de inicio no cambia.
+
+### Qué se hizo
+
+- Componente `components/editorial/portada.tsx` y retrato en `components/editorial/retrato-portada.tsx`.
+- Textos nuevos en `data/portfolio.ts`, dentro de `ui.portada`, en español e inglés. El rótulo es `identity.role`, la frase es `identity.tagline` y el nombre sale de `NAME`.
+- La cifra se cuenta. Proyectos es la longitud del arreglo de proyectos (11). Ingenierías son las entradas de formación cuyo título dice ingeniería (2, Software en curso y Electrónica 2021 a 2025).
+- Las tres enmiendas de 8.11 quedan en los tokens. El titular toma el menor entre el tamaño por ancho y el tamaño por alto. `--e-20` entra en la escala y solo lo usa el margen de celular. La compensación de −0.04 em vive solo en `.titular-portada`.
+- Capas. Bloque rojo al fondo, nombre encima, retrato delante. El bloque va a sangre por la derecha.
+- El retrato se pinta con `next/image` y `priority`, a 560 px de alto como máximo.
+
+### Medidas por tamaño
+
+| Pantalla | font-size | Franja, borde inferior | Bajo el pliegue | Retrato en pantalla | Archivo servido |
+|---|---|---|---|---|---|
+| 390 × 844 | 150.2 px | 844 px | 0 px | 141 × 291 | 256 px de ancho |
+| 768 × 1024 | 295.2 px | 1024 px | 0 px | 200 × 412 | 256 px de ancho |
+| 1024 × 768 | 219.9 px | 768 px | 0 px | 260 × 536 | 384 px de ancho |
+| 1440 × 900 | 324.0 px | 900 px | 0 px | 272 × 560 | 384 px de ancho |
+
+En los cuatro tamaños la franja con la frase, la cifra y los dos botones queda dentro del primer pantallazo. El retrato nunca pasa de 560 px de alto y siempre se pinta más pequeño que el archivo servido, con DPR 1. No hay desplazamiento horizontal.
+
+### Letras que tapa el retrato
+
+Porcentaje de la caja de cada letra cubierto por píxeles opacos del retrato.
+
+| Pantalla | Letras tapadas |
+|---|---|
+| 390 × 844 | T de PINTA 35 %, A 1 % |
+| 768 × 1024 | T de PINTA 21 %, A 12 % |
+| 1024 × 768 | O de DIEGO 11 % |
+| 1440 × 900 | O de DIEGO 30 %, A de PINTA 28 % |
+
+Ninguna letra queda tapada más de un tercio. En la primera versión el retrato tapaba el 72 % de la O a 1024 px. Entre 1024 y 1279 px el retrato se movió una columna a la derecha.
+
+### Contraste sobre el render
+
+| Texto | Medido |
+|---|---|
+| Rótulo, gris sobre papel | 6.28 |
+| Frase, tinta sobre papel | 15.92 |
+| Cifra, tinta sobre papel | 15.92 |
+| Botón primario, papel sobre tinta | 15.92 |
+| Botón secundario, tinta sobre papel | 16.04 |
+| Nombre sobre el bloque rojo | 3.88 |
+
+Ningún texto cae sobre el retrato. En celular y tablet ninguna letra cae sobre el rojo.
+
+### Resto de comprobaciones
+
+- Consola limpia en los cuatro tamaños y en inglés.
+- Teclado. El primer Tab lleva a «Ver proyectos» y el segundo a «Descargar CV». Contorno de 2 px en tinta y 44 px de alto.
+- Movimiento reducido. Sin animación y todo con opacidad 1 desde el primer fotograma.
+- Entrada normal. Las líneas suben 24 px en 700 ms con `cubic-bezier(0.16, 1, 0.3, 1)`. Bloque y retrato empiezan a los 350 ms.
+- Sin JavaScript se ve todo y la foto carga.
+- Sin imagen, con la foto bloqueada. El retrato se oculta, el bloque rojo queda solo y el nombre se lee.
+- El `h1` lee «Diego Armando Pinta Cuasquen» y las dos líneas visibles van ocultas a lectores de pantalla.
+- `npm run lint` sin errores. `npm test` 31 de 31. `npm run e2e` 16 de 16. `npm run build` correcto.
+
+### Crítica contra las referencias
+
+La comparativa está en `docs/pantallazos/rediseno/Portada comparativa.png`, con la portada a 1440 al lado de Abdullah Tariq y Axel Morgan. La escala del nombre y el bloque aguantan la comparación. La diferencia grande es la cara. En las referencias el retrato es un plano de busto y la cara mide más de 200 px. Aquí la foto es de cuerpo entero y con el tope de 560 px la cara mide unos 100 px. Recortar a busto exigiría ampliar la foto por encima de su resolución, y eso el anexo lo prohíbe. La salida es conseguir el original con más resolución. También se nota la falta de navegación, que llega en el paso 3.
+
+### Fallos y puntos donde el contrato no alcanza
+
+1. El par tinta sobre rojo no está en la tabla 8.2. Medido da 3.88. Pasa AA para texto grande (3:1) pero no AAA. Afecta solo a la parte del nombre que cae sobre el bloque en escritorio.
+2. El retardo de 350 ms de bloque y retrato no está en 8.8, que solo dice «después». Se tomó la mitad de la entrada.
+3. El contrato pide el ancla `#proyectos` y la navegación actual usa `#projects`. El paso 3 tiene que unificarlas.
+4. La cifra no puede pasar de 28 px porque el titular condensado tiene un solo trabajo, nombrar. Como punto de entrada queda más débil que en las referencias.
+5. La parte derecha del bloque rojo queda vacía en escritorio. Es un campo de color a propósito. Si se quiere más parecido a Axel Morgan, el bloque podría terminar en la columna 10 y perder la sangría.
+

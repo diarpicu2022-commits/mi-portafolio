@@ -136,6 +136,12 @@ const ui = {
       explore: "Explorar",
       downloadCv: "Descargar CV",
     },
+    portada: {
+      viewProjects: "Ver proyectos",
+      projects: "proyectos",
+      degrees: "ingenierías",
+      portrait: "Retrato de Diego Armando Pinta Cuasquen",
+    },
     world: {
       title: "Explora el mapa",
       intro:
@@ -233,6 +239,12 @@ const ui = {
       pressStart: "Press Start",
       explore: "Explore",
       downloadCv: "Download CV",
+    },
+    portada: {
+      viewProjects: "View projects",
+      projects: "projects",
+      degrees: "engineering degrees",
+      portrait: "Portrait of Diego Armando Pinta Cuasquen",
     },
     world: {
       title: "Explore the map",

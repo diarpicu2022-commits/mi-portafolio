@@ -53,6 +53,8 @@
   --e-8: 8px;
   --e-12: 12px;
   --e-16: 16px;
+  /* Enmienda 8.11.2. Único uso, el margen lateral en celular. */
+  --e-20: 20px;
   --e-24: 24px;
   --e-40: 40px;
   --e-64: 64px;
@@ -61,8 +63,7 @@
 
   /* 8.4 Retícula. Celular por defecto, se redefine por punto de quiebre */
   --ret-columnas: 4;
-  /* 20 px lo fija 8.4 como margen de celular aunque no está en la escala de espacio. Ver anexo 11. */
-  --ret-margen: 20px;
+  --ret-margen: var(--e-20);
   --ret-canal: var(--e-16);
   --ret-max: 1440px;
 
@@ -170,21 +171,192 @@
   max-width: 62ch;
 }
 
-/* Titular de portada. DIEGO ocupa 7 de 12 columnas en escritorio, el ancho completo en tablet y celular.
-   El contenedor de la portada lleva .portada-medida (container-type) y el cálculo usa 100cqi. */
+/* Titular de portada (8.3 y enmiendas 8.11).
+   Por ancho, DIEGO ocupa 7 de 12 columnas en escritorio y el ancho completo en tablet y celular.
+   Por alto, nunca saca del primer pantallazo la franja inferior (enmienda 1).
+   El contenedor lleva .portada-medida (container-type), y las variables viven en sus hijos
+   porque un contenedor no puede consultar su propio ancho. */
 .portada-medida {
   container-type: inline-size;
 }
-.titular-portada {
-  font-size: max(var(--titular-min), calc((100cqi - 2 * var(--ret-margen)) / var(--titular-k)));
+.portada-medida > * {
+  --nav-alto: 72px;
+  --rotulo-alto: calc(var(--t-13) * 1.45 + var(--e-16));
+  --franja-alto: 192px;
+  --escena-min: var(--e-168);
+  --fs-ancho: calc((100cqi - 2 * var(--ret-margen)) / var(--titular-k));
+  --fs-alto: calc(
+    (100svh - var(--nav-alto) - var(--rotulo-alto) - var(--franja-alto) - var(--escena-min)) / (2 * 0.82)
+  );
+  --fs-portada: max(var(--titular-min), min(var(--fs-ancho), var(--fs-alto)));
+  /* Cuánto sube el retrato sobre la base de PINTA en tablet y celular: media línea. */
+  --solape: calc(var(--fs-portada) * 0.41);
+}
+@media (min-width: 768px) {
+  .portada-medida > * {
+    --franja-alto: 160px;
+  }
 }
 @media (min-width: 1024px) {
-  .titular-portada {
+  .portada-medida > * {
+    --escena-min: 0px;
     /* 7 columnas más 6 canales de una retícula de 12 */
-    font-size: calc(
+    --fs-ancho: calc(
       ((min(100cqi, var(--ret-max)) - 2 * var(--ret-margen) - 11 * var(--ret-canal)) * 7 / 12 + 6 * var(--ret-canal)) /
         var(--titular-k)
     );
+  }
+}
+.titular-portada {
+  font-size: var(--fs-portada);
+  /* Enmienda 3. Solo aquí: la tinta de la D cae sobre el borde de la columna. */
+  margin-left: -0.04em;
+}
+
+/* Portada (paso 2). Capas: bloque rojo 0, nombre 1, retrato 2. */
+.portada {
+  position: relative;
+  min-height: 100svh;
+  grid-template-rows: var(--nav-alto) auto minmax(var(--escena-min), 1fr) auto;
+}
+.portada-cabeza {
+  grid-row: 2;
+  grid-column: 1 / -1;
+  position: relative;
+  z-index: 1;
+}
+.portada-rotulo {
+  font-size: var(--t-13);
+  line-height: 1.45;
+  margin-bottom: var(--e-16);
+}
+.portada-bloque {
+  position: absolute;
+  z-index: 0;
+  /* Las líneas van explícitas: en un elemento absoluto, «auto» es el borde del contenedor. */
+  grid-row: 3 / 4;
+  grid-column: 2 / -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  /* A sangre por la derecha, hasta el borde de la ventana. */
+  right: calc(-1 * (var(--ret-margen) + max(0px, (100cqi - var(--ret-max)) / 2)));
+  background: var(--rojo);
+}
+.portada-retrato {
+  position: absolute;
+  z-index: 2;
+  /* Las líneas van explícitas: en un elemento absoluto, «auto» es el borde del contenedor. */
+  grid-row: 3 / 4;
+  grid-column: 2 / -1;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  height: min(560px, calc(100% + var(--solape)));
+  aspect-ratio: 409 / 843;
+}
+.portada-retrato[data-error] {
+  display: none;
+}
+.portada-franja {
+  grid-row: 4;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: var(--e-16);
+  align-items: start;
+  border-top: var(--filete) solid var(--tinta);
+  padding-block: var(--e-24);
+  position: relative;
+  z-index: 1;
+}
+.portada-frase,
+.portada-cifra,
+.portada-acciones {
+  grid-column: 1 / -1;
+}
+.portada-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-12);
+}
+
+@media (min-width: 768px) {
+  .portada-bloque {
+    grid-column: 4 / -1;
+  }
+  .portada-retrato {
+    grid-column: 4 / -1;
+  }
+  .portada-frase {
+    grid-column: 1 / 5;
+  }
+  .portada-cifra {
+    grid-column: 5 / -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .portada {
+    grid-template-rows: var(--nav-alto) 1fr auto;
+  }
+  .portada-cabeza {
+    grid-column: 1 / 8;
+    align-self: end;
+  }
+  .portada-bloque {
+    grid-row: 2 / 3;
+    grid-column: 7 / -1;
+  }
+  .portada-retrato {
+    grid-row: 2 / 3;
+    /* Entre 1024 y 1279 el nombre es más estrecho. Una columna más a la derecha deja la O legible. */
+    grid-column: 7 / 11;
+    height: min(560px, 100%);
+  }
+  .portada-franja {
+    grid-row: 3;
+    min-height: 160px;
+  }
+  .portada-frase {
+    grid-column: 1 / 5;
+  }
+  .portada-cifra {
+    grid-column: 5 / 9;
+  }
+  .portada-acciones {
+    grid-column: 9 / -1;
+    justify-content: flex-end;
+  }
+}
+
+@media (min-width: 1280px) {
+  .portada-retrato {
+    grid-column: 6 / 10;
+  }
+}
+
+/* Entrada una sola vez (8.8). Solo transform y opacity, en CSS: se ve aunque no corra JavaScript. */
+@media (prefers-reduced-motion: no-preference) {
+  .portada-linea {
+    animation: portada-sube var(--dur-entrada) var(--curva-entrada) both;
+  }
+  .portada-bloque,
+  .portada-retrato {
+    animation: portada-sube var(--dur-entrada) var(--curva-entrada) both;
+    /* «Después» de las líneas: arrancan cuando estas llevan la mitad del recorrido. */
+    animation-delay: calc(var(--dur-entrada) / 2);
+  }
+}
+@keyframes portada-sube {
+  from {
+    opacity: 0;
+    transform: translateY(var(--desplazamiento-entrada));
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
