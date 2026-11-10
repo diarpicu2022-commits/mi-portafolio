@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-:root {
+/* Tokens de la versión anterior. Solo los usa el mapa 2D de /quest, envuelto en .quest-mundo. */
+.quest-mundo {
   --ink: #10263d;
   --forest: #164a3a;
   --emerald: #2f9e6e;
@@ -14,7 +15,7 @@
   --color-emerald: var(--emerald);
   --color-paper: var(--paper);
   --color-amber: var(--amber);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-archivo), sans-serif;
   --font-pixel: var(--font-press-start), monospace;
 }
 
@@ -1041,6 +1042,117 @@
   }
 }
 
+/* Página de caso. */
+.caso-cabeza {
+  row-gap: var(--e-24);
+  padding-top: calc(72px + var(--e-40));
+  padding-bottom: var(--e-64);
+}
+.caso-numero {
+  font-size: clamp(var(--titular-min), 12vw, 168px);
+  color: var(--rojo);
+  margin-bottom: calc(-1 * var(--e-16));
+}
+.caso-nombre {
+  font-size: clamp(var(--titular-min), 10vw, 168px);
+  overflow-wrap: anywhere;
+}
+.caso-ficha {
+  display: grid;
+  gap: var(--e-16) var(--e-24);
+  border-top: var(--filete) solid var(--tinta);
+  padding-top: var(--e-16);
+  font-size: var(--t-15);
+}
+.caso-ficha dt {
+  color: var(--gris);
+  font-size: var(--t-13);
+}
+@media (min-width: 768px) {
+  .caso-ficha {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.caso-escenario {
+  position: relative;
+  padding: 0 var(--e-24) var(--e-24) 0;
+}
+.caso-bloque {
+  position: absolute;
+  inset: var(--e-24) 0 0 var(--e-24);
+  background: var(--rojo);
+}
+.caso-captura,
+.caso-esquema {
+  position: relative;
+  z-index: 1;
+}
+.caso-captura {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 80vh;
+}
+@media (min-width: 1024px) {
+  .caso-escenario {
+    padding: 0 var(--e-64) var(--e-64) 0;
+  }
+  .caso-bloque {
+    inset: var(--e-64) 0 0 var(--e-64);
+  }
+  .caso-esquema {
+    max-width: 720px;
+  }
+}
+.caso-bloque-texto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-16);
+}
+.caso-pasos,
+.caso-resultados {
+  display: flex;
+  flex-direction: column;
+}
+.caso-pasos li,
+.caso-resultados li {
+  border-top: var(--filete) solid var(--tinta);
+  padding-block: var(--e-12);
+}
+.caso-lateral {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-40);
+  align-self: start;
+}
+@media (min-width: 1024px) {
+  .caso-lateral {
+    position: sticky;
+    top: calc(72px + var(--e-24));
+  }
+}
+.caso-siguiente {
+  display: grid;
+  row-gap: var(--e-12);
+  padding-block: var(--e-64);
+  text-decoration: none;
+}
+.caso-siguiente-nombre {
+  font-size: clamp(var(--titular-min), 9vw, 136px);
+}
+.caso-siguiente:hover .caso-siguiente-nombre {
+  text-decoration: underline;
+  text-decoration-thickness: var(--filete);
+  text-underline-offset: var(--e-8);
+}
+
+/* 404. */
+.error-cifra {
+  font-size: clamp(var(--titular-min), 30vw, 400px);
+  color: var(--rojo);
+}
+
 /* Entrada una sola vez (8.8). Solo transform y opacity, en CSS: se ve aunque no corra JavaScript. */
 @media (prefers-reduced-motion: no-preference) {
   .portada-linea {
@@ -1156,30 +1268,10 @@
 
 /* 8.8: el scroll es el del navegador, sin desplazamiento suave al seguir un ancla. */
 
-/* Lenis drives smooth scrolling itself; native smooth scroll would fight it. */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-html.lenis {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-/* Fluid type scale: grows continuously with the viewport between a readable floor and a ceiling. */
+/* Titular del mapa, en su estilo propio. */
 .display-title {
   font-size: clamp(1.4rem, 0.9rem + 3.2vw, 3.4rem);
   line-height: 1.25;
-}
-.section-title {
-  font-size: clamp(0.9rem, 0.75rem + 0.9vw, 1.35rem);
-  line-height: 1.5;
-}
-.lead {
-  font-size: clamp(1rem, 0.94rem + 0.35vw, 1.2rem);
-  line-height: 1.75;
 }
 
 .status-badge {
@@ -1198,39 +1290,16 @@ html.lenis {
   background: #d6e9f8;
 }
 
-.next-project:hover .display-title,
-.next-project:focus-visible .display-title {
-  color: var(--amber);
-}
-
-.grid-column {
-  background: rgb(230 162 60 / 0.14);
-  border-inline: 1px solid rgb(230 162 60 / 0.5);
-}
-
 body {
-  background: var(--forest);
-  color: var(--ink);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--font-archivo), sans-serif;
 }
 
-:focus-visible {
+/* Foco del mapa: conserva el contorno ámbar de la versión anterior. El resto del sitio usa el de 8.9. */
+.quest-mundo :focus-visible {
   outline: 3px solid var(--amber);
   outline-offset: 2px;
-}
-
-.skip-link {
-  position: absolute;
-  left: 1rem;
-  top: -4rem;
-  z-index: 60;
-  background: var(--amber);
-  color: var(--ink);
-  padding: 0.5rem 1rem;
-  font-weight: 700;
-}
-.skip-link:focus {
-  top: 1rem;
 }
 
 /* Pixel-adventure surfaces */
@@ -1289,14 +1358,6 @@ body {
   text-underline-offset: 3px;
 }
 
-.nav-link {
-  text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
-}
-.nav-link:hover {
-  color: var(--amber);
-  text-decoration-line: underline;
-}
 
 /* World */
 .world-grid {
@@ -1431,43 +1492,6 @@ body {
   }
 }
 
-.pixel-input {
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  background: #fff;
-  border: 3px solid var(--ink);
-  font-weight: 400;
-}
-
-.title-scene-art {
-  background: #3f9b5f;
-  border: 4px solid var(--ink);
-  box-shadow:
-    0 0 0 4px var(--paper),
-    0 0 0 8px var(--ink);
-  image-rendering: pixelated;
-}
-.title-hero {
-  animation: bob-hero 900ms steps(2) infinite;
-}
-.press-start {
-  animation: blink-color 1s steps(2) infinite;
-}
-
-@keyframes blink-color {
-  50% {
-    color: var(--paper);
-  }
-}
-.title-scene:hover .title-scene-art {
-  transform: translate(-2px, -2px);
-}
-
-@keyframes bob-hero {
-  50% {
-    transform: translateY(-6%);
-  }
-}
 
 .dpad {
   grid-template-areas:
@@ -1476,30 +1500,7 @@ body {
     ". down .";
 }
 
-/* Scroll reveals: only elements below the fold get .reveal-pending, added by JavaScript. */
-.reveal-pending {
-  opacity: 0;
-  transform: translateY(28px);
-  transition:
-    opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-/* Cards holding links only fade, so a click never misses a target that is still moving. */
-.reveal-pending[data-reveal="fade"] {
-  transform: none;
-}
-.reveal-pending.is-revealed {
-  opacity: 1;
-  transform: none;
-}
 
-/* Printing never waits for scroll reveals. */
-@media print {
-  .reveal-pending {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
   *,

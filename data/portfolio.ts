@@ -231,7 +231,7 @@ const ui = {
       status: { complete: "Terminado", "in-progress": "En desarrollo", research: "Investigación" },
     },
     caseStudy: {
-      back: "← Todos los proyectos",
+      back: "Todos los proyectos",
       role: "Rol",
       year: "Periodo",
       position: "Cargo",
@@ -360,7 +360,7 @@ const ui = {
       status: { complete: "Complete", "in-progress": "In progress", research: "Research" },
     },
     caseStudy: {
-      back: "← All projects",
+      back: "All projects",
       role: "Role",
       year: "Period",
       position: "Position",

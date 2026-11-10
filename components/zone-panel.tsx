@@ -83,7 +83,6 @@ export function ZonePanel({ locale, zone, onClose }: ZonePanelProps) {
         aria-modal="true"
         aria-labelledby={headingId}
         onKeyDown={handleKeyDown}
-        data-lenis-prevent
         className="pixel-frame max-h-[88vh] w-full max-w-3xl overflow-y-auto bg-paper p-5 text-ink sm:p-7"
       >
         <div className="mb-4 flex items-start justify-between gap-4">

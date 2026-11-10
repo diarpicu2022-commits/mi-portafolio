@@ -5,8 +5,6 @@ import { CaseStudyPage } from "@/components/case-study-page";
 import { getPortfolio } from "@/data/portfolio";
 
 vi.mock("next/navigation", () => ({
-  // Las páginas de caso montan MotionProvider, que lee la ruta.
-  usePathname: () => "/proyectos/agropulse",
   notFound: () => {
     throw new Error("NEXT_NOT_FOUND");
   },

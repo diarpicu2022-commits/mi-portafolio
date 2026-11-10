@@ -1,4 +1,5 @@
 import { BorrarProgreso } from "@/components/editorial/borrar-progreso";
+import { Pie } from "@/components/editorial/pie";
 import { getPortfolio, homePath, type Locale } from "@/data/portfolio";
 import { privacidad, privacyPath } from "@/data/privacidad";
 
@@ -59,11 +60,7 @@ export function PaginaPrivacidad({ locale }: { locale: Locale }) {
           </aside>
         </article>
       </main>
-      <footer className="sup-negro">
-        <div className="reticula py-e40">
-          <p className="voz-dato col-span-full text-13 text-gris-claro">{t.footer.noCookies}</p>
-        </div>
-      </footer>
+      <Pie locale={locale} />
     </>
   );
 }

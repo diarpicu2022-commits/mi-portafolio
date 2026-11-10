@@ -67,7 +67,8 @@ test("zone progress survives a reload", async ({ page }) => {
 test("unknown pages show the themed 404 and social image exists", async ({ page, request }) => {
   const response = await page.goto("/no-existe");
   expect(response?.status()).toBe(404);
-  await expect(page.getByRole("heading", { name: /te perdiste/i })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Esta página no existe." })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Volver al inicio/ })).toHaveAttribute("href", "/");
 
   const html = await (await request.get("/")).text();
   const og = html.match(/property="og:image" content="[^"]*?(\/opengraph-image[^"?]*)/)?.[1];
@@ -76,7 +77,7 @@ test("unknown pages show the themed 404 and social image exists", async ({ page,
   expect(image.headers()["content-type"]).toContain("image/png");
 });
 
-test("case studies are reachable from the project list and keep the language", async ({ page }) => {
+test("case studies are reachable from the project list and keep the language", async ({ page, isMobile }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
   // AgroPulse ya no es el primero (enmienda 10): se elige en el selector antes de abrir su caso.
@@ -84,7 +85,7 @@ test("case studies are reachable from the project list and keep the language", a
   await page.getByRole("tabpanel", { name: "AgroPulse" }).getByRole("link", { name: "Ver caso de estudio: AgroPulse" }).click();
   await expect(page).toHaveURL(/\/proyectos\/agropulse$/);
   await expect(page.getByRole("heading", { level: 1, name: "AgroPulse" })).toBeVisible();
-  await page.getByRole("link", { name: "English" }).click();
+  await (await enlaceNav(page, "English", isMobile)).click();
   await expect(page).toHaveURL(/\/en\/projects\/agropulse$/);
   await expect(page.getByRole("heading", { name: "The challenge" })).toBeVisible();
   await page.getByRole("navigation", { name: "Next project" }).getByRole("link").click();

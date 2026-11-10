@@ -10,7 +10,7 @@ import { NAME, getPortfolio, homePath, type Locale } from "@/data/portfolio";
  * Desde 1024 px los enlaces van en línea. Por debajo, un menú que se abre con un botón,
  * se cierra con Escape y devuelve el foco al botón.
  */
-export function Navegacion({ locale }: { locale: Locale }) {
+export function Navegacion({ locale, alternate }: { locale: Locale; alternate?: string }) {
   const { navLinks, cvPath, t } = getPortfolio(locale);
   const otro: Locale = locale === "es" ? "en" : "es";
   const [abierto, setAbierto] = useState(false);
@@ -18,7 +18,11 @@ export function Navegacion({ locale }: { locale: Locale }) {
   const panel = useRef<HTMLDivElement>(null);
   const idPanel = useId();
   const [nombre, , apellido] = NAME.split(" ");
-  const secciones = navLinks.filter((link) => link.href.startsWith("#"));
+  // Fuera de la página de inicio, las anclas apuntan a ella y el idioma lleva a la misma página en el otro idioma.
+  const base = alternate ? homePath[locale] : "";
+  const secciones = navLinks
+    .filter((link) => link.href.startsWith("#"))
+    .map((link) => ({ ...link, href: `${base}${link.href}` }));
 
   useEffect(() => {
     if (!abierto) return;
@@ -33,7 +37,7 @@ export function Navegacion({ locale }: { locale: Locale }) {
   }, [abierto]);
 
   const idioma = (
-    <a className="nav-ed-enlace voz-dato text-13" href={homePath[otro]} hrefLang={otro} lang={otro}>
+    <a className="nav-ed-enlace voz-dato text-13" href={alternate ?? homePath[otro]} hrefLang={otro} lang={otro}>
       {t.nav.switchLanguage}
     </a>
   );
@@ -42,7 +46,7 @@ export function Navegacion({ locale }: { locale: Locale }) {
     <header className="nav-ed sup-papel">
       <nav aria-label={t.nav.label} className="reticula h-full items-center">
         <div className="col-span-full flex items-center justify-between gap-e16">
-          <a href="#contenido" className="nav-ed-enlace voz-texto-fuerte -ml-e8 text-17">
+          <a href={alternate ? homePath[locale] : "#contenido"} className="nav-ed-enlace voz-texto-fuerte -ml-e8 text-17">
             {nombre} {apellido}
           </a>
 
