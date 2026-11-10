@@ -30,11 +30,15 @@ export type Project = {
   links: ProjectLink[];
   /** Live demo URL; omitted until a public demo is confirmed. */
   demo?: string;
-  /** Screenshot or GIF under public/, e.g. "/projects/agropulse.png". */
-  image?: string;
+  /** Captura real bajo public/projects/, con sus medidas en píxeles y texto alternativo. */
+  image?: ProjectImage;
 } & CaseStudy;
 
-type ProjectBase = Omit<Project, keyof CaseStudy>;
+export type ProjectImage = { src: string; width: number; height: number; alt: string };
+
+type ProjectBase = Omit<Project, keyof CaseStudy | "image"> & {
+  image?: Omit<ProjectImage, "alt"> & { alt: Record<Locale, string> };
+};
 
 // Every fact below comes from the project's own repository (README, manifests or source tree).
 const base: ProjectBase[] = [
@@ -59,6 +63,16 @@ const base: ProjectBase[] = [
     status: "research",
     technologies: ["ESP32", "Control automático", "Flutter", "Dart"],
     links: [{ label: "App móvil", url: `${GH}/siscan-movil` }],
+    // App Mobile/docs/sustentacion/img/apk-02-inicio.png (APK en un teléfono, datos de un secador de prueba).
+    image: {
+      src: "/projects/siscan-inicio.webp",
+      width: 720,
+      height: 1600,
+      alt: {
+        es: "Pantalla de inicio de SISCAN en el celular: humedad del grano al 10,6 %, temperatura y humedad del secador.",
+        en: "SISCAN home screen on a phone: grain moisture at 10.6 %, dryer temperature and humidity.",
+      },
+    },
   },
   {
     id: "ecos",
@@ -68,6 +82,16 @@ const base: ProjectBase[] = [
     status: "in-progress",
     technologies: ["Godot 4", "GDScript", "Python"],
     links: [{ label: "GitHub", url: `${GH}/ecos-de-la-tierra` }],
+    // Videojuego/docs/ux/capturas/2026-11-04-accion-purifica.png (resolución nativa del juego, 640 × 360).
+    image: {
+      src: "/projects/ecos-de-la-tierra-combate.webp",
+      width: 640,
+      height: 360,
+      alt: {
+        es: "Combate de Ecos de la Tierra en pixel art: el grupo purifica a la Llama de la Deforestación.",
+        en: "Ecos de la Tierra pixel-art battle: the party purifies the Deforestation Flame.",
+      },
+    },
   },
   {
     id: "notascan",
@@ -80,6 +104,16 @@ const base: ProjectBase[] = [
       { label: "Escritorio", url: `${GH}/notascan-escritorio` },
       { label: "Subida por QR", url: `${GH}/notascan-subir` },
     ],
+    // NotaScan oscuro/notascan-desktop/verify-out/oscuro-login-1440.png (inicio de sesión, sin datos personales).
+    image: {
+      src: "/projects/notascan-inicio-de-sesion.webp",
+      width: 1280,
+      height: 800,
+      alt: {
+        es: "Inicio de sesión de NotaScan en escritorio, tema oscuro, con selector de rol docente, secretaría o rectoría.",
+        en: "NotaScan desktop sign-in, dark theme, with a teacher, secretary or principal role selector.",
+      },
+    },
   },
   {
     id: "campuswatch",
@@ -509,6 +543,7 @@ const linkLabels: Record<string, string> = {
 export function getProjects(locale: Locale): Project[] {
   return base.map((project) => ({
     ...project,
+    image: project.image && { ...project.image, alt: project.image.alt[locale] },
     ...studies[locale][project.id],
     technologies:
       locale === "en"

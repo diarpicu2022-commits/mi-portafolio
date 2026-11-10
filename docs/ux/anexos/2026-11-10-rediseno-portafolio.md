@@ -251,6 +251,10 @@ Aprobadas por Diego el 10 de noviembre de 2026, al revisar el paso 2.
 6. Tinta sobre rojo entra en la tabla de color con 3.88 medido. Solo vale para el titular de portada donde cruza el bloque.
 7. El bloque rojo y el retrato entran 350 ms después del nombre.
 
+Aprobada por Diego el 10 de noviembre de 2026, al revisar el paso 3.
+
+8. Experiencia y formación van como dos secciones seguidas, cada una con su enlace en la navegación.
+
 Foto. Diego va a tomarse una nueva o a buscar el original. La portada debe aceptar el cambio con solo reemplazar el archivo en `public/retrato/`. Mientras tanto sigue el tope de 560 px de alto.
 
 ## 9. Legal y privacidad
@@ -472,4 +476,22 @@ Capturas en `docs/pantallazos/rediseno/`. Son `Inicio 390.png`, `Inicio 768.png`
 5. Las páginas de caso siguen con Lenis, GSAP y botones magnéticos. `gsap` y `lenis` siguen en `package.json` porque `components/motion-provider.tsx` los importa. Se retiran cuando los casos adopten los tokens.
 6. El título y la descripción del sitio en `app/site-metadata.ts` siguen hablando de la aventura 2D. Falta actualizarlos.
 7. Se retiró la prueba que buscaba el `h1` «Diecu's Engineering Quest» en la portada. Ese título vive ahora en `/quest` y el `h1` de la portada es el nombre.
+
+## 14. Verificación del paso 4
+
+### 14.1 Capturas de proyectos
+
+Diego autorizó usar capturas de sus carpetas de proyectos. Se buscaron en `Proyectos Finales` y en las carpetas de talleres del semestre, solo con lectura. Se miró cada imagen antes de usarla.
+
+| Proyecto | Origen | Archivo en el sitio | Medidas |
+|---|---|---|---|
+| SISCAN | `App Mobile/docs/sustentacion/img/apk-02-inicio.png` | `public/projects/siscan-inicio.webp` | 720 × 1600 |
+| Ecos de la Tierra | `Videojuego/docs/ux/capturas/2026-11-04-accion-purifica.png` | `public/projects/ecos-de-la-tierra-combate.webp` | 640 × 360 |
+| NotaScan | `NotaScan oscuro/notascan-desktop/verify-out/oscuro-login-1440.png` | `public/projects/notascan-inicio-de-sesion.webp` | 1280 × 800 |
+
+- SISCAN muestra el inicio de la app con un secador de prueba. No hay nombres ni datos de personas.
+- Ecos se dejó en su resolución nativa de 640 × 360, sin ampliar y sin pérdida.
+- NotaScan usa la pantalla de inicio de sesión. Los paneles de docente, secretaría y rectoría muestran nombres de estudiantes y calificaciones. No se puede confirmar que sean de demostración, así que se descartaron.
+- Se descartaron también la hoja de calificaciones impresa de NotaScan y la pantalla de equipo de SISCAN, que no aporta frente al inicio.
+- AgroPulse, CampusWatch, HidroMon, Harmonia, Proxy IA, EcoVolt, SETPasto+ y Tower Defense no tienen capturas en esas carpetas. `App Smartwacht` solo guarda un zip del sistema de diseño. Esos ocho proyectos van con la placa tipográfica de 8.9.
 

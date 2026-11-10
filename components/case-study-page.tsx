@@ -63,11 +63,11 @@ export function CaseStudyPage({ locale, id }: { locale: Locale; id: string }) {
         {project.image && (
           <div className="mx-auto max-w-5xl px-4 pt-12">
             <Image
-              src={project.image}
-              alt={t.card.imageAlt(project.name)}
-              width={1280}
-              height={720}
-              className="w-full border-4 border-ink"
+              src={project.image.src}
+              alt={project.image.alt}
+              width={project.image.width}
+              height={project.image.height}
+              className="mx-auto h-auto max-h-[80vh] w-auto max-w-full border-4 border-ink"
               priority
             />
           </div>
