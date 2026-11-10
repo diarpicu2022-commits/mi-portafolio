@@ -30,27 +30,37 @@ export type Project = {
   links: ProjectLink[];
   /** Live demo URL; omitted until a public demo is confirmed. */
   demo?: string;
-  /** Screenshot or GIF under public/, e.g. "/projects/agropulse.png". */
-  image?: string;
+  /** Captura real bajo public/projects/, con sus medidas en píxeles y texto alternativo. */
+  image?: ProjectImage;
+  /** Esquema de sistema cuando no hay captura. Si llega una captura, manda la captura. */
+  esquema?: Esquema;
 } & CaseStudy;
 
-type ProjectBase = Omit<Project, keyof CaseStudy>;
+export type ProjectImage = { src: string; width: number; height: number; alt: string };
+
+/** Texto en los dos idiomas. Los nombres técnicos (ESP32, Spring Boot) se repiten igual en ambos. */
+type Bilingue = Record<Locale, string>;
+type NodoBase = { etiqueta: Bilingue; detalle: Bilingue };
+type EtapaBase = { nodos: NodoBase[]; enlace?: Bilingue };
+/**
+ * Esquema de sistema (enmienda 13): cómo está armado un proyecto sin captura.
+ * Etapas de arriba abajo; cada etapa tiene uno o más nodos y una etiqueta para la flecha que baja a la siguiente.
+ * Cada bloque sale del README o del código del repositorio (fuente anotada junto a cada esquema).
+ */
+type EsquemaBase = { titulo: Bilingue; etapas: EtapaBase[] };
+export type Esquema = {
+  titulo: string;
+  etapas: { nodos: { etiqueta: string; detalle: string }[]; enlace?: string }[];
+};
+
+type ProjectBase = Omit<Project, keyof CaseStudy | "image" | "esquema"> & {
+  image?: Omit<ProjectImage, "alt"> & { alt: Record<Locale, string> };
+  esquema?: EsquemaBase;
+};
 
 // Every fact below comes from the project's own repository (README, manifests or source tree).
 const base: ProjectBase[] = [
-  {
-    id: "agropulse",
-    name: "AgroPulse",
-    start: "2026-03",
-    end: "2026-05",
-    status: "complete",
-    technologies: ["ESP32", "C++", "PlatformIO", "Java 17", "Spring Boot", "Supabase", "Docker", "React", "TypeScript"],
-    links: [
-      { label: "Firmware", url: `${GH}/firmware-AgroPulse` },
-      { label: "Backend", url: `${GH}/backend-AgroPulse` },
-      { label: "Frontend", url: `${GH}/frontend-AgroPulse` },
-    ],
-  },
+  // Enmienda 10: primero los proyectos con captura real. La numeración del sitio sigue este orden.
   {
     id: "siscan",
     name: "SISCAN",
@@ -59,6 +69,16 @@ const base: ProjectBase[] = [
     status: "research",
     technologies: ["ESP32", "Control automático", "Flutter", "Dart"],
     links: [{ label: "App móvil", url: `${GH}/siscan-movil` }],
+    // App Mobile/docs/sustentacion/img/apk-02-inicio.png (APK en un teléfono, datos de un secador de prueba).
+    image: {
+      src: "/projects/siscan-inicio.webp",
+      width: 720,
+      height: 1600,
+      alt: {
+        es: "Pantalla de inicio de SISCAN en el celular: humedad del grano al 10,6 %, temperatura y humedad del secador.",
+        en: "SISCAN home screen on a phone: grain moisture at 10.6 %, dryer temperature and humidity.",
+      },
+    },
   },
   {
     id: "ecos",
@@ -68,6 +88,16 @@ const base: ProjectBase[] = [
     status: "in-progress",
     technologies: ["Godot 4", "GDScript", "Python"],
     links: [{ label: "GitHub", url: `${GH}/ecos-de-la-tierra` }],
+    // Videojuego/docs/ux/capturas/2026-11-04-accion-purifica.png (resolución nativa del juego, 640 × 360).
+    image: {
+      src: "/projects/ecos-de-la-tierra-combate.webp",
+      width: 640,
+      height: 360,
+      alt: {
+        es: "Combate de Ecos de la Tierra en pixel art: el grupo purifica a la Llama de la Deforestación.",
+        en: "Ecos de la Tierra pixel-art battle: the party purifies the Deforestation Flame.",
+      },
+    },
   },
   {
     id: "notascan",
@@ -80,6 +110,16 @@ const base: ProjectBase[] = [
       { label: "Escritorio", url: `${GH}/notascan-escritorio` },
       { label: "Subida por QR", url: `${GH}/notascan-subir` },
     ],
+    // NotaScan oscuro/notascan-desktop/verify-out/oscuro-login-1440.png (inicio de sesión, sin datos personales).
+    image: {
+      src: "/projects/notascan-inicio-de-sesion.webp",
+      width: 1280,
+      height: 800,
+      alt: {
+        es: "Inicio de sesión de NotaScan en escritorio, tema oscuro, con selector de rol docente, secretaría o rectoría.",
+        en: "NotaScan desktop sign-in, dark theme, with a teacher, secretary or principal role selector.",
+      },
+    },
   },
   {
     id: "campuswatch",
@@ -89,6 +129,58 @@ const base: ProjectBase[] = [
     status: "in-progress",
     technologies: ["Kotlin", "Jetpack Compose", "Wear OS", "Room", "SQLCipher"],
     links: [{ label: "GitHub", url: `${GH}/agenda-android` }],
+    // github.com/diarpicu2022-commits/agenda-android, docs/capturas/cw-en-principal.png (esferas del reloj, en inglés).
+    image: {
+      src: "/projects/campuswatch-esferas.webp",
+      width: 1200,
+      height: 600,
+      alt: {
+        es: "Ocho esferas de CampusWatch en el reloj: tiempo para salir, clase en curso, examen y turno, con la interfaz en inglés.",
+        en: "Eight CampusWatch watch faces: time to leave, class in progress, exam and shift.",
+      },
+    },
+  },
+  {
+    id: "setpasto",
+    name: "SETPasto+",
+    start: "2026-08",
+    end: "2026-08",
+    status: "complete",
+    technologies: ["Node.js", "Express", "EJS", "Tailwind"],
+    links: [{ label: "GitHub", url: `${GH}/Taller-Contenido--voz-y-internacionalizacion` }],
+    // github.com/diarpicu2022-commits/Taller-Contenido--voz-y-internacionalizacion, shots/indicadores-es.png (primer pantallazo recortado a 1440 × 900).
+    image: {
+      src: "/projects/setpasto-indicadores.webp",
+      width: 1280,
+      height: 800,
+      alt: {
+        es: "Página de indicadores de SETPasto+: cumplimiento de itinerario, espera promedio, satisfacción y PQRSD respondidas.",
+        en: "SETPasto+ indicators page: schedule compliance, average wait, satisfaction and answered requests.",
+      },
+    },
+  },
+  {
+    id: "agropulse",
+    name: "AgroPulse",
+    start: "2026-03",
+    end: "2026-05",
+    status: "complete",
+    technologies: ["ESP32", "C++", "PlatformIO", "Java 17", "Spring Boot", "Supabase", "Docker", "React", "TypeScript"],
+    links: [
+      { label: "Firmware", url: `${GH}/firmware-AgroPulse` },
+      { label: "Backend", url: `${GH}/backend-AgroPulse` },
+      { label: "Frontend", url: `${GH}/frontend-AgroPulse` },
+    ],
+    // Esquema: README de firmware-AgroPulse (sensores, relés, OLED, WiFi-HTTP), backend-AgroPulse (Spring Boot, Supabase, SendGrid) y frontend-AgroPulse (React, servicios contra la API).
+    esquema: {
+      titulo: { es: "Del invernadero al panel", en: "From greenhouse to dashboard" },
+      etapas: [
+        { nodos: [{ etiqueta: { es: "Sensores", en: "Sensors" }, detalle: { es: "DHT11, DHT22, humedad de suelo", en: "DHT11, DHT22, soil moisture" } }], enlace: { es: "lecturas", en: "readings" } },
+        { nodos: [{ etiqueta: { es: "ESP32", en: "ESP32" }, detalle: { es: "firmware PlatformIO, relés y OLED", en: "PlatformIO firmware, relays and OLED" } }], enlace: { es: "JSON por WiFi-HTTP", en: "JSON over WiFi-HTTP" } },
+        { nodos: [{ etiqueta: { es: "API REST", en: "REST API" }, detalle: { es: "Spring Boot 3.2, JWT, Resilience4j", en: "Spring Boot 3.2, JWT, Resilience4j" } }], enlace: { es: "guarda, sirve y avisa", en: "stores, serves, alerts" } },
+        { nodos: [{ etiqueta: { es: "Supabase", en: "Supabase" }, detalle: { es: "PostgreSQL", en: "PostgreSQL" } }, { etiqueta: { es: "Panel web", en: "Dashboard" }, detalle: { es: "React 18 en Vercel", en: "React 18 on Vercel" } }, { etiqueta: { es: "Alertas", en: "Alerts" }, detalle: { es: "correo con SendGrid", en: "email via SendGrid" } }] },
+      ],
+    },
   },
   {
     id: "hidromon",
@@ -98,6 +190,17 @@ const base: ProjectBase[] = [
     status: "complete",
     technologies: ["NestJS", "TypeScript", "Node.js"],
     links: [{ label: "GitHub", url: `${GH}/hidromon-nestjs` }],
+    // Esquema: README de hidromon-nestjs (diagrama entidad-relación y entidades).
+    esquema: {
+      titulo: { es: "Entidades de la API NestJS", en: "NestJS API entities" },
+      etapas: [
+        { nodos: [{ etiqueta: { es: "Usuario", en: "User" }, detalle: { es: "agricultor o administrador", en: "farmer or administrator" } }], enlace: { es: "gestiona", en: "manages" } },
+        { nodos: [{ etiqueta: { es: "Zona", en: "Zone" }, detalle: { es: "cultivo, humedad mínima y máxima", en: "crop, minimum and maximum humidity" } }], enlace: { es: "agrupa", en: "groups" } },
+        { nodos: [{ etiqueta: { es: "Sensor", en: "Sensor" }, detalle: { es: "de suelo o ambiental", en: "soil or ambient" } }], enlace: { es: "registra", en: "records" } },
+        { nodos: [{ etiqueta: { es: "Lectura", en: "Reading" }, detalle: { es: "valor y fecha", en: "value and date" } }], enlace: { es: "fuera de rango genera", en: "out of range creates" } },
+        { nodos: [{ etiqueta: { es: "Alerta", en: "Alert" }, detalle: { es: "Alta o Baja", en: "High or Low" } }] },
+      ],
+    },
   },
   {
     id: "harmonia",
@@ -107,6 +210,15 @@ const base: ProjectBase[] = [
     status: "complete",
     technologies: ["Express", "TypeScript", "MongoDB", "Redis", "Groq", "OAuth", "React", "Vite"],
     links: [{ label: "GitHub", url: `${GH}/Harmonia` }],
+    // Esquema: Árbol del repositorio Harmonia (frontend React, backend Express con passport.ts y MusicAIAgent.ts) y backend/package.json (mongoose, redis, groq-sdk, passport-google-oauth20, passport-jwt).
+    esquema: {
+      titulo: { es: "Reproductor con IA", en: "AI music player" },
+      etapas: [
+        { nodos: [{ etiqueta: { es: "Frontend", en: "Frontend" }, detalle: { es: "React, Vite, Tailwind", en: "React, Vite, Tailwind" } }], enlace: { es: "peticiones con JWT", en: "requests with JWT" } },
+        { nodos: [{ etiqueta: { es: "API", en: "API" }, detalle: { es: "Express, Passport con Google OAuth", en: "Express, Passport with Google OAuth" } }], enlace: { es: "datos, caché e IA", en: "data, cache and AI" } },
+        { nodos: [{ etiqueta: { es: "MongoDB", en: "MongoDB" }, detalle: { es: "Mongoose", en: "Mongoose" } }, { etiqueta: { es: "Redis", en: "Redis" }, detalle: { es: "caché", en: "cache" } }, { etiqueta: { es: "Groq", en: "Groq" }, detalle: { es: "agente musical", en: "music agent" } }] },
+      ],
+    },
   },
   {
     id: "proxy-ia",
@@ -119,6 +231,17 @@ const base: ProjectBase[] = [
       { label: "Backend", url: `${GH}/proxy-ai-backend` },
       { label: "Frontend", url: `${GH}/proxy-ai-frontend` },
     ],
+    // Esquema: Código de proxy-ai-backend: AIController llama a CacheProxyService, que delega en RateLimitProxyService, luego en QuotaProxyService y al final en MockAIGenerationService. ResetScheduler reinicia límites cada minuto y cuotas cada mes.
+    esquema: {
+      titulo: { es: "Cadena de proxies", en: "Proxy chain" },
+      etapas: [
+        { nodos: [{ etiqueta: { es: "Cliente", en: "Client" }, detalle: { es: "React y Vite", en: "React and Vite" } }], enlace: { es: "POST de generación", en: "generation POST" } },
+        { nodos: [{ etiqueta: { es: "Caché", en: "Cache" }, detalle: { es: "CacheProxyService", en: "CacheProxyService" } }], enlace: { es: "si no está en caché", en: "on cache miss" } },
+        { nodos: [{ etiqueta: { es: "Límite", en: "Rate limit" }, detalle: { es: "RateLimitProxyService", en: "RateLimitProxyService" } }], enlace: { es: "dentro del límite", en: "within the limit" } },
+        { nodos: [{ etiqueta: { es: "Cuota", en: "Quota" }, detalle: { es: "QuotaProxyService", en: "QuotaProxyService" } }, { etiqueta: { es: "Reinicio", en: "Reset" }, detalle: { es: "cada minuto y cada mes", en: "every minute and every month" } }], enlace: { es: "con cuota disponible", en: "with quota left" } },
+        { nodos: [{ etiqueta: { es: "Generación", en: "Generation" }, detalle: { es: "servicio simulado", en: "mock service" } }] },
+      ],
+    },
   },
   {
     id: "ecovolt",
@@ -128,15 +251,16 @@ const base: ProjectBase[] = [
     status: "complete",
     technologies: ["Python", "FastAPI"],
     links: [{ label: "GitHub", url: `${GH}/EcoVolt` }],
-  },
-  {
-    id: "setpasto",
-    name: "SETPasto+",
-    start: "2026-08",
-    end: "2026-08",
-    status: "complete",
-    technologies: ["Node.js", "Express", "EJS", "Tailwind"],
-    links: [{ label: "GitHub", url: `${GH}/Taller-Contenido--voz-y-internacionalizacion` }],
+    // Esquema: Árbol del repositorio EcoVolt: backend/main.py con FastAPI, domain/entities, data_structures y db/database_connection.py (SQLite como Singleton).
+    esquema: {
+      titulo: { es: "Capas del backend", en: "Backend layers" },
+      etapas: [
+        { nodos: [{ etiqueta: { es: "API", en: "API" }, detalle: { es: "FastAPI", en: "FastAPI" } }], enlace: { es: "usa", en: "uses" } },
+        { nodos: [{ etiqueta: { es: "Dominio", en: "Domain" }, detalle: { es: "paneles, baterías, cargas y alertas", en: "panels, batteries, loads and alerts" } }], enlace: { es: "sobre", en: "built on" } },
+        { nodos: [{ etiqueta: { es: "Estructuras", en: "Data structures" }, detalle: { es: "colas, listas, pilas y arreglos", en: "queues, lists, stacks and arrays" } }], enlace: { es: "persiste en", en: "persists to" } },
+        { nodos: [{ etiqueta: { es: "SQLite", en: "SQLite" }, detalle: { es: "conexión única", en: "single connection" } }] },
+      ],
+    },
   },
   {
     id: "tower-defense",
@@ -146,6 +270,16 @@ const base: ProjectBase[] = [
     status: "complete",
     technologies: ["Java", "Canvas 2D", "REST API"],
     links: [{ label: "GitHub", url: `${GH}/TowerDefenseDecorator` }],
+    // Esquema: README de TowerDefenseDecorator (jerarquía del patrón Decorator y ejemplo de apilamiento).
+    esquema: {
+      titulo: { es: "Patrón Decorator", en: "Decorator pattern" },
+      etapas: [
+        { nodos: [{ etiqueta: { es: "Tower", en: "Tower" }, detalle: { es: "interfaz", en: "interface" } }], enlace: { es: "implementan", en: "implemented by" } },
+        { nodos: [{ etiqueta: { es: "BaseTower", en: "BaseTower" }, detalle: { es: "torre base", en: "base tower" } }, { etiqueta: { es: "TowerDecorator", en: "TowerDecorator" }, detalle: { es: "decorador abstracto", en: "abstract decorator" } }], enlace: { es: "lo extienden", en: "extended by" } },
+        { nodos: [{ etiqueta: { es: "RapidFire", en: "RapidFire" }, detalle: { es: "velocidad ×1.5", en: "speed ×1.5" } }, { etiqueta: { es: "FreezingShot", en: "FreezingShot" }, detalle: { es: "congela", en: "freezes" } }, { etiqueta: { es: "Shield", en: "Shield" }, detalle: { es: "escudo", en: "shield" } }, { etiqueta: { es: "GoldGenerator", en: "GoldGenerator" }, detalle: { es: "oro por baja", en: "gold per kill" } }], enlace: { es: "se apilan", en: "they stack" } },
+        { nodos: [{ etiqueta: { es: "Torre mejorada", en: "Upgraded tower" }, detalle: { es: "Shield(Freeze(RapidFire(Base)))", en: "Shield(Freeze(RapidFire(Base)))" } }] },
+      ],
+    },
   },
 ];
 
@@ -284,7 +418,7 @@ const studies: Record<Locale, Record<string, CaseStudy>> = {
       challenge: "Evitar el abuso y los costos descontrolados de un servicio de IA de pago.",
       approach: [
         "API en Spring Boot donde un proxy intercepta cada generación y comprueba cuota y límite de peticiones.",
-        "Excepciones propias para cuota agotada y exceso de peticiones, y una tarea programada que reinicia el uso diario.",
+        "Excepciones propias para cuota agotada y exceso de peticiones, y una tarea programada que reinicia el límite de peticiones cada minuto y las cuotas cada mes.",
         "Frontend en React y Vite; backend empaquetado en Docker.",
       ],
       outcome: ["El patrón Proxy separa la regla de negocio (cuotas) de la llamada al modelo."],
@@ -454,7 +588,7 @@ const studies: Record<Locale, Record<string, CaseStudy>> = {
       challenge: "Prevent abuse and runaway costs on a paid AI service.",
       approach: [
         "Spring Boot API where a proxy intercepts every generation and checks quota and rate limit.",
-        "Custom exceptions for exhausted quota and too many requests, plus a scheduled job that resets daily usage.",
+        "Custom exceptions for exhausted quota and too many requests, plus a scheduled job that resets the rate limit every minute and quotas every month.",
         "React + Vite frontend; backend packaged with Docker.",
       ],
       outcome: ["The Proxy pattern keeps the business rule (quotas) apart from the model call."],
@@ -509,6 +643,14 @@ const linkLabels: Record<string, string> = {
 export function getProjects(locale: Locale): Project[] {
   return base.map((project) => ({
     ...project,
+    image: project.image && { ...project.image, alt: project.image.alt[locale] },
+    esquema: project.esquema && {
+      titulo: project.esquema.titulo[locale],
+      etapas: project.esquema.etapas.map((e) => ({
+        nodos: e.nodos.map((n) => ({ etiqueta: n.etiqueta[locale], detalle: n.detalle[locale] })),
+        enlace: e.enlace?.[locale],
+      })),
+    },
     ...studies[locale][project.id],
     technologies:
       locale === "en"

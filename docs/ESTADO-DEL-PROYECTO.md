@@ -8,6 +8,36 @@ Portafolio de **Diego Armando Pinta Cuasquen** («Diecu»). Este documento reún
 
 ---
 
+
+## 0. Estado al 10 de noviembre de 2026, rediseño editorial
+
+Lo que sigue en las secciones 1 a 6 describe la versión del 28 de octubre (el mapa 2D como portada) y se conserva como historial.
+
+### Qué cambió
+
+- La portada es editorial. Nombre en titular condensado, retrato sobre un bloque rojo y cifras contadas desde los datos.
+- Los 11 proyectos se eligen en un selector. Cinco tienen captura real y seis un esquema de sistema dibujado desde sus repositorios.
+- Habilidades con la cifra de proyectos por grupo, experiencia con miniatura y logro, formación, testimonios pendientes y contacto con formulario que abre el correo.
+- Páginas de caso, mapa, privacidad y 404 con la misma navegación y el mismo pie.
+- El mapa 2D vive en `/quest`. Lenis, GSAP, Geist y el CSS viejo se retiraron del resto del sitio.
+- Metadatos, sitemap, robots, datos estructurados, imagen social por idioma y por proyecto, e icono nuevos.
+- CV de una columna con el mismo sistema, dos páginas A4 por idioma.
+
+### Verificación
+
+Medida con Playwright en 390, 768 y 1440 px. Detalle en la sección 16 del anexo de diseño. `npm run lint`, `npm test`, `npm run e2e` y `npm run build` pasan.
+
+### Qué falta
+
+| # | Tarea | Quién |
+|---|---|---|
+| 1 | Desplegar y pasar Lighthouse en `/`, un caso y `/en`, en móvil y escritorio | Diego o el coordinador |
+| 2 | Capturas reales de AgroPulse, HidroMon, Harmonia, Proxy IA, EcoVolt y Tower Defense | Diego |
+| 3 | Tres testimonios reales con autorización de cada persona | Diego |
+| 4 | Revisión de la política de privacidad por un abogado | Diego |
+| 5 | Foto con más resolución para la portada | Diego |
+| 6 | Confirmar demos públicas y añadirlas en `demo` | Diego |
+
 ## 1. Qué es
 
 Un portafolio para que cualquier persona (reclutadores, clientes, docentes) conozca a Diego y su CV. Se presenta como una aventura 2D en pixel art: el visitante camina por un mapa y cada edificio abre una parte del portafolio. Todo el contenido existe también como página normal, sin necesidad de jugar.

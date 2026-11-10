@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 import { CaseStudyPage } from "@/components/case-study-page";
-import { getPortfolio, projectPath } from "@/data/portfolio";
+import { alternativas } from "@/app/site-metadata";
+import { NAME, getPortfolio, projectPath } from "@/data/portfolio";
 import { projectIds } from "@/data/projects";
 
 export function generateStaticParams() {
@@ -13,9 +14,9 @@ export async function generateMetadata({ params }: PageProps<"/en/projects/[id]"
   const project = getPortfolio("en").projects.find((item) => item.id === id);
   if (!project) return {};
   return {
-    title: `${project.name} · Case study · Diecu's Engineering Quest`,
+    title: `${project.name} · Case study · ${NAME}`,
     description: project.summary,
-    alternates: { canonical: projectPath("en", id), languages: { es: projectPath("es", id), en: projectPath("en", id) } },
+    alternates: alternativas("en", projectPath("es", id), projectPath("en", id)),
   };
 }
 

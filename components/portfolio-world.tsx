@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { WorldCanvas } from "@/components/world-canvas";
 import { ZonePanel } from "@/components/zone-panel";
 import { getPortfolio, type Locale } from "@/data/portfolio";
+import { QUEST_KEYS } from "@/data/privacidad";
 import { sounds } from "@/lib/sound";
 import { readStored, writeStored } from "@/lib/storage";
 import {
@@ -19,9 +20,8 @@ import {
 
 const world = parseWorld(WORLD_LAYOUT);
 const STEP_MS = 120;
-const VISITED_KEY = "diecu-visited";
-const SOUND_KEY = "diecu-sound";
-const NIGHT_KEY = "diecu-night";
+// Las claves viven en data/privacidad.ts: la política y el botón de borrar usan las mismas.
+const [VISITED_KEY, SOUND_KEY, NIGHT_KEY] = QUEST_KEYS;
 
 const pad: { direction: Direction; glyph: string; area: string }[] = [
   { direction: "up", glyph: "▲", area: "[grid-area:up]" },

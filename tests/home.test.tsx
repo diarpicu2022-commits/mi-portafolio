@@ -1,19 +1,67 @@
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 
-import { PortfolioPage } from "@/components/portfolio-page";
+import { PaginaInicio as PortfolioPage } from "@/components/editorial/pagina-inicio";
 import { getPortfolio } from "@/data/portfolio";
 
 describe("PortfolioPage (es)", () => {
-  it("shows the portfolio title", () => {
+  it("names Diego in full as the only h1", () => {
     render(<PortfolioPage locale="es" />);
-    expect(screen.getByRole("heading", { level: 1, name: "Diecu's Engineering Quest" })).toBeInTheDocument();
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+    expect(screen.getByRole("heading", { level: 1, name: "Diego Armando Pinta Cuasquen" })).toBeInTheDocument();
+  });
+
+  it("derives the cover figures from the data and points to the projects anchor", () => {
+    const { container } = render(<PortfolioPage locale="es" />);
+    const cifras = [...container.querySelectorAll(".portada-cifra-numero")].map((n) => n.textContent);
+    expect(cifras).toEqual([String(getPortfolio("es").projects.length), "2"]);
+    expect(screen.getByRole("link", { name: /ver proyectos/i })).toHaveAttribute("href", "#proyectos");
+    expect(screen.getByRole("region", { name: "Proyectos" })).toHaveAttribute("id", "proyectos");
+  });
+
+  it("opens the mobile menu, closes it with Escape and returns focus", async () => {
+    const user = userEvent.setup();
+    render(<PortfolioPage locale="es" />);
+    const boton = screen.getByRole("button", { name: "Menú" });
+    expect(boton).toHaveAttribute("aria-expanded", "false");
+    await user.click(boton);
+    expect(boton).toHaveAttribute("aria-expanded", "true");
+    const panel = document.getElementById(boton.getAttribute("aria-controls")!)!;
+    expect(panel).toBeVisible();
+    expect(within(panel).getAllByRole("link")[0]).toHaveFocus();
+    await user.keyboard("{Escape}");
+    expect(panel).not.toBeVisible();
+    expect(boton).toHaveFocus();
+  });
+
+  it("selects projects as tabs and says when there is no public demo", async () => {
+    const user = userEvent.setup();
+    render(<PortfolioPage locale="es" />);
+    const tabs = screen.getAllByRole("tab");
+    expect(tabs).toHaveLength(getPortfolio("es").projects.length);
+    expect(tabs[0]).toHaveAttribute("aria-selected", "true");
+    tabs[0].focus();
+    await user.keyboard("{ArrowDown}");
+    expect(tabs[1]).toHaveAttribute("aria-selected", "true");
+    expect(tabs[1]).toHaveFocus();
+    expect(screen.getAllByText("Sin demo pública")).toHaveLength(getPortfolio("es").projects.filter((p) => !p.demo).length);
+  });
+
+  it("moves the 2D map to /quest and says the site uses no cookies", () => {
+    render(<PortfolioPage locale="es" />);
+    expect(screen.queryByRole("application")).toBeNull();
+    expect(screen.getByRole("link", { name: /entrar al mapa/i })).toHaveAttribute("href", "/quest");
+    expect(screen.getByText("Este sitio no usa cookies.")).toBeInTheDocument();
   });
 
   it("exposes conventional sections outside the map", () => {
     render(<PortfolioPage locale="es" />);
     const nav = screen.getByRole("navigation", { name: /principal/i });
-    expect(within(nav).getByRole("link", { name: /proyectos/i })).toHaveAttribute("href", "#projects");
+    expect(within(nav).getByRole("link", { name: /proyectos/i })).toHaveAttribute("href", "#proyectos");
+    for (const [name, href] of [["Perfil", "#perfil"], ["Experiencia", "#experiencia"], ["Formación", "#formacion"], ["Contacto", "#contacto"]]) {
+      expect(within(nav).getByRole("link", { name })).toHaveAttribute("href", href);
+    }
     for (const name of ["Perfil", "Proyectos", "Experiencia", "Formación", "Testimonios", "Contacto"]) {
       expect(screen.getByRole("heading", { level: 2, name })).toBeVisible();
     }
@@ -82,6 +130,8 @@ describe("PortfolioPage (en)", () => {
   it("renders English content and the English CV", () => {
     render(<PortfolioPage locale="en" />);
     expect(screen.getByRole("navigation", { name: "Main navigation" })).toBeInTheDocument();
+    expect(within(screen.getByRole("navigation")).getByRole("link", { name: "Projects" })).toHaveAttribute("href", "#projects");
+    expect(screen.getByRole("link", { name: /enter the map/i })).toHaveAttribute("href", "/en/quest");
     for (const name of ["Profile", "Projects", "Experience", "Education", "Testimonials", "Contact"]) {
       expect(screen.getByRole("heading", { level: 2, name })).toBeVisible();
     }

@@ -7,6 +7,22 @@ export const locales: Locale[] = ["es", "en"];
 export const GITHUB_PROFILE = "https://github.com/diarpicu2022-commits";
 export const EMAIL = "diarpicu2022@gmail.com";
 export const NAME = "Diego Armando Pinta Cuasquen";
+/** URL pública del portafolio, tomada del campo «homepage» del repositorio mi-portafolio en GitHub. La usa el CV. */
+export const PORTFOLIO_URL = "https://mi-portafolio-beta-kohl.vercel.app";
+
+/**
+ * Retrato de la portada. Para cambiar la foto se reemplaza el archivo y se actualizan ancho y alto
+ * con las medidas en píxeles del archivo nuevo. El layout se adapta solo (ver README).
+ */
+export const retrato = {
+  src: "/retrato/retrato-diego.webp",
+  ancho: 409,
+  alto: 843,
+  /** Densidad mínima de píxeles que se acepta en pantalla. Con 1.5 el tope de alto es alto / 1.5. */
+  densidadMinima: 1.5,
+};
+/** Alto máximo en px CSS al que se pinta el retrato sin perder nitidez. */
+export const retratoTope = Math.floor(retrato.alto / retrato.densidadMinima);
 
 export const homePath: Record<Locale, string> = { es: "/", en: "/en" };
 export const cvPath: Record<Locale, string> = {
@@ -18,6 +34,37 @@ export const projectPath = (locale: Locale, id: string) =>
   locale === "es" ? `/proyectos/${id}` : `/en/projects/${id}`;
 
 export type SectionId = "about" | "projects" | "experience" | "education" | "testimonials" | "contact";
+export type AnchorId = SectionId | "skills" | "quest";
+
+/** Anclas de la página de inicio: en español en «/» y en inglés en «/en». */
+export const sectionAnchors: Record<Locale, Record<AnchorId, string>> = {
+  es: {
+    about: "perfil",
+    projects: "proyectos",
+    skills: "habilidades",
+    experience: "experiencia",
+    education: "formacion",
+    testimonials: "testimonios",
+    quest: "mapa",
+    contact: "contacto",
+  },
+  en: {
+    about: "profile",
+    projects: "projects",
+    skills: "skills",
+    experience: "experience",
+    education: "education",
+    testimonials: "testimonials",
+    quest: "map",
+    contact: "contact",
+  },
+};
+
+/** Enlace a una sección de la página de inicio desde cualquier otra página. */
+export const sectionHref = (locale: Locale, id: AnchorId) => `${homePath[locale]}#${sectionAnchors[locale][id]}`;
+
+/** El mapa 2D, que salió de la portada (decisión 3 del anexo). */
+export const questPath: Record<Locale, string> = { es: "/quest", en: "/en/quest" };
 
 type ZoneBase = { id: string; symbol: string; section: SectionId; projectIds?: string[] };
 
@@ -127,6 +174,8 @@ const ui = {
       cv: "CV",
       contact: "Contacto",
       switchLanguage: "English",
+      menu: "Menú",
+      home: "Inicio",
     },
     hero: {
       kicker: "▶ Nueva partida",
@@ -135,6 +184,12 @@ const ui = {
       pressStart: "Presiona Start",
       explore: "Explorar",
       downloadCv: "Descargar CV",
+    },
+    portada: {
+      viewProjects: "Ver proyectos",
+      projects: "proyectos",
+      degrees: "ingenierías",
+      portrait: "Retrato de Diego Armando Pinta Cuasquen",
     },
     world: {
       title: "Explora el mapa",
@@ -168,12 +223,17 @@ const ui = {
       searchRepo: "Buscar en GitHub",
       demo: "Ver demo",
       noDemo: "Demo no disponible",
+      noPublicDemo: "Sin demo pública",
+      diagram: "Esquema",
+      then: "luego",
+      choose: "Elige un proyecto",
+      hashPrefix: "proyecto-",
       imageAlt: (name: string) => `Captura de ${name}`,
       caseStudy: "Ver caso de estudio",
       status: { complete: "Terminado", "in-progress": "En desarrollo", research: "Investigación" },
     },
     caseStudy: {
-      back: "← Todos los proyectos",
+      back: "Todos los proyectos",
       role: "Rol",
       year: "Periodo",
       position: "Cargo",
@@ -203,6 +263,9 @@ const ui = {
       pending: "Pendiente",
       contactTitle: "Contacto",
       contactIntro: "¿Hablamos? Escríbeme o revisa mi código.",
+      questIntro: "La versión anterior de este portafolio, un mapa 2D en pixel art. Se recorre con el teclado o con controles táctiles.",
+      questEnter: "Entrar al mapa",
+      questBack: "Volver al portafolio",
     },
     form: {
       title: "Envíame un mensaje",
@@ -211,8 +274,23 @@ const ui = {
       submit: "Abrir en mi correo",
       hint: "Se abrirá tu aplicación de correo con el mensaje listo para enviar.",
       subject: (name: string) => `Contacto desde el portafolio — ${name}`,
+      errorName: "Escribe tu nombre.",
+      errorMessage: "Escribe el mensaje.",
+      noServer: "Nada se envía a un servidor. El mensaje sale desde tu correo.",
     },
-    footer: { rights: "Pixel art y código originales.", grid: "Ver retícula" },
+    footer: {
+      rights: "Pixel art y código originales.",
+      grid: "Ver retícula",
+      noCookies: "Este sitio no usa cookies.",
+      privacy: "Política de privacidad",
+    },
+    franja: {
+      label: "Dos ingenierías",
+      hardware: "Hardware",
+      software: "Software",
+    },
+    testimonialsNote: "Se publica cuando la persona lo autorice.",
+    questImageAlt: "Mapa 2D en pixel art con el personaje de Diego entre los edificios del laboratorio y la academia.",
   },
   en: {
     skipLink: "Skip to content",
@@ -225,6 +303,8 @@ const ui = {
       cv: "CV",
       contact: "Contact",
       switchLanguage: "Español",
+      menu: "Menu",
+      home: "Home",
     },
     hero: {
       kicker: "▶ New game",
@@ -233,6 +313,12 @@ const ui = {
       pressStart: "Press Start",
       explore: "Explore",
       downloadCv: "Download CV",
+    },
+    portada: {
+      viewProjects: "View projects",
+      projects: "projects",
+      degrees: "engineering degrees",
+      portrait: "Portrait of Diego Armando Pinta Cuasquen",
     },
     world: {
       title: "Explore the map",
@@ -266,12 +352,17 @@ const ui = {
       searchRepo: "Search on GitHub",
       demo: "Live demo",
       noDemo: "No demo available",
+      noPublicDemo: "No public demo",
+      diagram: "Diagram",
+      then: "then",
+      choose: "Choose a project",
+      hashPrefix: "project-",
       imageAlt: (name: string) => `${name} screenshot`,
       caseStudy: "Read the case study",
       status: { complete: "Complete", "in-progress": "In progress", research: "Research" },
     },
     caseStudy: {
-      back: "← All projects",
+      back: "All projects",
       role: "Role",
       year: "Period",
       position: "Position",
@@ -300,6 +391,9 @@ const ui = {
       pending: "Pending",
       contactTitle: "Contact",
       contactIntro: "Let's talk. Write to me or browse my code.",
+      questIntro: "The previous version of this portfolio, a 2D pixel-art map. You can walk it with the keyboard or with touch controls.",
+      questEnter: "Enter the map",
+      questBack: "Back to the portfolio",
     },
     form: {
       title: "Send me a message",
@@ -308,8 +402,23 @@ const ui = {
       submit: "Open in my email app",
       hint: "Your email app will open with the message ready to send.",
       subject: (name: string) => `Portfolio contact — ${name}`,
+      errorName: "Write your name.",
+      errorMessage: "Write the message.",
+      noServer: "Nothing is sent to a server. The message leaves from your own email.",
     },
-    footer: { rights: "Original pixel art and code.", grid: "Show grid" },
+    footer: {
+      rights: "Original pixel art and code.",
+      grid: "Show grid",
+      noCookies: "This site does not use cookies.",
+      privacy: "Privacy policy",
+    },
+    franja: {
+      label: "Two engineering degrees",
+      hardware: "Hardware",
+      software: "Software",
+    },
+    testimonialsNote: "Published once the person authorizes it.",
+    questImageAlt: "2D pixel-art map with Diego's character between the laboratory and academy buildings.",
   },
 };
 
@@ -477,13 +586,15 @@ export function getPortfolio(locale: Locale) {
     principles: text.principles,
     testimonials: text.testimonials as Testimonial[],
     cvPath: cvPath[locale],
+    anchors: sectionAnchors[locale],
+    questPath: questPath[locale],
     navLinks: [
-      { href: "#about", label: t.nav.about },
-      { href: "#projects", label: t.nav.projects },
-      { href: "#experience", label: t.nav.experience },
-      { href: "#education", label: t.nav.education },
+      { href: `#${sectionAnchors[locale].about}`, label: t.nav.about },
+      { href: `#${sectionAnchors[locale].projects}`, label: t.nav.projects },
+      { href: `#${sectionAnchors[locale].experience}`, label: t.nav.experience },
+      { href: `#${sectionAnchors[locale].education}`, label: t.nav.education },
       { href: cvPath[locale], label: t.nav.cv },
-      { href: "#contact", label: t.nav.contact },
+      { href: `#${sectionAnchors[locale].contact}`, label: t.nav.contact },
     ],
   };
 }

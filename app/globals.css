@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-:root {
+/* Tokens de la versión anterior. Solo los usa el mapa 2D de /quest, envuelto en .quest-mundo. */
+.quest-mundo {
   --ink: #10263d;
   --forest: #164a3a;
   --emerald: #2f9e6e;
@@ -14,38 +15,1266 @@
   --color-emerald: var(--emerald);
   --color-paper: var(--paper);
   --color-amber: var(--amber);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-archivo), sans-serif;
   --font-pixel: var(--font-press-start), monospace;
 }
 
-html {
-  scroll-behavior: smooth;
+/* ==========================================================================
+   Rediseño editorial. Tokens del contrato de diseño (anexo 2026-11-10, sección 8).
+   Nombres en español para no pisar los tokens actuales (--ink, --paper...).
+   Los tokens viejos se retiran cuando la portada nueva sustituya a la actual.
+   ========================================================================== */
+
+:root {
+  /* 8.2 Color */
+  --papel: #f1ece2;
+  --tinta: #121211;
+  --gris: #5a554c;
+  --rojo: #d92b1f;
+  --rojo-texto: #b81f14;
+  --negro: #0d0d0c;
+  --gris-claro: #a39e94;
+  --rojo-claro: #ff4a3d;
+
+  /* 8.3 Escala de texto fija */
+  --t-13: 13px;
+  --t-15: 15px;
+  --t-17: 17px;
+  --t-21: 21px;
+  --t-28: 28px;
+
+  /* 8.3 Titular de portada, medido con Playwright (anexo 8.3 y 11).
+     Se calcula sobre el ancho del contenedor de la portada, que lleva container-type: inline-size.
+     K = avance de DIEGO en em con Archivo ancho 62 peso 900. */
+  --titular-k: 2.331;
+  --titular-min: 40px;
+
+  /* 8.4 Escala de espacio */
+  --e-4: 4px;
+  --e-8: 8px;
+  --e-12: 12px;
+  --e-16: 16px;
+  /* Enmienda 8.11.2. Único uso, el margen lateral en celular. */
+  --e-20: 20px;
+  --e-24: 24px;
+  --e-40: 40px;
+  --e-64: 64px;
+  --e-104: 104px;
+  --e-168: 168px;
+
+  /* 8.4 Retícula. Celular por defecto, se redefine por punto de quiebre */
+  --ret-columnas: 4;
+  --ret-margen: var(--e-20);
+  --ret-canal: var(--e-16);
+  --ret-max: 1440px;
+
+  /* 8.4 Forma */
+  --radio: 0;
+  --filete: 1px;
+
+  /* 8.8 Movimiento */
+  --curva-entrada: cubic-bezier(0.16, 1, 0.3, 1);
+  --curva-salida: ease-out;
+  --dur-entrada: 700ms;
+  --dur-selector: 200ms;
+  --dur-hover: 150ms;
+  --desplazamiento-entrada: 24px;
+
+  /* 8.9 Foco */
+  --foco: 2px;
 }
 
-/* Lenis drives smooth scrolling itself; native smooth scroll would fight it. */
-html.lenis,
-html.lenis body {
+@media (min-width: 768px) {
+  :root {
+    --ret-columnas: 8;
+    --ret-margen: var(--e-40);
+    --ret-canal: var(--e-24);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --ret-columnas: 12;
+    --ret-margen: var(--e-64);
+  }
+}
+
+@theme inline {
+  --color-papel: var(--papel);
+  --color-tinta: var(--tinta);
+  --color-gris: var(--gris);
+  --color-rojo: var(--rojo);
+  --color-rojo-texto: var(--rojo-texto);
+  --color-negro: var(--negro);
+  --color-gris-claro: var(--gris-claro);
+  --color-rojo-claro: var(--rojo-claro);
+
+  --font-titular: var(--font-archivo), sans-serif;
+  --font-texto: var(--font-archivo), sans-serif;
+  --font-dato: var(--font-plex-mono), monospace;
+
+  --text-13: 13px;
+  --text-13--line-height: 1.45;
+  --text-15: 15px;
+  --text-15--line-height: 1.5;
+  --text-17: 17px;
+  --text-17--line-height: 1.55;
+  --text-21: 21px;
+  --text-21--line-height: 1.35;
+  --text-28: 28px;
+  --text-28--line-height: 1.2;
+
+  --spacing-e4: 4px;
+  --spacing-e8: 8px;
+  --spacing-e12: 12px;
+  --spacing-e16: 16px;
+  --spacing-e24: 24px;
+  --spacing-e40: 40px;
+  --spacing-e64: 64px;
+  --spacing-e104: 104px;
+  --spacing-e168: 168px;
+
+  --radius-ed: 0;
+
+  --ease-entrada: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Las tres voces (8.3). */
+.voz-titular {
+  font-family: var(--font-archivo), sans-serif;
+  font-variation-settings: "wdth" 62;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.82;
+  letter-spacing: 0;
+}
+.voz-texto {
+  font-family: var(--font-archivo), sans-serif;
+  font-variation-settings: "wdth" 100;
+  font-weight: 400;
+}
+.voz-texto-fuerte {
+  font-family: var(--font-archivo), sans-serif;
+  font-variation-settings: "wdth" 100;
+  font-weight: 600;
+}
+.voz-dato {
+  font-family: var(--font-plex-mono), monospace;
+  font-weight: 400;
+}
+.voz-dato-fuerte {
+  font-family: var(--font-plex-mono), monospace;
+  font-weight: 500;
+}
+
+/* Párrafos a 62 caracteres como máximo (8.3). Medido en el paso 5: Archivo 400 promedia 0.45 em por carácter,
+   así que 26 em dan unos 58 de media. 62ch se medía con el ancho del cero y dejaba pasar hasta 75.
+   Con 27 em el texto legal, de palabras cortas, llegaba a 64. */
+.medida {
+  max-width: 26em;
+}
+
+/* Titular de portada (8.3 y enmiendas 8.11).
+   Por ancho, DIEGO ocupa 7 de 12 columnas en escritorio y el ancho completo en tablet y celular.
+   Por alto, nunca saca del primer pantallazo la franja inferior (enmienda 1).
+   El contenedor lleva .portada-medida (container-type), y las variables viven en sus hijos
+   porque un contenedor no puede consultar su propio ancho. */
+.portada-medida {
+  container-type: inline-size;
+}
+.portada-medida > * {
+  --nav-alto: 72px;
+  --rotulo-alto: calc(var(--t-13) * 1.45 + var(--e-16));
+  /* Alto de la franja inferior en celular: frase, un renglón de botones y relleno. */
+  --franja-alto: 136px;
+  --escena-min: var(--e-168);
+  --fs-ancho: calc((100cqi - 2 * var(--ret-margen)) / var(--titular-k));
+  --fs-alto: calc(
+    (100svh - var(--nav-alto) - var(--rotulo-alto) - var(--franja-alto) - var(--escena-min)) / (2 * 0.82)
+  );
+  --fs-portada: max(var(--titular-min), min(var(--fs-ancho), var(--fs-alto)));
+  /* Cuánto sube el retrato sobre la base de PINTA en tablet y celular: media línea. */
+  --solape: calc(var(--fs-portada) * 0.41);
+  /* Cifra en titular (enmienda 5). Menor que el nombre para que este se lea primero. */
+  --fs-cifra: max(var(--titular-min), calc(var(--fs-portada) * 0.4));
+}
+@media (min-width: 768px) {
+  .portada-medida > * {
+    --franja-alto: 160px;
+  }
+}
+@media (min-width: 1024px) {
+  .portada-medida > * {
+    --escena-min: 0px;
+    --fs-cifra: max(var(--titular-min), calc(var(--fs-portada) * 0.5));
+    /* 7 columnas más 6 canales de una retícula de 12 */
+    --fs-ancho: calc(
+      ((min(100cqi, var(--ret-max)) - 2 * var(--ret-margen) - 11 * var(--ret-canal)) * 7 / 12 + 6 * var(--ret-canal)) /
+        var(--titular-k)
+    );
+  }
+}
+.titular-portada {
+  font-size: var(--fs-portada);
+  /* Enmienda 3. Solo aquí: la tinta de la D cae sobre el borde de la columna. */
+  margin-left: -0.04em;
+}
+
+/* Portada (paso 2, ajustada con las enmiendas 4 a 7). Capas: bloque rojo 0, nombre y cifra 1, retrato 2.
+   Las proporciones y el tope de alto del retrato llegan como variables desde data/portfolio.ts (retrato). */
+.portada {
+  position: relative;
+  min-height: 100svh;
+  grid-template-rows: var(--nav-alto) auto minmax(var(--escena-min), 1fr) auto;
+}
+.portada-cabeza {
+  grid-row: 2;
+  grid-column: 1 / -1;
+  position: relative;
+  z-index: 1;
+}
+.portada-rotulo {
+  font-size: var(--t-13);
+  line-height: 1.45;
+  margin-bottom: var(--e-16);
+}
+.portada-bloque {
+  position: absolute;
+  z-index: 0;
+  /* Las líneas van explícitas: en un elemento absoluto, «auto» es el borde del contenedor. */
+  grid-row: 3 / 4;
+  grid-column: 3 / -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  /* En celular y tablet va a sangre por la derecha. */
+  right: calc(-1 * (var(--ret-margen) + max(0px, (100cqi - var(--ret-max)) / 2)));
+  background: var(--rojo);
+}
+.portada-retrato {
+  position: absolute;
+  z-index: 2;
+  grid-row: 3 / 4;
+  grid-column: 3 / -1;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  height: min(var(--retrato-tope), calc(100% + var(--solape)));
+  aspect-ratio: var(--retrato-proporcion);
+  max-width: 100%;
+}
+.portada-retrato[data-error] {
+  display: none;
+}
+.portada-cifra {
+  grid-row: 3;
+  grid-column: 1 / 3;
+  align-self: end;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-16);
+  padding-bottom: var(--e-24);
+}
+.portada-cifra-numero {
+  display: block;
+  font-size: var(--fs-cifra);
+}
+.portada-cifra-rotulo {
+  display: block;
+  font-size: var(--t-13);
+  line-height: 1.45;
+  margin-top: var(--e-8);
+}
+.portada-franja {
+  grid-row: 4;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: var(--e-16);
+  align-items: center;
+  border-top: var(--filete) solid var(--tinta);
+  padding-block: var(--e-24);
+  position: relative;
+  z-index: 1;
+}
+.portada-frase,
+.portada-acciones {
+  grid-column: 1 / -1;
+}
+.portada-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-12);
+}
+@media (max-width: 767px) {
+  /* Los dos botones caben en un renglón con 16 px de relleno lateral. */
+  .portada-acciones .boton-ed {
+    padding-inline: var(--e-16);
+  }
+}
+
+@media (min-width: 768px) {
+  .portada-bloque,
+  .portada-retrato {
+    grid-column: 4 / -1;
+  }
+  .portada-cifra {
+    grid-column: 1 / 4;
+  }
+  .portada-frase {
+    grid-column: 1 / 4;
+  }
+  /* Cinco columnas: los dos botones caben en un renglón. */
+  .portada-acciones {
+    grid-column: 4 / -1;
+    justify-content: flex-end;
+  }
+}
+
+@media (min-width: 1024px) {
+  .portada {
+    grid-template-rows: var(--nav-alto) 1fr auto;
+  }
+  .portada-cabeza {
+    grid-column: 1 / 8;
+    align-self: end;
+  }
+  /* Enmienda 4. Sin sangre: el bloque enmarca la figura del pecho abajo y deja la cabeza fuera. */
+  .portada-bloque {
+    grid-row: 2 / 3;
+    grid-column: 7 / 11;
+    top: auto;
+    right: 0;
+    height: calc(min(var(--retrato-tope), 100%) * 0.8);
+  }
+  .portada-retrato {
+    grid-row: 2 / 3;
+    /* Entre 1024 y 1279 el nombre es más estrecho. Una columna más a la derecha deja la O legible. */
+    grid-column: 7 / 11;
+    height: min(var(--retrato-tope), 100%);
+  }
+  /* Enmienda 5. La cifra en la columna que libera el bloque. */
+  .portada-cifra {
+    grid-row: 2;
+    grid-column: 11 / -1;
+    padding-bottom: 0;
+  }
+  .portada-franja {
+    grid-row: 3;
+    min-height: 160px;
+  }
+  .portada-frase {
+    grid-column: 1 / 7;
+  }
+  .portada-acciones {
+    grid-column: 7 / -1;
+  }
+}
+@media (min-width: 1280px) {
+  .portada-bloque {
+    grid-column: 7 / 10;
+  }
+  .portada-retrato {
+    grid-column: 6 / 10;
+  }
+  .portada-cifra {
+    grid-column: 10 / -1;
+  }
+}
+
+/* Esqueleto (paso 3). */
+
+/* Navegación fija de 72 px (8.7 punto 1). */
+.nav-ed {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 40;
+  height: 72px;
+  border-bottom: var(--filete) solid var(--tinta);
+}
+.nav-ed-enlace {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: var(--e-8);
+  text-decoration: none;
+}
+.nav-ed-enlace:hover {
+  text-decoration: underline;
+  text-underline-offset: var(--e-4);
+}
+.nav-ed-panel {
+  position: fixed;
+  inset: 72px 0 0 0;
+  z-index: 39;
+  overflow-y: auto;
+  padding: var(--e-24) var(--ret-margen) var(--e-64);
+}
+.nav-ed-panel a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+/* Saltar al contenido: oculto hasta recibir foco. */
+.salto-ed {
+  position: fixed;
+  left: var(--ret-margen);
+  top: var(--e-12);
+  z-index: 50;
+  transform: translateY(-200%);
+}
+.salto-ed:focus {
+  transform: none;
+}
+.salto-ed:focus-visible {
+  outline: var(--foco) solid var(--tinta);
+  outline-offset: var(--e-4);
+}
+
+/* Secciones. El ancla deja libre la navegación fija. */
+.seccion-ed {
+  scroll-margin-top: 72px;
+}
+/* Titular de sección: fluido entre el mínimo del contrato (40 px) y 104 px de la escala. */
+.titular-seccion {
+  font-size: clamp(var(--titular-min), 10vw, 104px);
+}
+
+/* Campos del formulario de contacto. */
+.campo-ed {
+  min-height: 44px;
+  width: 100%;
+  border: var(--filete) solid var(--tinta);
+  border-radius: var(--radio);
+  background: var(--papel);
+  color: var(--tinta);
+  padding: var(--e-12);
+  font-size: var(--t-17);
+}
+
+/* Selector de proyectos (paso 4). Sobre negro, dentro de la sección de proyectos. */
+.selector {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: var(--e-24);
+  /* Alto del escenario: once pestañas de 44 px, la lista y el escenario miden lo mismo. */
+  --escenario-alto: calc(11 * 44px);
+}
+.selector-lista {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: var(--e-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  /* Deja ver el foco de la primera y la última pestaña. */
+  padding: var(--e-4);
+  margin: calc(-1 * var(--e-4));
+}
+.selector-pestana {
+  /* Contiene al nombre oculto de celular: si no, se sale de la tira y crea scroll horizontal. */
+  position: relative;
+  flex: none;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  gap: var(--e-12);
+  min-width: 44px;
+  min-height: 44px;
+  padding-inline: var(--e-12);
+  color: var(--gris-claro);
+  text-align: left;
+  border: var(--filete) solid transparent;
+}
+.selector-pestana:hover {
+  color: var(--papel);
+}
+.selector-pestana[aria-selected="true"] {
+  background: var(--papel);
+  color: var(--negro);
+}
+.selector-pestana-numero {
+  font-size: var(--t-15);
+}
+.selector-pestana-nombre {
+  /* En celular solo se ve el número; el nombre queda para lectores de pantalla. */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.selector-paneles {
+  grid-column: 1 / -1;
+  display: grid;
+}
+.selector-panel {
+  grid-row: 1;
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-24);
+}
+.selector-panel:not([data-activo]) {
+  visibility: hidden;
+}
+.selector-escenario {
+  position: relative;
+  container-type: inline-size;
+  /* Cuadrado en celular: cabe mejor la captura vertical de SISCAN y el panel más bajo deja menos hueco. */
+  aspect-ratio: 1;
+}
+.selector-bloque {
+  position: absolute;
+  inset: var(--e-24) 0 0 var(--e-24);
+  background: var(--rojo);
+}
+.selector-captura {
+  position: absolute;
+  inset: 0 var(--e-24) var(--e-24) 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.selector-captura img {
+  /* Nunca más grande que el archivo: ancho y alto automáticos con tope en el hueco. */
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+.selector-placa {
+  position: absolute;
+  inset: var(--e-24) 0 0 var(--e-24);
+  display: flex;
+  align-items: flex-end;
+  padding: var(--e-24);
+  color: var(--papel);
+  /* Placa sin captura (8.9). Papel sobre rojo 4.13, solo en titular de 40 px o más. */
+  font-size: clamp(var(--titular-min), 12cqi, 104px);
+  overflow-wrap: anywhere;
+}
+.selector-ficha {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-16);
+}
+.selector-nombre {
+  font-size: var(--titular-min);
+}
+/* Enmienda 9. Número del elegido en titular, la mitad del nombre de portada o menos.
+   Rojo claro sobre negro (5.83): el rojo señala al elegido, como el bloque. */
+.selector-numero {
+  font-size: 80px;
+  color: var(--rojo-claro);
+  margin-bottom: calc(-1 * var(--e-8));
+}
+.selector-datos {
+  display: grid;
+  gap: var(--e-4);
+}
+/* Rótulo encima del valor: el valor usa todo el ancho y cargo y tecnologías caben en dos líneas. */
+.selector-datos dd {
+  margin-bottom: var(--e-8);
+}
+.selector-datos dt {
+  color: var(--gris-claro);
+}
+
+@media (min-width: 768px) {
+  .selector {
+    row-gap: 0;
+  }
+  .selector-lista {
+    grid-column: 1 / 4;
+    flex-direction: column;
+    gap: 0;
+    overflow: visible;
+    align-self: start;
+  }
+  .selector-pestana {
+    width: 100%;
+  }
+  /* La pestaña elegida cruza el canal y toca el escenario: une la lista con el proyecto. */
+  .selector-pestana[aria-selected="true"] {
+    width: calc(100% + var(--ret-canal));
+  }
+  .selector-pestana-nombre {
+    position: static;
+    width: auto;
+    height: auto;
+    clip-path: none;
+    white-space: normal;
+    font-size: var(--t-15);
+  }
+  .selector-paneles {
+    grid-column: 4 / -1;
+  }
+  .selector-escenario {
+    aspect-ratio: auto;
+    height: var(--escenario-alto);
+  }
+}
+
+@media (min-width: 768px) {
+  .selector-numero {
+    font-size: 104px;
+  }
+}
+/* Desde 1280 hay sitio para tres columnas: escenario de 5 y ficha de 4. Entre 1024 y 1279 la ficha baja como en tablet. */
+@media (min-width: 1280px) {
+  .selector-numero {
+    font-size: 160px;
+  }
+  .selector-paneles {
+    grid-template-columns: subgrid;
+  }
+  .selector-panel {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-items: start;
+  }
+  .selector-escenario {
+    grid-column: 1 / 6;
+  }
+  .selector-ficha {
+    grid-column: 6 / -1;
+  }
+}
+@media (min-width: 1024px) {
+  .selector-bloque,
+  .selector-placa {
+    inset: var(--e-40) 0 0 var(--e-40);
+  }
+  .selector-captura {
+    inset: 0 var(--e-40) var(--e-40) 0;
+  }
+}
+
+/* Cambio de proyecto con puntero: 200 ms ease-out. Con teclado o con movimiento reducido, sin animación (8.8). */
+@media (prefers-reduced-motion: no-preference) {
+  .selector-panel[data-animar] .selector-anima {
+    animation: selector-entra var(--dur-selector) var(--curva-salida);
+  }
+}
+@keyframes selector-entra {
+  from {
+    opacity: 0;
+    transform: translateY(var(--e-8));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Paso 5. Secciones. */
+
+/* Perfil. */
+.perfil-entrada {
+  font-size: var(--t-28);
+  line-height: 1.25;
+  /* Archivo 600 promedia 0.5 em por carácter: 29 em son unos 58 caracteres. */
+  max-width: 29em;
+}
+.perfil-margen {
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-16);
+}
+.perfil-contacto {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--e-24);
+}
+.perfil-lema {
+  max-width: 26em;
+  border-top: var(--filete) solid var(--tinta);
+  padding-top: var(--e-16);
+  color: var(--gris);
+}
+.perfil-principal {
+  font-size: clamp(var(--titular-min), 7vw, 104px);
+}
+.perfil-principios {
+  display: grid;
+  gap: var(--e-24);
+}
+@media (min-width: 768px) {
+  .perfil-principios {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .perfil-principios {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Franja Hardware / Software: el único corte diagonal (8.5). */
+.franja {
+  display: grid;
+  container-type: inline-size;
+}
+.franja-capa {
+  grid-area: 1 / 1;
+}
+.franja-capa-negra {
+  clip-path: polygon(0 0, 58% 0, 42% 100%, 0 100%);
+}
+.franja-reticula {
+  row-gap: var(--e-40);
+  padding-block: var(--e-104);
+}
+.franja-hardware {
+  grid-column: 1 / -1;
+}
+.franja-software {
+  grid-column: 1 / -1;
+  justify-self: end;
+  text-align: right;
+}
+.franja-lema {
+  grid-column: 1 / -1;
+  justify-self: center;
+  text-align: center;
+  font-size: clamp(var(--titular-min), 7cqi, 104px);
+}
+.franja-palabra {
+  font-size: clamp(var(--titular-min), 11cqi, 176px);
+}
+.franja-detalle {
+  margin-top: var(--e-12);
+}
+
+/* Habilidades (enmienda 12): cifra real por grupo y tecnologías enlazadas a sus proyectos. */
+.habilidades {
+  display: grid;
+  gap: var(--e-40) var(--e-24);
+}
+@media (min-width: 768px) {
+  .habilidades {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .habilidades {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  /* El grupo con más proyectos abre a doble ancho: la prueba más fuerte entra primero. */
+  .habilidad:first-child {
+    grid-column: span 2;
+  }
+}
+.habilidad {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-4);
+  border-top: var(--filete) solid var(--tinta);
+  padding-top: var(--e-16);
+}
+.habilidad-cifra {
+  font-size: clamp(var(--titular-min), 9vw, 104px);
+}
+.habilidad:first-child .habilidad-cifra {
+  font-size: clamp(var(--titular-min), 14vw, 168px);
+}
+.habilidad-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--e-16);
+  padding-top: var(--e-12);
+}
+.habilidad-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-4);
+}
+.habilidad-sin-prueba {
+  color: var(--gris);
+  min-height: 44px;
+}
+.habilidad-enlaces {
+  display: inline-flex;
+}
+.habilidad-enlace {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  text-decoration: underline;
+  text-underline-offset: var(--e-4);
+}
+.habilidad-enlace:hover {
+  background: var(--tinta);
+  color: var(--papel);
+}
+
+/* Experiencia: tabla cronológica. */
+.cronologia {
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: var(--e-24);
+  border-top: var(--filete) solid var(--tinta);
+  padding-top: var(--e-24);
+}
+.cronologia-fila {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: var(--e-4);
+  align-items: baseline;
+}
+.cronologia-miniatura,
+.cronologia-periodo,
+.cronologia-cargo,
+.cronologia-caso {
+  grid-column: 1 / -1;
+}
+.cronologia-miniatura {
+  width: 160px;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: var(--filete) solid var(--tinta);
+  background: var(--papel);
+  align-self: start;
+}
+.cronologia-miniatura img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+.cronologia-miniatura .esquema-mini {
+  border: 0;
+  height: 100%;
+  justify-content: space-between;
+}
+@media (min-width: 768px) {
+  .cronologia-miniatura {
+    grid-column: 1 / 3;
+    grid-row: span 2;
+    width: 100%;
+  }
+  .cronologia-periodo {
+    grid-column: 3 / 7;
+  }
+  .cronologia-cargo {
+    grid-column: 3 / 7;
+  }
+  .cronologia-caso {
+    grid-column: 7 / -1;
+    justify-self: end;
+    grid-row: 1;
+  }
+}
+@media (min-width: 1024px) {
+  .cronologia-miniatura {
+    grid-column: 1 / 3;
+  }
+  .cronologia-periodo {
+    grid-column: 3 / 5;
+    grid-row: 1;
+  }
+  .cronologia-cargo {
+    grid-column: 5 / 11;
+    grid-row: 1;
+  }
+  .cronologia-caso {
+    grid-column: 11 / -1;
+  }
+}
+/* Con puntero fino la miniatura de la fila señalada se amplía. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .cronologia-miniatura > * {
+    transition: transform var(--dur-selector) var(--curva-salida);
+    transform-origin: top left;
+  }
+  .cronologia-fila:hover .cronologia-miniatura > * {
+    transform: scale(1.06);
+  }
+}
+
+/* Testimonios pendientes: marco de filete, el hueco es parte del diseño (8.9). */
+.testimonio-pendiente {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--e-40);
+  min-height: 240px;
+  border: var(--filete) solid var(--tinta);
+  padding: var(--e-24);
+}
+
+/* Mapa. */
+.mapa-captura {
+  display: block;
+}
+.mapa-captura img {
+  display: block;
+  width: 100%;
   height: auto;
 }
-html.lenis {
-  scroll-behavior: auto !important;
+
+/* Contacto. */
+.contacto-correo {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  width: fit-content;
+  max-width: 100%;
+  font-size: var(--t-28);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-underline-offset: var(--e-8);
+  text-decoration-thickness: var(--filete);
 }
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
+.campo-ed[aria-invalid="true"] {
+  border-color: var(--rojo-texto);
+}
+.campo-ed-error {
+  color: var(--rojo-texto);
 }
 
-/* Fluid type scale: grows continuously with the viewport between a readable floor and a ceiling. */
+/* Privacidad: aviso de borrador. */
+.aviso-borrador {
+  border: var(--filete) solid var(--tinta);
+  padding: var(--e-12) var(--e-16);
+  width: fit-content;
+}
+
+/* Esquema de sistema (enmienda 13). Ficha de papel con filetes de tinta: el texto nunca cae sobre el rojo. */
+.esquema {
+  background: var(--papel);
+  color: var(--tinta);
+  border: var(--filete) solid var(--tinta);
+  padding: var(--e-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-12);
+}
+.esquema-cabeza {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--e-4) var(--e-12);
+  border-bottom: var(--filete) solid var(--tinta);
+  padding-bottom: var(--e-8);
+}
+.esquema-etapas {
+  display: flex;
+  flex-direction: column;
+}
+.esquema-fila {
+  display: grid;
+  gap: var(--e-8);
+}
+.esquema-nodo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-4);
+  min-width: 0;
+  border: var(--filete) solid var(--tinta);
+  padding: var(--e-8) var(--e-12);
+  overflow-wrap: anywhere;
+  line-height: 1.2;
+}
+/* El recorrido empieza y termina en tinta: el ojo encuentra la entrada y la salida. */
+.esquema-etapa:first-child .esquema-nodo,
+.esquema-etapa:last-child .esquema-nodo {
+  background: var(--tinta);
+  color: var(--papel);
+}
+.esquema-enlace {
+  display: flex;
+  align-items: center;
+  gap: var(--e-8);
+  padding: var(--e-4) 0 var(--e-4) var(--e-12);
+  color: var(--gris);
+}
+.esquema-enlace svg {
+  color: var(--tinta);
+  flex: none;
+}
+/* Miniatura: solo la forma del recorrido. */
+.esquema-mini {
+  padding: var(--e-8);
+  gap: var(--e-8);
+  width: 100%;
+}
+.esquema-mini-dibujo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-8);
+}
+.esquema-mini-fila {
+  display: flex;
+  gap: var(--e-4);
+}
+.esquema-mini-nodo {
+  flex: 1;
+  height: var(--e-12);
+  border: var(--filete) solid var(--tinta);
+}
+/* En el selector va delante del bloque rojo, como una captura. */
+.selector-escenario[data-esquema] {
+  aspect-ratio: auto;
+}
+@media (min-width: 768px) {
+  /* El esquema va en el flujo: el escenario crece si hace falta y el alto común lo fija el panel más alto. */
+  .selector-escenario[data-esquema] {
+    height: auto;
+    min-height: var(--escenario-alto);
+  }
+}
+.selector-esquema {
+  position: relative;
+  z-index: 1;
+  margin: 0 var(--e-24) var(--e-24) 0;
+}
+@media (min-width: 1024px) {
+  .selector-esquema {
+    margin: 0 var(--e-40) var(--e-40) 0;
+  }
+}
+
+/* Página de caso. */
+.caso-cabeza {
+  row-gap: var(--e-24);
+  padding-top: calc(72px + var(--e-40));
+  padding-bottom: var(--e-64);
+}
+.caso-numero {
+  font-size: clamp(var(--titular-min), 12vw, 168px);
+  color: var(--rojo);
+  margin-bottom: calc(-1 * var(--e-16));
+}
+.caso-nombre {
+  font-size: clamp(var(--titular-min), 10vw, 168px);
+  overflow-wrap: anywhere;
+}
+.caso-ficha {
+  display: grid;
+  gap: var(--e-16) var(--e-24);
+  border-top: var(--filete) solid var(--tinta);
+  padding-top: var(--e-16);
+  font-size: var(--t-15);
+}
+.caso-ficha dt {
+  color: var(--gris);
+  font-size: var(--t-13);
+}
+@media (min-width: 768px) {
+  .caso-ficha {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.caso-escenario {
+  position: relative;
+  padding: 0 var(--e-24) var(--e-24) 0;
+}
+.caso-bloque {
+  position: absolute;
+  inset: var(--e-24) 0 0 var(--e-24);
+  background: var(--rojo);
+}
+.caso-captura,
+.caso-esquema {
+  position: relative;
+  z-index: 1;
+}
+.caso-captura {
+  display: block;
+  /* El ancho y la proporción llegan en línea desde los datos: el hueco queda reservado antes de cargar. */
+  height: auto;
+}
+@media (min-width: 1024px) {
+  .caso-escenario {
+    padding: 0 var(--e-64) var(--e-64) 0;
+  }
+  .caso-bloque {
+    inset: var(--e-64) 0 0 var(--e-64);
+  }
+  .caso-esquema {
+    max-width: 720px;
+  }
+}
+.caso-bloque-texto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-16);
+}
+.caso-pasos,
+.caso-resultados {
+  display: flex;
+  flex-direction: column;
+}
+.caso-pasos li,
+.caso-resultados li {
+  border-top: var(--filete) solid var(--tinta);
+  padding-block: var(--e-12);
+}
+.caso-lateral {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-40);
+  align-self: start;
+}
+@media (min-width: 1024px) {
+  .caso-lateral {
+    position: sticky;
+    top: calc(72px + var(--e-24));
+  }
+}
+.caso-siguiente {
+  display: grid;
+  row-gap: var(--e-12);
+  padding-block: var(--e-64);
+  text-decoration: none;
+}
+.caso-siguiente-nombre {
+  font-size: clamp(var(--titular-min), 9vw, 136px);
+}
+.caso-siguiente:hover .caso-siguiente-nombre {
+  text-decoration: underline;
+  text-decoration-thickness: var(--filete);
+  text-underline-offset: var(--e-8);
+}
+
+/* 404. */
+.error-cifra {
+  font-size: clamp(var(--titular-min), 30vw, 400px);
+  color: var(--rojo);
+}
+
+/* Entrada una sola vez (8.8). Solo transform y opacity, en CSS: se ve aunque no corra JavaScript. */
+@media (prefers-reduced-motion: no-preference) {
+  .portada-linea {
+    animation: portada-sube var(--dur-entrada) var(--curva-entrada) both;
+  }
+  .portada-bloque,
+  .portada-retrato {
+    animation: portada-sube var(--dur-entrada) var(--curva-entrada) both;
+    /* «Después» de las líneas: arrancan cuando estas llevan la mitad del recorrido. */
+    animation-delay: calc(var(--dur-entrada) / 2);
+  }
+}
+@keyframes portada-sube {
+  from {
+    opacity: 0;
+    transform: translateY(var(--desplazamiento-entrada));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Retícula 12/8/4 (8.4). */
+.reticula {
+  display: grid;
+  grid-template-columns: repeat(var(--ret-columnas), minmax(0, 1fr));
+  column-gap: var(--ret-canal);
+  padding-inline: var(--ret-margen);
+  max-width: var(--ret-max);
+  margin-inline: auto;
+}
+
+/* Filete de sección: filete de 1 px, cuadrado y rótulo mono (repertorio 8.5). */
+.filete-seccion {
+  display: flex;
+  align-items: center;
+  gap: var(--e-12);
+  border-top: var(--filete) solid currentColor;
+  padding-top: var(--e-12);
+}
+.filete-seccion::before {
+  content: "";
+  width: var(--e-8);
+  height: var(--e-8);
+  background: currentColor;
+  flex: none;
+}
+
+/* Superficies. El foco cambia de color con la superficie (8.9). */
+.sup-papel {
+  background: var(--papel);
+  color: var(--tinta);
+  --color-foco: var(--tinta);
+}
+.sup-negro {
+  background: var(--negro);
+  color: var(--papel);
+  --color-foco: var(--papel);
+}
+.sup-papel :focus-visible,
+.sup-negro :focus-visible {
+  outline: var(--foco) solid var(--color-foco);
+  outline-offset: var(--e-4);
+}
+
+/* Botones. El rojo no rellena botones (referente Freshman, anexo 5). */
+.boton-ed {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-12);
+  min-height: 44px;
+  padding: var(--e-12) var(--e-24);
+  border: var(--filete) solid currentColor;
+  border-radius: var(--radio);
+  font-family: var(--font-archivo), sans-serif;
+  font-variation-settings: "wdth" 100;
+  font-weight: 600;
+  font-size: var(--t-15);
+  line-height: 1.2;
+  text-decoration: none;
+}
+.sup-papel .boton-ed-primario {
+  background: var(--tinta);
+  border-color: var(--tinta);
+  color: var(--papel);
+}
+.sup-negro .boton-ed-primario {
+  background: var(--papel);
+  border-color: var(--papel);
+  color: var(--negro);
+}
+.boton-ed-secundario {
+  background: transparent;
+}
+.boton-ed .icono-ed {
+  transition: transform var(--dur-hover) var(--curva-salida);
+}
+.boton-ed:hover .icono-ed-diagonal {
+  transform: translate(var(--e-4), calc(-1 * var(--e-4)));
+}
+.boton-ed:hover .icono-ed-abajo {
+  transform: translateY(var(--e-4));
+}
+@media (prefers-reduced-motion: reduce) {
+  .boton-ed .icono-ed {
+    transition: none;
+  }
+  .boton-ed:hover .icono-ed {
+    transform: none;
+  }
+}
+
+/* 8.8: el scroll es el del navegador, sin desplazamiento suave al seguir un ancla. */
+
+/* Titular del mapa, en su estilo propio. */
 .display-title {
   font-size: clamp(1.4rem, 0.9rem + 3.2vw, 3.4rem);
   line-height: 1.25;
-}
-.section-title {
-  font-size: clamp(0.9rem, 0.75rem + 0.9vw, 1.35rem);
-  line-height: 1.5;
-}
-.lead {
-  font-size: clamp(1rem, 0.94rem + 0.35vw, 1.2rem);
-  line-height: 1.75;
 }
 
 .status-badge {
@@ -64,39 +1293,16 @@ html.lenis {
   background: #d6e9f8;
 }
 
-.next-project:hover .display-title,
-.next-project:focus-visible .display-title {
-  color: var(--amber);
-}
-
-.grid-column {
-  background: rgb(230 162 60 / 0.14);
-  border-inline: 1px solid rgb(230 162 60 / 0.5);
-}
-
 body {
-  background: var(--forest);
-  color: var(--ink);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--font-archivo), sans-serif;
 }
 
-:focus-visible {
+/* Foco del mapa: conserva el contorno ámbar de la versión anterior. El resto del sitio usa el de 8.9. */
+.quest-mundo :focus-visible {
   outline: 3px solid var(--amber);
   outline-offset: 2px;
-}
-
-.skip-link {
-  position: absolute;
-  left: 1rem;
-  top: -4rem;
-  z-index: 60;
-  background: var(--amber);
-  color: var(--ink);
-  padding: 0.5rem 1rem;
-  font-weight: 700;
-}
-.skip-link:focus {
-  top: 1rem;
 }
 
 /* Pixel-adventure surfaces */
@@ -155,14 +1361,6 @@ body {
   text-underline-offset: 3px;
 }
 
-.nav-link {
-  text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
-}
-.nav-link:hover {
-  color: var(--amber);
-  text-decoration-line: underline;
-}
 
 /* World */
 .world-grid {
@@ -297,43 +1495,6 @@ body {
   }
 }
 
-.pixel-input {
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  background: #fff;
-  border: 3px solid var(--ink);
-  font-weight: 400;
-}
-
-.title-scene-art {
-  background: #3f9b5f;
-  border: 4px solid var(--ink);
-  box-shadow:
-    0 0 0 4px var(--paper),
-    0 0 0 8px var(--ink);
-  image-rendering: pixelated;
-}
-.title-hero {
-  animation: bob-hero 900ms steps(2) infinite;
-}
-.press-start {
-  animation: blink-color 1s steps(2) infinite;
-}
-
-@keyframes blink-color {
-  50% {
-    color: var(--paper);
-  }
-}
-.title-scene:hover .title-scene-art {
-  transform: translate(-2px, -2px);
-}
-
-@keyframes bob-hero {
-  50% {
-    transform: translateY(-6%);
-  }
-}
 
 .dpad {
   grid-template-areas:
@@ -342,30 +1503,7 @@ body {
     ". down .";
 }
 
-/* Scroll reveals: only elements below the fold get .reveal-pending, added by JavaScript. */
-.reveal-pending {
-  opacity: 0;
-  transform: translateY(28px);
-  transition:
-    opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-/* Cards holding links only fade, so a click never misses a target that is still moving. */
-.reveal-pending[data-reveal="fade"] {
-  transform: none;
-}
-.reveal-pending.is-revealed {
-  opacity: 1;
-  transform: none;
-}
 
-/* Printing never waits for scroll reveals. */
-@media print {
-  .reveal-pending {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
   *,

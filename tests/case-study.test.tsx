@@ -30,7 +30,7 @@ describe("CaseStudyPage", () => {
     const next = screen.getByRole("navigation", { name: "Siguiente proyecto" });
     expect(within(next).getByRole("link")).toHaveAttribute("href", `/proyectos/${projects[1].id}`);
     expect(screen.getByRole("link", { name: "English" })).toHaveAttribute("href", `/en/projects/${projects[0].id}`);
-    expect(screen.getByRole("link", { name: "Proyectos" })).toHaveAttribute("href", "/#projects");
+    expect(screen.getByRole("link", { name: "Proyectos" })).toHaveAttribute("href", "/#proyectos");
   });
 
   it("renders every project in both languages", () => {

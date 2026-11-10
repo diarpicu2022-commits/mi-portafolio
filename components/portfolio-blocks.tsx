@@ -20,11 +20,11 @@ export function ProjectCard({
     <article className={`pixel-card flex flex-col gap-3 p-4 ${featured ? "sm:col-span-2 sm:p-6" : ""}`} data-reveal="fade">
       {project.image && (
         <Image
-          src={project.image}
-          alt={t.card.imageAlt(project.name)}
-          width={640}
-          height={360}
-          className="aspect-video w-full border-2 border-ink object-cover"
+          src={project.image.src}
+          alt={project.image.alt}
+          width={project.image.width}
+          height={project.image.height}
+          className="mx-auto h-auto max-h-80 w-auto max-w-full border-2 border-ink"
         />
       )}
       <div className="flex items-baseline justify-between gap-3">
