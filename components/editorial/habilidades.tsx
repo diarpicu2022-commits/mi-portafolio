@@ -1,77 +1,94 @@
+import * as iconos from "simple-icons";
+
 import { getPortfolio, type Locale } from "@/data/portfolio";
 
-/**
- * Habilidades (enmienda 12). Cada grupo abre con la cifra real de proyectos que usan alguna de sus tecnologías,
- * contada desde data/projects.ts. Cada tecnología enlaza a esos proyectos en el selector por su número.
- * Las que no aparecen en ningún proyecto se listan sin número: son conocimiento declarado, no prueba.
- */
+type Icono = { title: string; hex: string; path: string };
 
-// Mismo nombre escrito distinto en habilidades y en proyectos.
+// Nombre de la habilidad → icono de simple-icons. Lo que no tiene logo se muestra como etiqueta de texto.
+const LOGO: Record<string, string> = {
+  ESP32: "siEspressif",
+  Arduino: "siArduino",
+  "C/C++": "siCplusplus",
+  Java: "siOpenjdk",
+  TypeScript: "siTypescript",
+  JavaScript: "siJavascript",
+  Python: "siPython",
+  Kotlin: "siKotlin",
+  Dart: "siDart",
+  GDScript: "siGodotengine",
+  "Spring Boot": "siSpringboot",
+  NestJS: "siNestjs",
+  Express: "siExpress",
+  FastAPI: "siFastapi",
+  React: "siReact",
+  "Next.js": "siNextdotjs",
+  Vite: "siVite",
+  "Tailwind CSS": "siTailwindcss",
+  Flutter: "siFlutter",
+  "Jetpack Compose": "siJetpackcompose",
+  Tauri: "siTauri",
+  Godot: "siGodotengine",
+  "PostgreSQL (Supabase)": "siSupabase",
+  MongoDB: "siMongodb",
+  Redis: "siRedis",
+  SQLite: "siSqlite",
+  Docker: "siDocker",
+  Render: "siRender",
+  Vercel: "siVercel",
+  "Git y GitHub": "siGit",
+  "Git and GitHub": "siGit",
+  PlatformIO: "siPlatformio",
+};
+
 const ALIAS: Record<string, string> = {
   "Java 17": "Java",
   "Tailwind CSS": "Tailwind",
   "C/C++": "C++",
   Godot: "Godot 4",
   "PostgreSQL (Supabase)": "Supabase",
-  "Automatic control": "Control automático",
 };
 const normal = (t: string) => ALIAS[t] ?? t;
 
+/** Habilidades: cada grupo numerado, con la cifra real de proyectos que lo usan y los logos de cada tecnología. */
 export function Habilidades({ locale }: { locale: Locale }) {
-  const { projects, skillGroups, t } = getPortfolio(locale);
-  const numero = new Map(projects.map((p, i) => [p.id, String(i + 1).padStart(2, "0")]));
-  const usos = new Map<string, { id: string; name: string }[]>();
-  for (const p of projects)
-    for (const tech of new Set(p.technologies.map(normal)))
-      usos.set(tech, [...(usos.get(tech) ?? []), { id: p.id, name: p.name }]);
-
-  const grupos = skillGroups
-    .map((g) => {
-      const items = g.items.map((item) => ({ item, proyectos: usos.get(normal(item)) ?? [] }));
-      const distintos = new Set(items.flatMap((i) => i.proyectos.map((p) => p.id)));
-      return { ...g, items, cifra: distintos.size };
-    })
-    .sort((a, b) => b.cifra - a.cifra);
+  const { projects, skillGroups } = getPortfolio(locale);
+  const enProyectos = (items: string[]) =>
+    projects.filter((p) => p.technologies.some((tech) => items.some((i) => normal(i) === tech || i === tech))).length;
+  const rotulo = locale === "es" ? "proyectos" : "projects";
 
   return (
-    <ul className="habilidades col-span-full">
-      {grupos.map((g) => (
-        <li key={g.title} className="habilidad">
-          <p className="habilidad-cifra voz-titular" aria-hidden={g.cifra === 0 || undefined}>
-            {g.cifra}
-          </p>
-          <h3 className="voz-texto-fuerte text-21">
-            {g.title}
-            <span className="sr-only">
-              : {g.cifra} {t.portada.projects}
-            </span>
-          </h3>
-          <p className="voz-dato text-13 text-gris" aria-hidden="true">
-            {t.portada.projects}
-          </p>
-          <ul className="habilidad-items">
-            {g.items.map(({ item, proyectos }) => (
-              <li key={item} className={proyectos.length ? "habilidad-item" : "habilidad-item habilidad-sin-prueba"}>
-                <span className="text-15">{item}</span>
-                {proyectos.length > 0 && (
-                  <span className="habilidad-enlaces">
-                    {proyectos.map((p) => (
-                      <a
-                        key={p.id}
-                        href={`#${t.card.hashPrefix}${p.id}`}
-                        className="habilidad-enlace voz-dato-fuerte text-13"
-                        aria-label={`${item}: ${p.name}`}
-                      >
-                        {numero.get(p.id)}
-                      </a>
-                    ))}
-                  </span>
-                )}
-              </li>
-            ))}
-          </ul>
-        </li>
-      ))}
-    </ul>
+    <ol className="skills2 col-span-full">
+      {skillGroups.map((g, gi) => {
+        const n = enProyectos(g.items);
+        return (
+          <li key={g.title} className="skills2-grupo" data-revelar>
+            <div className="flex items-baseline justify-between gap-e16">
+              <span className="voz-dato text-13 text-gris">{String(gi + 1).padStart(2, "0")}</span>
+              {n > 0 && (
+                <span className="voz-dato text-13 text-gris">
+                  <strong className="voz-titular skills2-cifra">{n}</strong> {rotulo}
+                </span>
+              )}
+            </div>
+            <h3 className="voz-texto-fuerte text-21">{g.title}</h3>
+            <ul className="skills2-items">
+              {g.items.map((item) => {
+                const ic = (iconos as unknown as Record<string, Icono | undefined>)[LOGO[item] ?? ""];
+                return (
+                  <li key={item} className={ic ? "skills2-logo" : "skills2-chip"}>
+                    {ic && (
+                      <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill={`#${ic.hex}`}>
+                        <path d={ic.path} />
+                      </svg>
+                    )}
+                    <span className="text-13">{item}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </li>
+        );
+      })}
+    </ol>
   );
 }

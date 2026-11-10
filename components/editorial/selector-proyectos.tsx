@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "re
 
 import { EsquemaSistema } from "@/components/editorial/esquema-sistema";
 import { FlechaDiagonal } from "@/components/editorial/iconos";
+import { IlustracionProyecto } from "@/components/editorial/ilustracion-proyecto";
 import { getPortfolio, projectPath, type Locale } from "@/data/portfolio";
 import { formatPeriod } from "@/data/projects";
 
@@ -113,7 +114,7 @@ export function SelectorProyectos({ locale }: { locale: Locale }) {
               data-animar={activo && animar ? "" : undefined}
               className="selector-panel"
             >
-              <div className="selector-escenario" data-esquema={!p.image && p.esquema ? "" : undefined}>
+              <div className="selector-escenario" data-esquema={!p.image && !p.ilustracion && p.esquema ? "" : undefined}>
                 <div aria-hidden="true" className="selector-bloque" />
                 {p.image ? (
                   <div className="selector-captura selector-anima">
@@ -132,6 +133,16 @@ export function SelectorProyectos({ locale }: { locale: Locale }) {
                         <img src={p.image.src} alt={p.image.alt} width={p.image.width} height={p.image.height} loading="lazy" />
                       </noscript>
                     )}
+                  </div>
+                ) : p.ilustracion ? (
+                  <div className="selector-captura selector-anima">
+                    <IlustracionProyecto
+                      ilustracion={p.ilustracion}
+                      rotulo={c.illustration}
+                      cargar={vistos.has(i)}
+                      sizes="(min-width: 1280px) 500px, (min-width: 1024px) 630px, (min-width: 768px) 380px, 90vw"
+                      className="selector-ilustracion"
+                    />
                   </div>
                 ) : p.esquema ? (
                   <EsquemaSistema

@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { EsquemaSistema } from "@/components/editorial/esquema-sistema";
 import { FlechaDiagonal } from "@/components/editorial/iconos";
+import { IlustracionProyecto } from "@/components/editorial/ilustracion-proyecto";
 import { getPortfolio, projectPath, type Locale } from "@/data/portfolio";
 
 /**
@@ -19,7 +20,7 @@ export function Experiencia({ locale }: { locale: Locale }) {
         const p = porId.get(item.id)!;
         return (
           <li key={item.id} className="cronologia-fila">
-            <div className="cronologia-miniatura" aria-hidden={p.image ? undefined : true}>
+            <div className="cronologia-miniatura" aria-hidden={p.image || p.ilustracion ? undefined : true}>
               {p.image ? (
                 <Image
                   src={p.image.src}
@@ -28,6 +29,13 @@ export function Experiencia({ locale }: { locale: Locale }) {
                   height={p.image.height}
                   sizes="(min-width: 1024px) 200px, 160px"
                   loading="lazy"
+                />
+              ) : p.ilustracion ? (
+                <IlustracionProyecto
+                  ilustracion={p.ilustracion}
+                  rotulo={t.card.illustration}
+                  sizes="(min-width: 1024px) 200px, 160px"
+                  className="ilustracion-mini"
                 />
               ) : (
                 p.esquema && <EsquemaSistema esquema={p.esquema} rotulo={t.card.diagram} luego={t.card.then} mini />
