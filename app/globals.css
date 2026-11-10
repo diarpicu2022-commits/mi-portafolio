@@ -166,9 +166,10 @@
   font-weight: 500;
 }
 
-/* Párrafos a 62 caracteres como máximo (8.3). */
+/* Párrafos a 62 caracteres como máximo (8.3). Medido en el paso 5: Archivo 400 promedia 0.45 em por carácter,
+   así que 27 em dan unos 60 caracteres. 62ch se medía con el ancho del cero y dejaba pasar hasta 75. */
 .medida {
-  max-width: 62ch;
+  max-width: 27em;
 }
 
 /* Titular de portada (8.3 y enmiendas 8.11).
@@ -664,6 +665,187 @@
     opacity: 1;
     transform: none;
   }
+}
+
+/* Paso 5. Secciones. */
+
+/* Perfil. */
+.perfil-entrada {
+  font-size: var(--t-28);
+  line-height: 1.25;
+  /* Archivo 600 promedia 0.5 em por carácter: 29 em son unos 58 caracteres. */
+  max-width: 29em;
+}
+.perfil-lema {
+  align-self: end;
+  max-width: 27em;
+  border-top: var(--filete) solid var(--tinta);
+  padding-top: var(--e-16);
+  color: var(--gris);
+}
+.perfil-principal {
+  font-size: clamp(var(--titular-min), 7vw, 104px);
+}
+.perfil-principios {
+  display: grid;
+  gap: var(--e-24);
+}
+@media (min-width: 768px) {
+  .perfil-principios {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .perfil-principios {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Franja Hardware / Software: el único corte diagonal (8.5). */
+.franja {
+  display: grid;
+  container-type: inline-size;
+}
+.franja-capa {
+  grid-area: 1 / 1;
+}
+.franja-capa-negra {
+  clip-path: polygon(0 0, 58% 0, 42% 100%, 0 100%);
+}
+.franja-reticula {
+  row-gap: var(--e-40);
+  padding-block: var(--e-104);
+}
+.franja-hardware {
+  grid-column: 1 / -1;
+}
+.franja-software {
+  grid-column: 1 / -1;
+  justify-self: end;
+  text-align: right;
+}
+.franja-lema {
+  grid-column: 1 / -1;
+  justify-self: center;
+  text-align: center;
+  font-size: clamp(var(--titular-min), 7cqi, 104px);
+}
+.franja-palabra {
+  font-size: clamp(var(--titular-min), 11cqi, 176px);
+}
+.franja-detalle {
+  margin-top: var(--e-12);
+}
+
+/* Habilidades: hoja de especificaciones. */
+.especificaciones {
+  border-top: var(--filete) solid var(--tinta);
+  border-collapse: collapse;
+}
+.especificaciones th {
+  text-align: left;
+  vertical-align: baseline;
+  padding: var(--e-16) var(--e-24) var(--e-16) 0;
+  white-space: nowrap;
+}
+.especificaciones td {
+  padding-block: var(--e-16);
+}
+@media (max-width: 767px) {
+  .especificaciones th,
+  .especificaciones td {
+    display: block;
+    padding: 0;
+  }
+  .especificaciones th {
+    padding-top: var(--e-16);
+  }
+}
+
+/* Experiencia: tabla cronológica. */
+.cronologia {
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: var(--e-24);
+  border-top: var(--filete) solid var(--tinta);
+  padding-top: var(--e-24);
+}
+.cronologia-fila {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: var(--e-4);
+  align-items: baseline;
+}
+.cronologia-periodo,
+.cronologia-cargo,
+.cronologia-caso {
+  grid-column: 1 / -1;
+}
+@media (min-width: 768px) {
+  .cronologia-periodo {
+    grid-column: 1 / 3;
+  }
+  .cronologia-cargo {
+    grid-column: 3 / 7;
+  }
+  .cronologia-caso {
+    grid-column: 7 / -1;
+    justify-self: end;
+  }
+}
+@media (min-width: 1024px) {
+  .cronologia-periodo {
+    grid-column: 1 / 4;
+  }
+  .cronologia-cargo {
+    grid-column: 4 / 10;
+  }
+  .cronologia-caso {
+    grid-column: 10 / -1;
+  }
+}
+
+/* Testimonios pendientes: marco de filete, el hueco es parte del diseño (8.9). */
+.testimonio-pendiente {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--e-40);
+  min-height: 240px;
+  border: var(--filete) solid var(--tinta);
+  padding: var(--e-24);
+}
+
+/* Mapa. */
+.mapa-captura {
+  display: block;
+}
+.mapa-captura img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Contacto. */
+.contacto-correo {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  width: fit-content;
+  max-width: 100%;
+  font-size: var(--t-28);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-underline-offset: var(--e-8);
+  text-decoration-thickness: var(--filete);
+}
+.campo-ed[aria-invalid="true"] {
+  border-color: var(--rojo-texto);
+}
+.campo-ed-error {
+  color: var(--rojo-texto);
 }
 
 /* Entrada una sola vez (8.8). Solo transform y opacity, en CSS: se ve aunque no corra JavaScript. */

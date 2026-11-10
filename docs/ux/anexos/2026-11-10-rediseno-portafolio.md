@@ -582,3 +582,53 @@ Capturas nuevas, tomadas de los repositorios públicos de Diego con `gh api`, si
 - Resolución efectiva a 1440. CampusWatch se pinta a 493 × 246 y SETPasto+ a 493 × 308, los dos desde archivos de 640 px. Ninguna captura se amplía en ningún ancho.
 - Carga inicial. Bajan el retrato (31 KB) y la captura del primer proyecto, SISCAN (32 KB).
 
+### 15.2 Paso 5, resto de secciones
+
+Qué se hizo, sección por sección.
+
+- Perfil. La propuesta de valor va como entrada de 28 px a 8 columnas y el lema como cita al margen con filete. «Cómo trabajo» abre con el primer principio en titular y los otros cuatro van en cuatro columnas.
+- Franja Hardware / Software. Dos capas iguales, papel debajo y negro encima recortada con `clip-path`. «Hardware» queda en el lado negro, «Software» en el papel y «Del sensor a la interfaz.» cruza la diagonal y cambia de color al cruzarla. Debajo de cada palabra va la formación real que la sostiene. No usa rojo.
+- Habilidades. Tabla de especificaciones en voz dato, un renglón por grupo de los datos, con un solo filete arriba.
+- Experiencia. Tabla cronológica con periodo en mono, cargo y enlace al caso con el nombre del proyecto. El resumen salió de la fila porque ya está en el selector.
+- Formación. Dos entradas grandes lado a lado y los idiomas en una línea al pie. Sin notas.
+- Testimonios. Tres marcos de filete con «Pendiente», el rol y la nota de que se publica con autorización. Sin cita.
+- Mapa. La captura real del mapa, tomada de `/quest` a 1952 × 1222 sin pérdida, enlazada a `/quest`.
+- Contacto. El correo como enlace de 28 px, GitHub y CV, y el formulario con etiquetas visibles. Con campos vacíos avisa junto a cada campo, marca `aria-invalid` y lleva el foco al primero. No envía nada a un servidor.
+
+Medidas.
+
+| Comprobación | 390 | 768 | 1440 |
+|---|---|---|---|
+| Alto de la página | 10718 | 9439 | 8414 |
+| Scroll horizontal | no | no | no |
+| Tramos vacíos de más de 380 px | ninguno | ninguno | ninguno |
+| Márgenes del texto | 20 y 20 | 40 y 40 | 64 y 64 |
+| Bloques rojos visibles a la vez, máximo | 1 | 1 | 1 |
+| Caracteres por línea en perfil, máximo | 51 | 59 | 62 |
+| Consola | limpia | limpia | limpia |
+
+- La primera medición de perfil dio 75 caracteres a 1440 y 88 a 768. `62ch` se mide con el ancho del cero y Archivo promedia 0.45 em por carácter. `.medida` pasó a 27 em y la entrada de perfil a 29 em.
+- Franja, contraste a cada lado de la diagonal. «Hardware» papel sobre negro 16.52. «Software» tinta sobre papel 15.92. El lema mide 16.52 en el lado negro y 15.92 en el papel. Los datos de formación en mono de 13 px dan los mismos valores. Las palabras miden 43, 84 y 158 px y el lema 40, 54 y 101 px en 390, 768 y 1440.
+- Número grande del selector, rojo claro sobre negro, 5.83.
+- Error del formulario, rojo texto sobre papel, 5.50.
+- Navegación, cabeceras sobre papel y sobre negro. Entre 15.92 y 16.52, gris 6.28, gris claro 7.29.
+- Teclado. 26 paradas a 390 y 32 a 1440, todas con contorno de 2 px y 44 px de alto, sin saltos hacia arriba. La primera medición marcó el enlace del correo con 34 px de alto. Ahora mide 44.
+- Movimiento reducido. La portada y el selector no animan (medido en 13.1 y 15.1). Este paso no añade animaciones.
+
+Repertorio contado al terminar.
+
+| Forma | Trabajo | Dónde |
+|---|---|---|
+| Bloque rojo plano | Señalar al sujeto | Portada y selector, nunca dos a la vez en pantalla |
+| Titular condensado | Nombrar | Portada, 8 aperturas de sección, placa, nombre en la ficha, primer principio, palabras y lema de la franja. Con las cifras de las enmiendas 5 y 9 |
+| Filete con cuadrado y rótulo | Abrir una sección | 8 cabeceras |
+| Filete suelto | Separar | Lema de perfil, tabla de habilidades, cronología y franja de portada |
+| Marco de filete | Señalar un estado pendiente | Solo los 3 testimonios |
+| Índice 01 a 11 | Ordenar proyectos | Solo el selector |
+| Corte diagonal | Contar la dualidad | Una vez, la franja |
+| Retrato en blanco y negro | Poner cara | Una vez, la portada |
+
+Se quitó el marco de la captura del mapa para que el filete no hiciera de marco en dos sitios.
+
+Crítica contra las referencias. La comparativa está en `docs/pantallazos/rediseno/Inicio comparativa.png`. La mitad de arriba aguanta (portada, selector y franja). La de abajo es más textual que Abdullah Tariq y Axel Morgan. Ellos usan iconos, logos de clientes, fotos de proyectos y cifras de premios, y el contrato excluye todo eso. Dentro del contrato la experiencia se acortó y el mapa da una imagen real. Habilidades y experiencia siguen siendo texto bien puesto sin un punto de entrada propio. Hacer más exigiría otra forma en el repertorio.
+

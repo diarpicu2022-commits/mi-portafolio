@@ -81,7 +81,7 @@ test("case studies are reachable from the project list and keep the language", a
   await page.waitForLoadState("networkidle");
   // AgroPulse ya no es el primero (enmienda 10): se elige en el selector antes de abrir su caso.
   await page.getByRole("tab", { name: /AgroPulse/ }).click();
-  await page.getByRole("link", { name: "Ver caso de estudio: AgroPulse" }).click();
+  await page.getByRole("tabpanel", { name: "AgroPulse" }).getByRole("link", { name: "Ver caso de estudio: AgroPulse" }).click();
   await expect(page).toHaveURL(/\/proyectos\/agropulse$/);
   await expect(page.getByRole("heading", { level: 1, name: "AgroPulse" })).toBeVisible();
   await page.getByRole("link", { name: "English" }).click();
@@ -191,4 +191,35 @@ test("without JavaScript the eleven projects are listed with their links", async
   for (const panel of await page.locator(".selector-panel").all()) await expect(panel).toBeVisible();
   await expect(page.locator('.selector a[href^="/proyectos/"]')).toHaveCount(11);
   await context.close();
+});
+
+test("the hardware / software band flips colour across the diagonal", async ({ page }) => {
+  await page.goto("/");
+  const franja = page.getByRole("region", { name: "Dos ingenierías" });
+  await expect(franja).toBeVisible();
+  const recorte = await franja.locator(".franja-capa-negra").evaluate((el) => getComputedStyle(el).clipPath);
+  expect(recorte).toContain("polygon");
+  // La capa de encima está oculta a lectores de pantalla: el texto se lee una sola vez.
+  await expect(franja.locator('.franja-capa-negra[aria-hidden="true"]')).toHaveCount(1);
+  await expect(franja.locator(".franja-capa:not(.franja-capa-negra)").getByText("Hardware", { exact: true })).toBeVisible();
+});
+
+test("the contact form explains empty fields and never posts to a server", async ({ page }) => {
+  let peticiones = 0;
+  page.on("request", (r) => r.method() === "POST" && peticiones++);
+  await page.goto("/");
+  await page.getByRole("button", { name: "Abrir en mi correo" }).click();
+  await expect(page.getByLabel("Tu nombre")).toBeFocused();
+  await expect(page.getByLabel("Tu nombre")).toHaveAttribute("aria-invalid", "true");
+  await expect(page.getByText("Escribe tu nombre.")).toBeVisible();
+  await expect(page.getByText("Escribe el mensaje.")).toBeVisible();
+  expect(peticiones).toBe(0);
+});
+
+test("the extra section shows the real map and enters /quest", async ({ page }) => {
+  await page.goto("/");
+  const mapa = page.getByRole("region", { name: "Explora el mapa" });
+  await expect(mapa.locator("img")).toBeVisible();
+  await mapa.getByRole("link", { name: "Entrar al mapa" }).click();
+  await expect(page).toHaveURL(/\/quest$/);
 });
