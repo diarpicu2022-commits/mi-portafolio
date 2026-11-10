@@ -462,6 +462,21 @@ const localized = {
         ],
         tecnologias: ["ESP32", "Autodesk Inventor", "Impresión 3D", "PCB", "Sensores", "Control automático", "Web", "Realidad virtual"],
       },
+      medios: {
+        rotulo: "Diseño para medios",
+        cargo: "Diseño gráfico y motion",
+        lugar: "Pasto Noticias",
+        periodo: "oct 2026",
+        logros: [
+          "Tres plantillas editables en Photoshop para redes y transmisión (1920×1080 y 1080×1080), con capas de texto reales, recortes para fotos y el contraste corregido a AA.",
+          "Fondo animado vertical 9:16 en 4K y en loop para la pantalla del estudio, hecho con 31 fotos reales de Pasto con licencia libre y sus créditos.",
+        ],
+        imagenes: [
+          { src: "/experiencia/pasto-noticias-plantilla.webp", width: 1200, height: 675, alt: "Plantilla horizontal de noticia con titular, foto y puntos clave en azul marino y rojo" },
+          { src: "/experiencia/pasto-noticias-fondo.webp", width: 540, height: 960, alt: "Cuadro del fondo animado vertical con el logo de Pasto Noticias y fotos de la ciudad" },
+        ],
+        tecnologias: ["Photoshop", "Motion graphics", "HTML a vídeo", "Montserrat"],
+      },
       pitch:
         "Estudio Ingeniería Electrónica e Ingeniería de Software, y me interesa justo donde las dos se cruzan: sistemas completos que empiezan en un sensor o un microcontrolador y terminan en una interfaz donde los datos se ven y se controlan.",
       motto:
@@ -563,6 +578,21 @@ const localized = {
         ],
         tecnologias: ["ESP32", "Autodesk Inventor", "3D printing", "PCB", "Sensors", "Automatic control", "Web", "Virtual reality"],
       },
+      medios: {
+        rotulo: "Design for media",
+        cargo: "Graphic and motion design",
+        lugar: "Pasto Noticias",
+        periodo: "Oct 2026",
+        logros: [
+          "Three editable Photoshop templates for social and broadcast (1920×1080 and 1080×1080), with live text layers, photo clipping masks and contrast fixed to AA.",
+          "A vertical 9:16 4K looping animated background for the studio screen, built with 31 openly licensed photos of Pasto and their credits.",
+        ],
+        imagenes: [
+          { src: "/experiencia/pasto-noticias-plantilla.webp", width: 1200, height: 675, alt: "Horizontal news template with headline, photo and key points in navy and red" },
+          { src: "/experiencia/pasto-noticias-fondo.webp", width: 540, height: 960, alt: "Frame of the vertical animated background with the Pasto Noticias logo and city photos" },
+        ],
+        tecnologias: ["Photoshop", "Motion graphics", "HTML to video", "Montserrat"],
+      },
       pitch:
         "I study Electronic Engineering and Software Engineering, and I work right where they meet: complete systems that start at a sensor or a microcontroller and end in an interface where data is seen and controlled.",
       motto:
@@ -647,6 +677,7 @@ export function getPortfolio(locale: Locale) {
     zones,
     skillGroups: text.skillGroups,
     pasantia: text.identity.pasantia,
+    medios: text.identity.medios,
     education: text.education,
     experience: [...projects].sort(byRecency).map((project) => ({
       id: project.id,
