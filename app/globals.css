@@ -382,6 +382,73 @@
   }
 }
 
+/* Esqueleto (paso 3). */
+
+/* Navegación fija de 72 px (8.7 punto 1). */
+.nav-ed {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 40;
+  height: 72px;
+  border-bottom: var(--filete) solid var(--tinta);
+}
+.nav-ed-enlace {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: var(--e-8);
+  text-decoration: none;
+}
+.nav-ed-enlace:hover {
+  text-decoration: underline;
+  text-underline-offset: var(--e-4);
+}
+.nav-ed-panel {
+  position: fixed;
+  inset: 72px 0 0 0;
+  z-index: 39;
+  overflow-y: auto;
+  padding: var(--e-24) var(--ret-margen) var(--e-64);
+}
+.nav-ed-panel a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+/* Saltar al contenido: oculto hasta recibir foco. */
+.salto-ed {
+  position: fixed;
+  left: var(--ret-margen);
+  top: var(--e-12);
+  z-index: 50;
+  transform: translateY(-200%);
+}
+.salto-ed:focus {
+  transform: none;
+}
+
+/* Secciones. El ancla deja libre la navegación fija. */
+.seccion-ed {
+  scroll-margin-top: 72px;
+}
+/* Titular de sección: fluido entre el mínimo del contrato (40 px) y 104 px de la escala. */
+.titular-seccion {
+  font-size: clamp(var(--titular-min), 10vw, 104px);
+}
+
+/* Campos del formulario de contacto. */
+.campo-ed {
+  min-height: 44px;
+  width: 100%;
+  border: var(--filete) solid var(--tinta);
+  border-radius: var(--radio);
+  background: var(--papel);
+  color: var(--tinta);
+  padding: var(--e-12);
+  font-size: var(--t-17);
+}
+
 /* Entrada una sola vez (8.8). Solo transform y opacity, en CSS: se ve aunque no corra JavaScript. */
 @media (prefers-reduced-motion: no-preference) {
   .portada-linea {
@@ -495,9 +562,7 @@
   }
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* 8.8: el scroll es el del navegador, sin desplazamiento suave al seguir un ancla. */
 
 /* Lenis drives smooth scrolling itself; native smooth scroll would fight it. */
 html.lenis,

@@ -1,5 +1,5 @@
-import { PortfolioPage } from "@/components/portfolio-page";
+import { PaginaInicio } from "@/components/editorial/pagina-inicio";
 
 export default function Home() {
-  return <PortfolioPage locale="es" />;
+  return <PaginaInicio locale="es" />;
 }

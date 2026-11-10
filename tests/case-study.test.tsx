@@ -5,6 +5,8 @@ import { CaseStudyPage } from "@/components/case-study-page";
 import { getPortfolio } from "@/data/portfolio";
 
 vi.mock("next/navigation", () => ({
+  // Las páginas de caso montan MotionProvider, que lee la ruta.
+  usePathname: () => "/proyectos/agropulse",
   notFound: () => {
     throw new Error("NEXT_NOT_FOUND");
   },
@@ -30,7 +32,7 @@ describe("CaseStudyPage", () => {
     const next = screen.getByRole("navigation", { name: "Siguiente proyecto" });
     expect(within(next).getByRole("link")).toHaveAttribute("href", `/proyectos/${projects[1].id}`);
     expect(screen.getByRole("link", { name: "English" })).toHaveAttribute("href", `/en/projects/${projects[0].id}`);
-    expect(screen.getByRole("link", { name: "Proyectos" })).toHaveAttribute("href", "/#projects");
+    expect(screen.getByRole("link", { name: "Proyectos" })).toHaveAttribute("href", "/#proyectos");
   });
 
   it("renders every project in both languages", () => {

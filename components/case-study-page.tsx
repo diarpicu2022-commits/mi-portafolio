@@ -4,8 +4,9 @@ import { notFound } from "next/navigation";
 
 import { ContactFooter } from "@/components/contact-footer";
 import { projectNumber } from "@/components/portfolio-blocks";
+import { MotionProvider } from "@/components/motion-provider";
 import { PortfolioNav } from "@/components/portfolio-nav";
-import { getPortfolio, homePath, projectPath, type Locale } from "@/data/portfolio";
+import { getPortfolio, projectPath, sectionHref, type Locale } from "@/data/portfolio";
 import { formatPeriod } from "@/data/projects";
 
 export function CaseStudyPage({ locale, id }: { locale: Locale; id: string }) {
@@ -15,7 +16,7 @@ export function CaseStudyPage({ locale, id }: { locale: Locale; id: string }) {
   const project = projects[index];
   const next = projects[(index + 1) % projects.length];
   const c = t.caseStudy;
-  const projectsHref = `${homePath[locale] === "/" ? "" : homePath[locale]}/#projects`;
+  const projectsHref = sectionHref(locale, "projects");
 
   return (
     <>
@@ -163,6 +164,8 @@ export function CaseStudyPage({ locale, id }: { locale: Locale; id: string }) {
         </nav>
       </main>
       <ContactFooter locale={locale} />
+      {/* Lenis, GSAP y botones magnéticos solo quedan aquí. Se retiran al pasar los casos a los tokens nuevos. */}
+      <MotionProvider />
     </>
   );
 }

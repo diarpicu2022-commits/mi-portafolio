@@ -18,7 +18,7 @@ export function PortfolioNav({ locale, alternate }: PortfolioNavProps) {
         aria-label={t.nav.label}
         className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-3"
       >
-        <a href={`${anchorBase}#top`} className="font-pixel text-xs text-amber">
+        <a href={homePath[locale]} className="font-pixel text-xs text-amber">
           Diecu&apos;s Quest
         </a>
         <ul className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-semibold text-paper">

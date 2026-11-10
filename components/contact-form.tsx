@@ -16,18 +16,18 @@ export function ContactForm({ locale }: { locale: Locale }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="pixel-card mt-8 grid max-w-xl gap-4 p-5">
-      <h3 className="font-pixel text-[0.7rem] text-forest">{t.form.title}</h3>
-      <label className="grid gap-1 text-sm font-semibold">
+    <form onSubmit={handleSubmit} className="grid gap-e16">
+      <h3 className="voz-texto-fuerte text-21">{t.form.title}</h3>
+      <label className="voz-texto-fuerte grid gap-e8 text-15">
         {t.form.name}
-        <input name="name" required autoComplete="name" className="pixel-input" />
+        <input name="name" required autoComplete="name" className="campo-ed voz-texto" />
       </label>
-      <label className="grid gap-1 text-sm font-semibold">
+      <label className="voz-texto-fuerte grid gap-e8 text-15">
         {t.form.message}
-        <textarea name="message" required rows={4} className="pixel-input" />
+        <textarea name="message" required rows={4} className="campo-ed voz-texto" />
       </label>
-      <p className="text-xs text-ink/70">{t.form.hint}</p>
-      <button type="submit" className="pixel-button pixel-button-amber w-fit">
+      <p className="text-13 text-gris">{t.form.hint}</p>
+      <button type="submit" className="boton-ed boton-ed-primario w-fit">
         {t.form.submit}
       </button>
     </form>

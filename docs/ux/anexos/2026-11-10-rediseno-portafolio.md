@@ -407,3 +407,69 @@ La comparativa está en `docs/pantallazos/rediseno/Portada comparativa.png`, con
 4. La cifra no puede pasar de 28 px porque el titular condensado tiene un solo trabajo, nombrar. Como punto de entrada queda más débil que en las referencias.
 5. La parte derecha del bloque rojo queda vacía en escritorio. Es un campo de color a propósito. Si se quiere más parecido a Axel Morgan, el bloque podría terminar en la columna 10 y perder la sangría.
 
+## 13. Verificación del ajuste de portada y del paso 3
+
+10 de noviembre de 2026. Dos commits. El ajuste de portada es `f4abacd` y el esqueleto va en el commit siguiente.
+
+### 13.1 Ajuste de portada
+
+Qué cambió.
+
+- Enmienda 4. En escritorio el bloque rojo ya no va a sangre. Ocupa las columnas 7 a 9 desde 1280 px y 7 a 10 entre 1024 y 1279 px. Mide el 80 % del alto del retrato y se apoya en la franja, así la cabeza queda fuera del bloque como en Axel Morgan.
+- Enmienda 5. La cifra va en titular condensado en la columna libre de la derecha. Su tamaño es la mitad del nombre en escritorio y el 40 % en tablet y celular. «11» se cuenta del arreglo de proyectos y «2» de la formación.
+- En tablet y celular la cifra va a la izquierda del retrato, dentro de la escena. La franja queda con la frase y los dos botones en un renglón.
+- El retrato se lee de `retrato` en `data/portfolio.ts` (ruta, ancho y alto). El tope de alto es `alto / 1.5`, que da 562 px con el archivo actual. El README explica cómo cambiar la foto.
+
+| Pantalla | Nombre | Cifra | Franja, borde inferior | Bajo el pliegue | Retrato | Letras tapadas |
+|---|---|---|---|---|---|---|
+| 390 × 844 | 150.2 px | 60.1 px | 844 | 0 px | 167 × 344 | T 2 %, A 8 % |
+| 768 × 1024 | 295.2 px | 118.1 px | 1024 | 0 px | 224 × 461 | T 21 %, A 12 % |
+| 1024 × 768 | 219.9 px | 110.0 px | 768 | 0 px | 260 × 536 | O 11 % |
+| 1440 × 900 | 324.0 px | 162.0 px | 900 | 0 px | 273 × 562 | O 31 %, A 28 % |
+
+La cifra no toca el retrato en ningún tamaño y su borde inferior coincide con la franja. El retrato siempre se pinta más pequeño que el archivo servido. Sobre el render la cifra y su rótulo miden 15.92 de contraste, rótulo de cabecera 6.28, nombre sobre el rojo 3.88 (enmienda 6). Sin imagen el bloque queda solo y el nombre se lee. Consola limpia, sin scroll horizontal, movimiento reducido sin animación.
+
+Primera medición fallida. A 768 px los botones se partían en dos renglones y la franja salía 3 px del pliegue. Se corrigió dando cinco columnas a los botones.
+
+### 13.2 Esqueleto
+
+Qué se hizo.
+
+- Navegación fija de 72 px con marca, enlaces a las secciones, cambio de idioma y descarga del CV. Por debajo de 1024 px un botón «Menú» abre un panel. Escape lo cierra y devuelve el foco al botón. Enlace «Saltar al contenido» como primera parada del teclado.
+- Página nueva en `/` y `/en` con la portada y las secciones en el orden de 8.7. Perfil, proyectos sobre negro, habilidades, experiencia, formación, testimonios, mapa, contacto y pie.
+- Cada sección lleva filete con cuadrado, rótulo mono y titular condensado. El titular de sección va de 40 a 104 px con `clamp(40px, 10vw, 104px)`.
+- Contenido real en forma tipográfica simple. Proyectos con enlace al caso y al repositorio. Testimonios como pendientes, sin cita.
+- Anclas en español en `/` (perfil, proyectos, habilidades, experiencia, formacion, testimonios, mapa, contacto) y en inglés en `/en`. Las páginas de caso y los paneles del mapa apuntan a ellas.
+- El mapa 2D pasa a `/quest` y `/en/quest`, igual que antes, con enlace de vuelta a la sección del mapa.
+- Lenis, GSAP y los botones magnéticos salen de la página nueva y de `/quest`. `MotionProvider` solo se monta en las páginas de caso.
+- Se quitó `scroll-behavior: smooth`. El salto a un ancla es el del navegador (8.8).
+- El pie dice «Este sitio no usa cookies.». En el código no hay `document.cookie` ni librería que las ponga. Vercel Analytics no usa cookies. El mapa sí guarda progreso y sonido en `localStorage`.
+
+Medidas sobre la página de inicio.
+
+| Comprobación | 390 | 768 | 1440 |
+|---|---|---|---|
+| Scroll horizontal | no | no | no |
+| Tramos vacíos de más de 380 px | ninguno | ninguno | ninguno |
+| Margen izquierdo y derecho del texto | 20 y 21 | 40 y 40 | 64 y 64 |
+| Bloques rojos visibles a la vez, máximo | 1 | 1 | 1 |
+| Consola | limpia | limpia | limpia |
+
+Contraste sobre el render. Navegación (marca, enlaces, idioma, botón) entre 15.92 y 16.04. Rótulo y titular sobre papel 15.92, texto gris 6.28. Rótulo y titular sobre negro 16.52, texto gris claro 7.29. Pie 7.29.
+
+Teclado. 38 paradas a 390 px y 44 a 1440 px, todas con contorno de 2 px y 44 px de alto. El orden empieza en «Saltar al contenido», sigue por la marca y la navegación y baja por la página. Hay un solo salto hacia arriba a 1440 px. Es el formulario de contacto, que va en la columna derecha a la altura de los enlaces de la izquierda.
+
+Pruebas. `npm run lint` sin errores. `npm test` 34 de 34. `npm run e2e` 22 de 22. `npm run build` correcto.
+
+Capturas en `docs/pantallazos/rediseno/`. Son `Inicio 390.png`, `Inicio 768.png`, `Inicio 1440.png`, `Inicio 390 menú abierto.png` y `Quest 1440.png`.
+
+### 13.3 Fallos y puntos donde el contrato no alcanza
+
+1. Las clases propias como `.boton-ed` van fuera de las capas de Tailwind y ganan a las utilidades. Por eso `lg:hidden` no ocultaba el botón «Menú» en escritorio. Se detectó en el recorrido por teclado y se corrigió con un envoltorio.
+2. El tope del retrato sale de la regla nueva en 562 px, no en 560. La diferencia viene de dividir 843 entre 1.5.
+3. Experiencia y formación van en dos secciones seguidas, no en una. La navegación tiene un enlace para cada una.
+4. El rótulo de cada cabecera usa datos reales cortos donde los hay y la entradilla de la sección donde no.
+5. Las páginas de caso siguen con Lenis, GSAP y botones magnéticos. `gsap` y `lenis` siguen en `package.json` porque `components/motion-provider.tsx` los importa. Se retiran cuando los casos adopten los tokens.
+6. El título y la descripción del sitio en `app/site-metadata.ts` siguen hablando de la aventura 2D. Falta actualizarlos.
+7. Se retiró la prueba que buscaba el `h1` «Diecu's Engineering Quest» en la portada. Ese título vive ahora en `/quest` y el `h1` de la portada es el nombre.
+

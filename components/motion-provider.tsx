@@ -12,7 +12,8 @@ export function MotionProvider() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Sin matchMedia (entornos de prueba) no hay preferencia que leer: no se anima nada.
+    if (typeof window.matchMedia !== "function" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const cleanups: (() => void)[] = [];
     let cancelled = false;

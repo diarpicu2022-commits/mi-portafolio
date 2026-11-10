@@ -11,7 +11,7 @@ import {
   projectNumber,
   TestimonialCards,
 } from "@/components/portfolio-blocks";
-import { getPortfolio, type Locale, type Zone } from "@/data/portfolio";
+import { getPortfolio, sectionHref, type Locale, type Zone } from "@/data/portfolio";
 
 /** `returnFocus: false` lets an anchor link move focus/scroll to its target instead of back to the map. */
 type ZonePanelProps = { locale: Locale; zone: Zone; onClose: (returnFocus?: boolean) => void };
@@ -143,7 +143,7 @@ export function ZonePanel({ locale, zone, onClose }: ZonePanelProps) {
           {zone.id === "plaza" && <ContactLinks locale={locale} />}
         </div>
 
-        <a className="pixel-link mt-6 inline-block text-sm" href={`#${zone.section}`} onClick={() => onClose(false)}>
+        <a className="pixel-link mt-6 inline-block text-sm" href={sectionHref(locale, zone.section)} onClick={() => onClose(false)}>
           {t.panel.fullSection}
         </a>
       </div>

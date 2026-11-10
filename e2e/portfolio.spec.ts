@@ -1,7 +1,14 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
-test("visitor can open a zone from the map and reach contact", async ({ page }) => {
-  await page.goto("/");
+/** En celular los enlaces viven en el menú; en escritorio, en la barra. */
+async function enlaceNav(page: Page, name: string, isMobile: boolean) {
+  if (isMobile) await page.getByRole("button", { name: /^(Menú|Menu)$/ }).click();
+  const scope = isMobile ? page.locator(".nav-ed-panel") : page.getByRole("navigation");
+  return scope.getByRole("link", { name, exact: true });
+}
+
+test("visitor can open a zone from the map and reach contact", async ({ page, isMobile }) => {
+  await page.goto("/quest");
   await page.getByRole("application", { name: /mapa/i }).click();
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("KeyE");
@@ -9,12 +16,14 @@ test("visitor can open a zone from the map and reach contact", async ({ page }) 
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toHaveCount(0);
 
-  await page.getByRole("navigation").getByRole("link", { name: "Contacto" }).click();
-  await expect(page.getByRole("region", { name: "Contacto" }).getByText("diarpicu2022@gmail.com")).toBeVisible();
+  await page.goto("/");
+  await (await enlaceNav(page, "Contacto", isMobile)).click();
+  await expect(page).toHaveURL(/#contacto$/);
+  await expect(page.getByRole("region", { name: "Contacto" }).getByRole("link", { name: "diarpicu2022@gmail.com" })).toBeInViewport();
 });
 
 test("touch controls move the player and open a zone", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/quest");
   await page.getByRole("button", { name: "Mover a la derecha" }).click();
   await page.getByRole("button", { name: "Entrar" }).click();
   await expect(page.getByRole("dialog", { name: /laboratorio/i })).toBeVisible();
@@ -30,11 +39,13 @@ test("page has no horizontal scroll and the CV is downloadable", async ({ page, 
   expect(cv.headers()["content-type"]).toContain("pdf");
 });
 
-test("English version works end to end", async ({ page, request }) => {
+test("English version works end to end", async ({ page, request, isMobile }) => {
   await page.goto("/");
-  await page.getByRole("link", { name: "English" }).click();
+  await (await enlaceNav(page, "English", isMobile)).click();
   await expect(page).toHaveURL(/\/en$/);
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await page.getByRole("link", { name: "Enter the map" }).click();
+  await expect(page).toHaveURL(/\/en\/quest$/);
   await page.getByRole("button", { name: "Open Laboratory" }).click();
   await expect(page.getByRole("dialog", { name: "Laboratory" })).toBeVisible();
 
@@ -43,7 +54,7 @@ test("English version works end to end", async ({ page, request }) => {
 });
 
 test("zone progress survives a reload", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/quest");
   await page.waitForLoadState("networkidle");
   await page.getByRole("button", { name: "Abrir Posada" }).click();
   await page.keyboard.press("Escape");
@@ -85,4 +96,52 @@ test("content stays visible with reduced motion", async ({ browser }) => {
   await expect(page.getByRole("heading", { name: "Resultado" })).toBeVisible();
   await expect(page.locator("html")).not.toHaveClass(/lenis/);
   await context.close();
+});
+
+test("navigation reaches every section and the skip link comes first", async ({ page, isMobile }) => {
+  await page.goto("/");
+  await page.keyboard.press("Tab");
+  await expect(page.getByRole("link", { name: "Saltar al contenido" })).toBeFocused();
+  for (const [name, hash] of [
+    ["Perfil", "perfil"],
+    ["Proyectos", "proyectos"],
+    ["Experiencia", "experiencia"],
+    ["Formación", "formacion"],
+    ["Contacto", "contacto"],
+  ]) {
+    await (await enlaceNav(page, name, isMobile)).click();
+    await expect(page).toHaveURL(new RegExp(`#${hash}$`));
+    // La sección queda justo debajo de la navegación fija de 72 px.
+    const top = await page.locator(`#${hash}`).evaluate((el) => el.getBoundingClientRect().top);
+    expect(Math.abs(top - 72)).toBeLessThanOrEqual(2);
+  }
+});
+
+test("mobile menu opens, closes with Escape and returns focus", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  const boton = page.getByRole("button", { name: "Menú" });
+  await boton.click();
+  await expect(boton).toHaveAttribute("aria-expanded", "true");
+  const panel = page.locator(".nav-ed-panel");
+  await expect(panel.getByRole("link", { name: "Perfil" })).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(panel).toBeHidden();
+  await expect(boton).toBeFocused();
+  await boton.click();
+  await panel.getByRole("link", { name: "Proyectos" }).click();
+  await expect(panel).toBeHidden();
+  await expect(page).toHaveURL(/#proyectos$/);
+});
+
+test("the 2D map loads at /quest and links back to the portfolio", async ({ page }) => {
+  const errores: string[] = [];
+  page.on("pageerror", (e) => errores.push(e.message));
+  await page.goto("/quest");
+  await expect(page.getByRole("application", { name: /mapa/i })).toBeVisible();
+  await page.getByRole("link", { name: /volver al portafolio/i }).click();
+  await expect(page).toHaveURL(/\/#mapa$/);
+  await page.goto("/en/quest");
+  await expect(page.getByRole("application")).toBeVisible();
+  expect(errores).toEqual([]);
 });
