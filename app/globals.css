@@ -856,6 +856,101 @@
   width: fit-content;
 }
 
+/* Esquema de sistema (enmienda 13). Ficha de papel con filetes de tinta: el texto nunca cae sobre el rojo. */
+.esquema {
+  background: var(--papel);
+  color: var(--tinta);
+  border: var(--filete) solid var(--tinta);
+  padding: var(--e-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-12);
+}
+.esquema-cabeza {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--e-4) var(--e-12);
+  border-bottom: var(--filete) solid var(--tinta);
+  padding-bottom: var(--e-8);
+}
+.esquema-etapas {
+  display: flex;
+  flex-direction: column;
+}
+.esquema-fila {
+  display: grid;
+  gap: var(--e-8);
+}
+.esquema-nodo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-4);
+  min-width: 0;
+  border: var(--filete) solid var(--tinta);
+  padding: var(--e-8) var(--e-12);
+  overflow-wrap: anywhere;
+  line-height: 1.2;
+}
+/* El recorrido empieza y termina en tinta: el ojo encuentra la entrada y la salida. */
+.esquema-etapa:first-child .esquema-nodo,
+.esquema-etapa:last-child .esquema-nodo {
+  background: var(--tinta);
+  color: var(--papel);
+}
+.esquema-enlace {
+  display: flex;
+  align-items: center;
+  gap: var(--e-8);
+  padding: var(--e-4) 0 var(--e-4) var(--e-12);
+  color: var(--gris);
+}
+.esquema-enlace svg {
+  color: var(--tinta);
+  flex: none;
+}
+/* Miniatura: solo la forma del recorrido. */
+.esquema-mini {
+  padding: var(--e-8);
+  gap: var(--e-8);
+  width: 100%;
+}
+.esquema-mini-dibujo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-8);
+}
+.esquema-mini-fila {
+  display: flex;
+  gap: var(--e-4);
+}
+.esquema-mini-nodo {
+  flex: 1;
+  height: var(--e-12);
+  border: var(--filete) solid var(--tinta);
+}
+/* En el selector va delante del bloque rojo, como una captura. */
+.selector-escenario[data-esquema] {
+  aspect-ratio: auto;
+}
+@media (min-width: 768px) {
+  /* El esquema va en el flujo: el escenario crece si hace falta y el alto común lo fija el panel más alto. */
+  .selector-escenario[data-esquema] {
+    height: auto;
+    min-height: var(--escenario-alto);
+  }
+}
+.selector-esquema {
+  position: relative;
+  z-index: 1;
+  margin: 0 var(--e-24) var(--e-24) 0;
+}
+@media (min-width: 1024px) {
+  .selector-esquema {
+    margin: 0 var(--e-40) var(--e-40) 0;
+  }
+}
+
 /* Entrada una sola vez (8.8). Solo transform y opacity, en CSS: se ve aunque no corra JavaScript. */
 @media (prefers-reduced-motion: no-preference) {
   .portada-linea {

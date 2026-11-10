@@ -41,6 +41,21 @@ Tras cambiar los datos, regenera los dos CV (español e inglés):
 npm run cv
 ```
 
+## Añadir la captura de un proyecto
+
+Cada proyecto de `data/projects.ts` muestra, en este orden, lo primero que tenga:
+
+1. `image`, una captura real.
+2. `esquema`, el esquema de sistema dibujado desde los datos (rotulado «Esquema»).
+3. La placa roja con el nombre.
+
+Para añadir una captura:
+
+1. Guarda la imagen en `public/projects/` en WebP, con guion medio en el nombre (`agropulse-panel.webp`) y sin ampliarla. 1280 px de ancho bastan.
+2. En el proyecto, añade `image` con `src`, `width` y `height` reales del archivo, y `alt` en español e inglés que describa lo que se ve.
+3. Anota en un comentario de dónde salió la captura.
+4. Si el proyecto tenía `esquema`, puedes dejarlo: la captura manda. Los proyectos con captura van primero en la lista (enmienda 10), así que muévelo arriba en `base`.
+
 ## Cambiar la foto de la portada
 
 La portada lee el retrato de `retrato` en `data/portfolio.ts`. Para cambiar la foto:

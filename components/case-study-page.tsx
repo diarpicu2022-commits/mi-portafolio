@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ContactFooter } from "@/components/contact-footer";
+import { EsquemaSistema } from "@/components/editorial/esquema-sistema";
 import { projectNumber } from "@/components/portfolio-blocks";
 import { MotionProvider } from "@/components/motion-provider";
 import { PortfolioNav } from "@/components/portfolio-nav";
@@ -70,6 +71,11 @@ export function CaseStudyPage({ locale, id }: { locale: Locale; id: string }) {
               className="mx-auto h-auto max-h-[80vh] w-auto max-w-full border-4 border-ink"
               priority
             />
+          </div>
+        )}
+        {!project.image && project.esquema && (
+          <div className="mx-auto max-w-3xl px-4 pt-12">
+            <EsquemaSistema esquema={project.esquema} rotulo={t.card.diagram} luego={t.card.then} />
           </div>
         )}
 

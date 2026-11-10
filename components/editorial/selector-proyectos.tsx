@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 
+import { EsquemaSistema } from "@/components/editorial/esquema-sistema";
 import { FlechaDiagonal } from "@/components/editorial/iconos";
 import { getPortfolio, projectPath, type Locale } from "@/data/portfolio";
 import { formatPeriod } from "@/data/projects";
@@ -112,7 +113,7 @@ export function SelectorProyectos({ locale }: { locale: Locale }) {
               data-animar={activo && animar ? "" : undefined}
               className="selector-panel"
             >
-              <div className="selector-escenario">
+              <div className="selector-escenario" data-esquema={!p.image && p.esquema ? "" : undefined}>
                 <div aria-hidden="true" className="selector-bloque" />
                 {p.image ? (
                   <div className="selector-captura selector-anima">
@@ -132,6 +133,13 @@ export function SelectorProyectos({ locale }: { locale: Locale }) {
                       </noscript>
                     )}
                   </div>
+                ) : p.esquema ? (
+                  <EsquemaSistema
+                    esquema={p.esquema}
+                    rotulo={c.diagram}
+                    luego={c.then}
+                    className="selector-esquema selector-anima"
+                  />
                 ) : (
                   <p aria-hidden="true" className="selector-placa voz-titular selector-anima">
                     {p.name}

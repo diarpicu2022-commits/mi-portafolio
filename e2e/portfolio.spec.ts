@@ -177,8 +177,9 @@ test("a direct link selects the project; missing capture and demo have their sta
   await expect(ecos.getByText("Sin demo pública")).toBeVisible();
   await page.getByRole("tab", { name: /AgroPulse/ }).click();
   const agro = page.getByRole("tabpanel", { name: /AgroPulse/ });
-  await expect(agro.locator(".selector-placa")).toHaveText("AgroPulse");
-  await expect(agro.getByRole("img")).toHaveCount(0);
+  // Sin captura, el esquema de sistema rotulado sustituye a la placa (enmienda 13).
+  await expect(agro.getByRole("img", { name: /^Esquema\. Del invernadero al panel/ })).toBeVisible();
+  await expect(agro.locator(".selector-placa")).toHaveCount(0);
   await expect(agro.getByRole("link", { name: "Ver caso de estudio: AgroPulse" })).toHaveAttribute("href", "/proyectos/agropulse");
 });
 

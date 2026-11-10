@@ -260,6 +260,12 @@ Aprobadas por Diego el 10 de noviembre de 2026, al revisar el paso 4.
 9. El número del proyecto elegido en el selector puede ir en titular condensado grande. Es la segunda y última excepción a la regla de que el titular solo nombra.
 10. Los proyectos con captura real van primero en el orden del selector. La numeración sigue ese orden en todo el sitio.
 
+Aprobadas por Diego el 10 de noviembre de 2026, al delegar las decisiones de diseño pendientes. El objetivo declarado es que lo contraten.
+
+11. El titular condensado nombra o da una cifra real. Usos admitidos: nombre de portada, apertura de sección, placa y nombre del proyecto, primer principio de perfil, franja Hardware / Software y cifras derivadas de los datos. Sigue sin bajar de 40 px y sin usarse en párrafos.
+12. Habilidades y experiencia ganan punto de entrada. En habilidades, una cifra real por grupo o tecnología contada desde `data/projects.ts`, con enlace a esos proyectos. En experiencia, la miniatura real o el esquema del proyecto en cada fila.
+13. Forma nueva en el repertorio, el esquema de sistema. Su único trabajo es mostrar cómo está armado un proyecto que no tiene captura. Sustituye a la placa roja como imagen principal y se retira cuando llegue una captura real. Siempre va rotulado «Esquema» («Diagram») y nunca se presenta como captura.
+
 Foto. Diego va a tomarse una nueva o a buscar el original. La portada debe aceptar el cambio con solo reemplazar el archivo en `public/retrato/`. Mientras tanto sigue el tope de 560 px de alto.
 
 ## 9. Legal y privacidad
