@@ -167,9 +167,10 @@
 }
 
 /* Párrafos a 62 caracteres como máximo (8.3). Medido en el paso 5: Archivo 400 promedia 0.45 em por carácter,
-   así que 27 em dan unos 60 caracteres. 62ch se medía con el ancho del cero y dejaba pasar hasta 75. */
+   así que 26 em dan unos 58 de media. 62ch se medía con el ancho del cero y dejaba pasar hasta 75.
+   Con 27 em el texto legal, de palabras cortas, llegaba a 64. */
 .medida {
-  max-width: 27em;
+  max-width: 26em;
 }
 
 /* Titular de portada (8.3 y enmiendas 8.11).
@@ -678,7 +679,7 @@
 }
 .perfil-lema {
   align-self: end;
-  max-width: 27em;
+  max-width: 26em;
   border-top: var(--filete) solid var(--tinta);
   padding-top: var(--e-16);
   color: var(--gris);
@@ -846,6 +847,13 @@
 }
 .campo-ed-error {
   color: var(--rojo-texto);
+}
+
+/* Privacidad: aviso de borrador. */
+.aviso-borrador {
+  border: var(--filete) solid var(--tinta);
+  padding: var(--e-12) var(--e-16);
+  width: fit-content;
 }
 
 /* Entrada una sola vez (8.8). Solo transform y opacity, en CSS: se ve aunque no corra JavaScript. */

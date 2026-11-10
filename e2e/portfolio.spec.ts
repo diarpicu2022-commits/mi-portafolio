@@ -223,3 +223,22 @@ test("the extra section shows the real map and enters /quest", async ({ page }) 
   await mapa.getByRole("link", { name: "Entrar al mapa" }).click();
   await expect(page).toHaveURL(/\/quest$/);
 });
+
+test("privacy page is linked from the footer and deletes the map progress", async ({ page }) => {
+  await page.goto("/quest");
+  await page.getByRole("button", { name: "Abrir Posada" }).click();
+  await page.keyboard.press("Escape");
+  expect(await page.evaluate(() => localStorage.getItem("diecu-visited"))).not.toBeNull();
+  await page.goto("/");
+  await page.getByRole("contentinfo").getByRole("link", { name: "Política de privacidad" }).click();
+  await expect(page).toHaveURL(/\/privacidad$/);
+  await expect(page.getByRole("heading", { level: 1, name: "Política de privacidad" })).toBeVisible();
+  await expect(page.getByText("Borrador técnico pendiente de revisión por un abogado.")).toBeVisible();
+  await expect(page.getByText(/no muestra un aviso de cookies/)).toBeVisible();
+  await page.getByRole("button", { name: "Borrar el progreso del mapa" }).click();
+  await expect(page.getByRole("status")).toHaveText(/se borraron/);
+  expect(await page.evaluate(() => ["diecu-visited", "diecu-sound", "diecu-night"].map((k) => localStorage.getItem(k)))).toEqual([null, null, null]);
+  await page.getByRole("link", { name: "English" }).click();
+  await expect(page).toHaveURL(/\/en\/privacy$/);
+  await expect(page.getByRole("heading", { level: 1, name: "Privacy policy" })).toBeVisible();
+});

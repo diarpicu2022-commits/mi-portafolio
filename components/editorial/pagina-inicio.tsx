@@ -8,6 +8,7 @@ import { Portada } from "@/components/editorial/portada";
 import { Seccion } from "@/components/editorial/seccion";
 import { SelectorProyectos } from "@/components/editorial/selector-proyectos";
 import { getPortfolio, projectPath, type Locale } from "@/data/portfolio";
+import { privacyPath } from "@/data/privacidad";
 
 /**
  * Página de inicio del rediseño. Orden de 8.7. Todo el texto sale de data/.
@@ -182,7 +183,10 @@ export function PaginaInicio({ locale }: { locale: Locale }) {
         <div className="reticula gap-y-e12 py-e40">
           <p className="voz-dato col-span-full text-13 md:col-span-4 lg:col-span-6">© 2026 {identity.name}</p>
           <p className="voz-dato col-span-full text-13 text-gris-claro md:col-span-4 md:text-right lg:col-span-6">
-            {t.footer.noCookies}
+            {t.footer.noCookies}{" "}
+            <a href={privacyPath[locale]} className="nav-ed-enlace text-papel underline underline-offset-4">
+              {t.footer.privacy}
+            </a>
           </p>
         </div>
       </footer>

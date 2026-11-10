@@ -632,3 +632,36 @@ Se quitó el marco de la captura del mapa para que el filete no hiciera de marco
 
 Crítica contra las referencias. La comparativa está en `docs/pantallazos/rediseno/Inicio comparativa.png`. La mitad de arriba aguanta (portada, selector y franja). La de abajo es más textual que Abdullah Tariq y Axel Morgan. Ellos usan iconos, logos de clientes, fotos de proyectos y cifras de premios, y el contrato excluye todo eso. Dentro del contrato la experiencia se acortó y el mapa da una imagen real. Habilidades y experiencia siguen siendo texto bien puesto sin un punto de entrada propio. Hacer más exigiría otra forma en el repertorio.
 
+### 15.3 Privacidad
+
+- La política de privacidad está en `data/privacidad.ts`, en español e inglés. Versión 1.0, vigente desde el 10 de noviembre de 2026. Arriba dice que es un borrador técnico pendiente de revisión por un abogado.
+- `npx tsx scripts/privacidad-md.ts` genera desde la misma fuente `docs/legal/Politica de privacidad.md` y `docs/legal/Privacy policy.md`.
+- Las páginas `/privacidad` y `/en/privacy` muestran el texto y se enlazan desde el pie de la página de inicio.
+- Contenido de la política.
+  - Responsable y contacto.
+  - Qué datos se tratan. El formulario abre el correo del visitante y no envía nada. Vercel Web Analytics no usa cookies. El mapa guarda tres claves en `localStorage`.
+  - Finalidad, autorización, con quién se comparten, conservación y seguridad.
+  - Derechos del artículo 8 de la Ley 1581 de 2012, y plazos de 10 y 15 días hábiles de los artículos 14 y 15.
+  - Cookies, menores, marco legal y cambios.
+- Lo que recoge Vercel Web Analytics se tomó de su documentación, https://vercel.com/docs/analytics/privacy-policy, consultada el 10 de noviembre de 2026. No usa cookies. Identifica la visita con un hash de la petición que se descarta a las 24 horas. Guarda fecha, página, ruta, origen, parámetros filtrados, ubicación aproximada, sistema operativo, navegador y tipo de dispositivo.
+- La página de privacidad tiene un botón para borrar el progreso del mapa. Borra las tres claves y anuncia el resultado en una región `status`. Las claves salen de `QUEST_KEYS`, la misma constante que usa el mapa.
+- No hay aviso de cookies porque no hay cookies. Lo dice la propia página. Tras cargar `/` el navegador tiene 0 cookies, medido con Playwright en local, donde Analytics no se carga.
+- El texto legal en español pasa `medir.py` en registro formal, sin «;», sin rayas, sin tics y sin «:» fuera de lista o rótulo.
+- Medidas de las páginas de privacidad.
+  - Sin scroll horizontal y consola limpia.
+  - Máximo de 62 caracteres por línea en español a 1440 y 63 en inglés, contando el espacio final.
+  - Con 27 em el texto legal llegaba a 64, así que `.medida` bajó a 26 em en todo el sitio.
+- Prueba e2e nueva. Llega a la política desde el pie, comprueba el aviso de borrador y la frase de cookies, borra el progreso guardado por el mapa y cambia a la versión en inglés.
+
+Pruebas finales. `npm run lint` sin errores. `npm test` 36 de 36. `npm run e2e` 36 de 36. `npm run build` correcto.
+
+Capturas nuevas en `docs/pantallazos/rediseno/`.
+
+- Página completa: `Inicio 390.png`, `Inicio 768.png`, `Inicio 1440.png` e `Inicio comparativa.png`.
+- Franja: `Franja 390.png`, `Franja 768.png` y `Franja 1440.png`.
+- Formulario: `Contacto 1440 formulario vacío.png`.
+- Selector: `Selector 1024 primero.png`, `Selector 1024 con captura.png`, `Selector 1024 sin captura.png` y sus pares de 1440.
+- Privacidad: `Privacidad 390.png` y `Privacidad 1440.png`.
+
+Pendiente. El texto legal lo tiene que revisar un abogado antes de publicarse para terceros. La política no cubre las páginas de caso de cada proyecto ni el título y la descripción del sitio, que siguen pendientes de pasar a los tokens.
+
