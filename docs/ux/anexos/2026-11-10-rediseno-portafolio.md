@@ -236,6 +236,14 @@ Las páginas de caso por proyecto se conservan y adoptan los mismos tokens.
 
 Tokens, portada (componente clave), esqueleto de la página, selector, resto de secciones, página completa, estados. Al cerrar cada paso se muestra, se cita la cláusula y se espera el visto bueno.
 
+### 8.11 Enmiendas
+
+Aprobadas por Diego el 10 de noviembre de 2026, al dar el visto bueno al paso 1.
+
+1. El titular de portada se limita también por el alto de la pantalla. Nunca crece hasta sacar del primer pantallazo la franja inferior con la frase y los botones. La retícula de 12 columnas empieza en 1024 px.
+2. El valor 20 px entra en la escala de espacio. Su único uso es el margen lateral en celular.
+3. El titular de portada admite una compensación óptica de −0.04 em a la izquierda para que la tinta de la D caiga sobre el borde de la columna. No se usa en ningún otro texto.
+
 ## 9. Legal y privacidad
 
 - El sitio no tiene cuentas ni pagos, así que no lleva términos y condiciones.
