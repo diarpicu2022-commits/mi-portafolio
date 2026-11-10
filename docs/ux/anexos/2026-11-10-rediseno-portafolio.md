@@ -244,6 +244,15 @@ Aprobadas por Diego el 10 de noviembre de 2026, al dar el visto bueno al paso 1.
 2. El valor 20 px entra en la escala de espacio. Su único uso es el margen lateral en celular.
 3. El titular de portada admite una compensación óptica de −0.04 em a la izquierda para que la tinta de la D caiga sobre el borde de la columna. No se usa en ningún otro texto.
 
+Aprobadas por Diego el 10 de noviembre de 2026, al revisar el paso 2.
+
+4. El bloque rojo de portada deja de ir a sangre en escritorio. Se estrecha para enmarcar la figura, como en la referencia de Axel Morgan, y libera una columna a la derecha.
+5. La cifra de portada (proyectos e ingenierías) puede ir en titular condensado, en esa columna de la derecha. Es la única excepción a la regla de que el titular solo nombra. No hay más cifras en titular en el resto del sitio.
+6. Tinta sobre rojo entra en la tabla de color con 3.88 medido. Solo vale para el titular de portada donde cruza el bloque.
+7. El bloque rojo y el retrato entran 350 ms después del nombre.
+
+Foto. Diego va a tomarse una nueva o a buscar el original. La portada debe aceptar el cambio con solo reemplazar el archivo en `public/retrato/`. Mientras tanto sigue el tope de 560 px de alto.
+
 ## 9. Legal y privacidad
 
 - El sitio no tiene cuentas ni pagos, así que no lleva términos y condiciones.
