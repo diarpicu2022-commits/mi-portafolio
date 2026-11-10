@@ -85,3 +85,15 @@ Se implementó el plan de `.research/plan-previo.md` sobre el scaffold de Next.j
 - Ajustar los periodos de los proyectos subidos en un solo día (Tower Defense, Harmonia, Proxy IA, EcoVolt, SETPasto+, HidroMon) al tiempo real que tomaron.
 - Confirmar las demos publicadas (por ejemplo AgroPulse y Harmonia en Vercel) y añadirlas en `demo`.
 - Capturas de cada proyecto y testimonios reales.
+
+## 2026-11-10 · Rediseño editorial
+
+Diego encontró sencilla la versión del mapa 2D y aprobó una dirección editorial con selector de proyectos. El contrato de diseño y la verificación de cada paso están en `docs/ux/anexos/2026-11-10-rediseno-portafolio.md`.
+
+- Paso 1. Tokens, fuentes Archivo e IBM Plex Mono, iconos y hoja de especímenes en `/sistema`.
+- Paso 2. Portada con nombre, retrato, bloque rojo y cifras.
+- Paso 3. Esqueleto, navegación con menú móvil y el mapa movido a `/quest`.
+- Paso 4. Selector de proyectos y capturas reales.
+- Paso 5. Resto de secciones y política de privacidad.
+- Paso 6. Esquemas de sistema, habilidades con cifras, experiencia con miniatura, páginas de caso, metadatos, imagen social y CV nuevos.
+

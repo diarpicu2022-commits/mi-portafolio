@@ -75,6 +75,11 @@ export function CaseStudyPage({ locale, id }: { locale: Locale; id: string }) {
                   height={project.image.height}
                   sizes="(min-width: 1024px) 1000px, 100vw"
                   className="caso-captura"
+                  style={{
+                    aspectRatio: `${project.image.width} / ${project.image.height}`,
+                    // Nunca más ancha que el archivo ni más alta que el 80 % de la ventana.
+                    width: `min(100%, ${project.image.width}px, calc(80vh * ${project.image.width / project.image.height}))`,
+                  }}
                   priority
                 />
               ) : (

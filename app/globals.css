@@ -430,6 +430,10 @@
 .salto-ed:focus {
   transform: none;
 }
+.salto-ed:focus-visible {
+  outline: var(--foco) solid var(--tinta);
+  outline-offset: var(--e-4);
+}
 
 /* Secciones. El ancla deja libre la navegación fija. */
 .seccion-ed {
@@ -522,7 +526,8 @@
 .selector-escenario {
   position: relative;
   container-type: inline-size;
-  aspect-ratio: 4 / 3;
+  /* Cuadrado en celular: cabe mejor la captura vertical de SISCAN y el panel más bajo deja menos hueco. */
+  aspect-ratio: 1;
 }
 .selector-bloque {
   position: absolute;
@@ -1089,10 +1094,8 @@
 }
 .caso-captura {
   display: block;
-  width: auto;
+  /* El ancho y la proporción llegan en línea desde los datos: el hueco queda reservado antes de cargar. */
   height: auto;
-  max-width: 100%;
-  max-height: 80vh;
 }
 @media (min-width: 1024px) {
   .caso-escenario {

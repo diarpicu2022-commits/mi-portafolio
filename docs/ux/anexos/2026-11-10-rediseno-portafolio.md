@@ -671,3 +671,94 @@ Capturas nuevas en `docs/pantallazos/rediseno/`.
 
 Pendiente. El texto legal lo tiene que revisar un abogado antes de publicarse para terceros. La política no cubre las páginas de caso de cada proyecto ni el título y la descripción del sitio, que siguen pendientes de pasar a los tokens.
 
+## 16. Verificación del paso 6
+
+10 de noviembre de 2026. Diego delegó las decisiones pendientes con un objetivo, que lo contraten. Las enmiendas 11, 12 y 13 están en la 8.11. Commits de este paso, en orden.
+
+- `be998ab` esquemas de sistema
+- `7f09b15` habilidades y experiencia
+- `34ec006` páginas de caso, mapa y 404
+- `6eea563` metadatos e imágenes sociales
+- `efc4c76` CV
+
+### 16.1 Esquemas de sistema
+
+Un solo componente (`components/editorial/esquema-sistema.tsx`) dibuja cada esquema desde `data/projects.ts`. Los nodos son HTML con filete de 1 px para que el texto no baje de 13 px. Las flechas son el icono flecha abajo del repertorio. El primer y el último nodo van en tinta para marcar la entrada y la salida. Siempre lleva el rótulo «Esquema» y una descripción accesible del recorrido. Cada bloque se comprobó con `gh api`, sin clonar.
+
+| Proyecto | Recorrido | Fuente |
+|---|---|---|
+| AgroPulse | Sensores, ESP32, API REST, y después Supabase, panel web y alertas | README de firmware, backend y frontend |
+| HidroMon | Usuario, zona, sensor, lectura y alerta | Diagrama entidad-relación del README |
+| Harmonia | Frontend, API Express con Passport, y después MongoDB, Redis y Groq | Árbol del repositorio y `backend/package.json` |
+| Proxy IA | Cliente, caché, límite, cuota con reinicio programado y generación simulada | Código de `proxy-ai-backend` |
+| EcoVolt | API FastAPI, dominio, estructuras de datos y SQLite | `backend/main.py`, carpetas y `db/database_connection.py` |
+| Tower Defense | Tower, BaseTower y TowerDecorator, cuatro decoradores y la torre apilada | README del repositorio |
+
+- El esquema de Proxy IA destapó un dato equivocado. Los datos decían que una tarea reinicia el uso diario. El código reinicia el límite de peticiones cada minuto y las cuotas cada mes. Se corrigió en los dos idiomas.
+- El esquema sustituye a la placa en el selector, en la página de caso, en la miniatura de experiencia y en la imagen social del proyecto. La placa queda solo para un proyecto sin captura ni esquema, y hoy no hay ninguno.
+- El alto del esquema va de 332 a 522 px a 1440. El contraste sobre el render es de 15.92 en los nodos (tinta sobre papel y papel sobre tinta) y de 6.28 en las etiquetas de las flechas. El texto nunca cae sobre el rojo.
+
+### 16.2 Habilidades y experiencia
+
+- Cada grupo de habilidades abre con la cifra de proyectos distintos que usan alguna de sus tecnologías. Lenguajes 10, Frontend y apps 8, Backend 6, Datos 3, Electrónica 2, Despliegue y herramientas 2, Ingeniería 1. El grupo con más proyectos abre a doble ancho.
+- Cada tecnología lleva el número de los proyectos que la usan, enlazado al selector con su fragmento. Las tecnologías sin proyecto se muestran en gris y sin número.
+- Un alias en el código une los nombres escritos distinto en habilidades y en proyectos, como Java 17 y Java o C/C++ y C++.
+- Cada fila de experiencia lleva la miniatura real o el esquema, el periodo, el cargo, el primer resultado del caso y el enlace. Con puntero fino la miniatura se amplía al 106 % en 200 ms. En táctil, teclado y movimiento reducido no cambia nada.
+- Perfil lleva el correo y el CV junto al lema, como enlaces de texto, distintos del bloque de contacto.
+
+### 16.3 Páginas de caso, limpieza y 404
+
+- La página de caso tiene el número en rojo y el nombre en titular, la ficha en voz dato y la captura o el esquema sobre el bloque rojo. Siguen la historia, el lateral fijo con tecnologías y código, el siguiente proyecto sobre negro y el cierre con contacto.
+- La captura reserva su hueco con la proporción de los datos. La primera medición dio un salto de layout de 0.116 a 768 px. Ahora da 0.
+- Se borraron `motion-provider.tsx`, `portfolio-nav.tsx`, `contact-footer.tsx` y `grid-toggle.tsx`. `gsap` y `lenis` salieron de `package.json`.
+- También salieron Geist, los SVG de plantilla, `favicon.ico` y el CSS sin uso (Lenis, revelados, escena de título, `.lead`, `.section-title`, `.nav-link` y `.pixel-input`). Un grep confirma que nada los importa.
+- `/quest` carga su propia fuente pixel y sus tokens viejos dentro de `.quest-mundo`. Usa la navegación y el pie del sitio.
+- La 404 tiene la cifra en titular rojo, el mensaje en los dos idiomas y tres salidas.
+
+### 16.4 Metadatos, imagen social y CV
+
+- Título y descripción reales, con cifras contadas. Canónicas y `hreflang` es, en y x-default. `sitemap.xml` con las 30 páginas y su par. `robots.txt` sin `/sistema`.
+- Datos estructurados Person con nombre, correo público, GitHub, rol, universidades e idiomas. Sin teléfono.
+- Satori no admite fuentes variables ni WOFF2. `scripts/fuentes-estaticas.py` crea instancias estáticas de Archivo y Plex Mono en `assets/fuentes` a partir de lo que next/font ya descargó al compilar. No se descargó ningún archivo nuevo. Archivo condensada se ve en las imágenes generadas `OG es.png`, `OG en.png`, `OG caso AgroPulse.png` y `OG caso NotaScan.png`.
+- El icono y el apple-icon son el monograma DP sobre rojo.
+- El CV va en una columna, en Archivo y Plex Mono sobre papel, con un solo acento rojo. Son dos páginas A4 por idioma.
+  - El texto extraído del PDF contiene los 51 datos de referencia de cada idioma (nombre, correo, frase, los 11 cargos con proyecto y periodo, formación, grupos e idiomas).
+  - No aparece ningún teléfono, cédula ni nota.
+  - Ningún bloque sale de los márgenes de 40 y 44 pt. Ninguna página termina con un título de sección.
+  - El contraste sobre el render a 300 ppp es de 15.92 para la tinta y 6.28 para el gris.
+  - Tiene 25 enlaces vivos.
+- La URL del portafolio en el CV sale del campo de página del repositorio en GitHub (`mi-portafolio-beta-kohl.vercel.app`). Si el despliegue cambia de dirección hay que actualizar `PORTFOLIO_URL` y regenerar el CV.
+
+### 16.5 Verificación del sitio
+
+Playwright con DPR 1 y servidor de producción local.
+
+| Página | Ancho | Scroll horizontal | Tramo vacío máximo | Rojos a la vez | CLS | Consola |
+|---|---|---|---|---|---|---|
+| Inicio | 390 | no | 303 | 1 | 0 | limpia |
+| Inicio | 768 | no | 182 | 1 | 0 | limpia |
+| Inicio | 1440 | no | 181 | 1 | 0 | limpia |
+| Caso con captura | 390, 768 y 1440 | no | 190 | 1 | 0 | limpia |
+| Caso con esquema | 390, 768 y 1440 | no | 189 | 1 | 0 | limpia |
+| Quest | 390, 768 y 1440 | no | 80 | 0 | 0 | limpia |
+| 404 | 390, 768 y 1440 | no | 331 | 0 | 0.024 como máximo | limpia |
+
+- La primera medición falló en el inicio a 390 px, con un tramo vacío de 390 px bajo los paneles cortos del selector. Se resolvió con el escenario cuadrado en celular.
+- Teclado. 75 paradas en el inicio, 16 en el caso con captura y 17 en el caso con esquema, todas con contorno de 2 px y 44 px de alto. La primera medición encontró «Saltar al contenido» sin contorno. Ya lo tiene.
+- Con movimiento reducido la portada no anima y la miniatura de experiencia no se amplía.
+- Sin JavaScript se ven los 11 paneles, los 6 esquemas y los enlaces a los casos. El caso de AgroPulse muestra su esquema.
+- Contraste en el caso. Número y nombre 15.92, rótulos de ficha 6.28, siguiente proyecto 16.52.
+- Contraste en el inicio. Cifras de habilidades 15.92, tecnología sin proyecto 6.28, logro de experiencia 6.28.
+- Pruebas. `npm run lint` sin errores. `npm test` 39 de 39. `npm run e2e` 40 de 40, con pruebas nuevas para esquema, habilidades, experiencia y SEO. `npm run build` correcto.
+- Lighthouse queda pendiente. No está instalado en el equipo y no se descargó sin permiso de Diego. Hay que correrlo sobre el despliegue en `/`, un caso y `/en`, en móvil y escritorio.
+
+### 16.6 Crítica final con ojo de quien contrata
+
+Las comparativas están en `docs/pantallazos/rediseno/Comparativa final 1440.png` y `Comparativa final 390.png`.
+
+- En diez segundos se ven el nombre, la frase, las cifras, «Ver proyectos» y «Descargar CV». El contacto está en la navegación, en perfil, en la sección de contacto y al final de cada caso.
+- Lo que hace Diego queda dicho por el rótulo de la portada y la frase, pero el rótulo es mono de 13 px. Una línea más concreta en la portada pediría copia nueva que Diego tiene que escribir o aprobar.
+- Cada sección tiene ahora un punto de entrada. Habilidades con cifras, experiencia con miniaturas, el mapa con su captura y la franja diagonal.
+- Testimonios sigue siendo un estado pendiente. Es honesto, pero no convence hasta que haya tres testimonios reales.
+- Seis de once proyectos se apoyan en esquemas. Explican el sistema, pero una captura real convence más.
+- La página en celular mide 14042 px. Habilidades y experiencia la alargan porque cada enlace mide 44 px.
