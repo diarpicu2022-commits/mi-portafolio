@@ -173,3 +173,60 @@
 
 /* Que el abanico y los números del collage no generen scroll horizontal. */
 .seccion-ed { overflow-x: clip; }
+
+/* ================= Versión 3: sin líneas negras, botones redondos, encabezado nuevo ================= */
+:root { --filete: 0px; --suave: rgba(18, 18, 17, 0.1); }
+
+/* Encabezado: monograma + nombre condensado con punto rojo, sin línea inferior, fondo translúcido. */
+.nav-ed { border-bottom: 0 !important; background: rgba(241, 236, 226, 0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.marca2 { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 8px; color: var(--tinta); }
+.marca2-mono { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--tinta); color: var(--papel); font-size: 18px; letter-spacing: 0.02em; transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+.marca2:hover .marca2-mono { transform: rotate(-12deg) scale(1.08); }
+.marca2-nombre { font-size: 22px; line-height: 1; letter-spacing: 0.01em; display: inline-flex; align-items: flex-end; gap: 3px; }
+.marca2-punto { width: 7px; height: 7px; border-radius: 50%; background: var(--rojo); margin-bottom: 3px; }
+.nav-ed-enlace.text-15 { font-family: var(--font-plex-mono), monospace; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; position: relative; }
+.nav-ed-enlace.text-15::after { content: ""; position: absolute; left: 8px; right: 8px; bottom: 8px; height: 2px; background: var(--rojo); transform: scaleX(0); transform-origin: left; transition: transform 250ms ease-out; }
+.nav-ed-enlace.text-15:hover::after { transform: scaleX(1); }
+.nav-ed-enlace:hover { background: transparent !important; }
+
+/* Botones en píldora: primario rojo, secundario texto con flecha en círculo, navegación negro. */
+.boton-ed { border: 0 !important; border-radius: 999px; min-height: 48px; padding: 0 24px; gap: 12px; font-weight: 600; transition: transform 200ms ease-out, background-color 200ms ease-out, color 200ms ease-out; }
+.boton-ed:hover { transform: translateY(-2px); }
+.boton-ed svg { transition: transform 200ms ease-out; }
+.boton-ed:hover svg { transform: translate(2px, -2px); }
+.boton-ed-primario { background: var(--rojo-texto) !important; color: var(--papel) !important; }
+.boton-ed-primario:hover { background: var(--tinta) !important; }
+.boton-ed-secundario { background: transparent !important; color: var(--tinta) !important; padding: 0 4px 0 0; }
+.boton-ed-secundario svg { box-sizing: content-box; width: 16px; height: 16px; padding: 12px; border-radius: 50%; background: var(--tinta); color: var(--papel); }
+.sup-negro .boton-ed-secundario { color: var(--papel) !important; }
+.sup-negro .boton-ed-secundario svg { background: var(--papel); color: var(--tinta); }
+.boton-ed-nav { background: var(--tinta) !important; color: var(--papel) !important; min-height: 44px; padding: 0 20px; }
+.boton-ed-nav:hover { background: var(--rojo-texto) !important; }
+.boton-ed-claro { background: var(--papel) !important; color: var(--tinta) !important; }
+.boton-ed-claro:hover { background: var(--rojo-claro) !important; color: var(--tinta) !important; }
+
+/* Rótulos de sección: cuadrado rojo y texto, sin línea. */
+.filete-seccion { border-top: 0 !important; padding-top: 0; color: var(--gris); letter-spacing: 0.08em; text-transform: uppercase; }
+.sup-negro .filete-seccion { color: var(--gris-claro); }
+.filete-seccion::before { background: var(--rojo) !important; }
+
+/* Portada sin líneas. */
+.hero2-intro { border-left: 0 !important; }
+.hero2-cifras { border-top: 0; padding-top: 0; }
+.cinta { border-block: 0; }
+
+/* Habilidades: tarjetas claras separadas, sin rejilla negra. */
+.skills2 { background: transparent; border: 0; gap: 16px; }
+.skills2-grupo { background: #f7f3ea; border-radius: 20px; }
+.skills2-logo { border: 0; border-radius: 14px; box-shadow: 0 1px 0 var(--suave); }
+.skills2-chip { border: 0; border-radius: 999px; background: #e9e2d4; padding: 6px 14px; }
+
+/* Collage y cartas: etiquetas en píldora, sin marcos negros. */
+.collage-tags li { border: 0; border-radius: 999px; background: rgba(241, 236, 226, 0.1); }
+.carta-enlace { border-radius: 20px; border: 0 !important; overflow: hidden; }
+.carta-img { border: 0; border-radius: 12px; }
+.carta:hover .carta-enlace, .carta:focus-within .carta-enlace { box-shadow: 0 0 0 2px var(--rojo-claro); }
+
+/* Formularios: campo relleno con línea suave abajo (el borde de 3:1 lo da el fondo). */
+input, textarea, select { border: 0 !important; border-radius: 12px; background: #fffdf8 !important; box-shadow: inset 0 0 0 1px rgba(18, 18, 17, 0.35); }
+input:focus-visible, textarea:focus-visible { box-shadow: inset 0 0 0 2px var(--tinta); }
