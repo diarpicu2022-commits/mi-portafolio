@@ -18,6 +18,266 @@
   --font-pixel: var(--font-press-start), monospace;
 }
 
+/* ==========================================================================
+   Rediseño editorial. Tokens del contrato de diseño (anexo 2026-11-10, sección 8).
+   Nombres en español para no pisar los tokens actuales (--ink, --paper...).
+   Los tokens viejos se retiran cuando la portada nueva sustituya a la actual.
+   ========================================================================== */
+
+:root {
+  /* 8.2 Color */
+  --papel: #f1ece2;
+  --tinta: #121211;
+  --gris: #5a554c;
+  --rojo: #d92b1f;
+  --rojo-texto: #b81f14;
+  --negro: #0d0d0c;
+  --gris-claro: #a39e94;
+  --rojo-claro: #ff4a3d;
+
+  /* 8.3 Escala de texto fija */
+  --t-13: 13px;
+  --t-15: 15px;
+  --t-17: 17px;
+  --t-21: 21px;
+  --t-28: 28px;
+
+  /* 8.3 Titular de portada, medido con Playwright (anexo 8.3 y 11).
+     Se calcula sobre el ancho del contenedor de la portada, que lleva container-type: inline-size.
+     K = avance de DIEGO en em con Archivo ancho 62 peso 900. */
+  --titular-k: 2.331;
+  --titular-min: 40px;
+
+  /* 8.4 Escala de espacio */
+  --e-4: 4px;
+  --e-8: 8px;
+  --e-12: 12px;
+  --e-16: 16px;
+  --e-24: 24px;
+  --e-40: 40px;
+  --e-64: 64px;
+  --e-104: 104px;
+  --e-168: 168px;
+
+  /* 8.4 Retícula. Celular por defecto, se redefine por punto de quiebre */
+  --ret-columnas: 4;
+  /* 20 px lo fija 8.4 como margen de celular aunque no está en la escala de espacio. Ver anexo 11. */
+  --ret-margen: 20px;
+  --ret-canal: var(--e-16);
+  --ret-max: 1440px;
+
+  /* 8.4 Forma */
+  --radio: 0;
+  --filete: 1px;
+
+  /* 8.8 Movimiento */
+  --curva-entrada: cubic-bezier(0.16, 1, 0.3, 1);
+  --curva-salida: ease-out;
+  --dur-entrada: 700ms;
+  --dur-selector: 200ms;
+  --dur-hover: 150ms;
+  --desplazamiento-entrada: 24px;
+
+  /* 8.9 Foco */
+  --foco: 2px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --ret-columnas: 8;
+    --ret-margen: var(--e-40);
+    --ret-canal: var(--e-24);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --ret-columnas: 12;
+    --ret-margen: var(--e-64);
+  }
+}
+
+@theme inline {
+  --color-papel: var(--papel);
+  --color-tinta: var(--tinta);
+  --color-gris: var(--gris);
+  --color-rojo: var(--rojo);
+  --color-rojo-texto: var(--rojo-texto);
+  --color-negro: var(--negro);
+  --color-gris-claro: var(--gris-claro);
+  --color-rojo-claro: var(--rojo-claro);
+
+  --font-titular: var(--font-archivo), sans-serif;
+  --font-texto: var(--font-archivo), sans-serif;
+  --font-dato: var(--font-plex-mono), monospace;
+
+  --text-13: 13px;
+  --text-13--line-height: 1.45;
+  --text-15: 15px;
+  --text-15--line-height: 1.5;
+  --text-17: 17px;
+  --text-17--line-height: 1.55;
+  --text-21: 21px;
+  --text-21--line-height: 1.35;
+  --text-28: 28px;
+  --text-28--line-height: 1.2;
+
+  --spacing-e4: 4px;
+  --spacing-e8: 8px;
+  --spacing-e12: 12px;
+  --spacing-e16: 16px;
+  --spacing-e24: 24px;
+  --spacing-e40: 40px;
+  --spacing-e64: 64px;
+  --spacing-e104: 104px;
+  --spacing-e168: 168px;
+
+  --radius-ed: 0;
+
+  --ease-entrada: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Las tres voces (8.3). */
+.voz-titular {
+  font-family: var(--font-archivo), sans-serif;
+  font-variation-settings: "wdth" 62;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.82;
+  letter-spacing: 0;
+}
+.voz-texto {
+  font-family: var(--font-archivo), sans-serif;
+  font-variation-settings: "wdth" 100;
+  font-weight: 400;
+}
+.voz-texto-fuerte {
+  font-family: var(--font-archivo), sans-serif;
+  font-variation-settings: "wdth" 100;
+  font-weight: 600;
+}
+.voz-dato {
+  font-family: var(--font-plex-mono), monospace;
+  font-weight: 400;
+}
+.voz-dato-fuerte {
+  font-family: var(--font-plex-mono), monospace;
+  font-weight: 500;
+}
+
+/* Párrafos a 62 caracteres como máximo (8.3). */
+.medida {
+  max-width: 62ch;
+}
+
+/* Titular de portada. DIEGO ocupa 7 de 12 columnas en escritorio, el ancho completo en tablet y celular.
+   El contenedor de la portada lleva .portada-medida (container-type) y el cálculo usa 100cqi. */
+.portada-medida {
+  container-type: inline-size;
+}
+.titular-portada {
+  font-size: max(var(--titular-min), calc((100cqi - 2 * var(--ret-margen)) / var(--titular-k)));
+}
+@media (min-width: 1024px) {
+  .titular-portada {
+    /* 7 columnas más 6 canales de una retícula de 12 */
+    font-size: calc(
+      ((min(100cqi, var(--ret-max)) - 2 * var(--ret-margen) - 11 * var(--ret-canal)) * 7 / 12 + 6 * var(--ret-canal)) /
+        var(--titular-k)
+    );
+  }
+}
+
+/* Retícula 12/8/4 (8.4). */
+.reticula {
+  display: grid;
+  grid-template-columns: repeat(var(--ret-columnas), minmax(0, 1fr));
+  column-gap: var(--ret-canal);
+  padding-inline: var(--ret-margen);
+  max-width: var(--ret-max);
+  margin-inline: auto;
+}
+
+/* Filete de sección: filete de 1 px, cuadrado y rótulo mono (repertorio 8.5). */
+.filete-seccion {
+  display: flex;
+  align-items: center;
+  gap: var(--e-12);
+  border-top: var(--filete) solid currentColor;
+  padding-top: var(--e-12);
+}
+.filete-seccion::before {
+  content: "";
+  width: var(--e-8);
+  height: var(--e-8);
+  background: currentColor;
+  flex: none;
+}
+
+/* Superficies. El foco cambia de color con la superficie (8.9). */
+.sup-papel {
+  background: var(--papel);
+  color: var(--tinta);
+  --color-foco: var(--tinta);
+}
+.sup-negro {
+  background: var(--negro);
+  color: var(--papel);
+  --color-foco: var(--papel);
+}
+.sup-papel :focus-visible,
+.sup-negro :focus-visible {
+  outline: var(--foco) solid var(--color-foco);
+  outline-offset: var(--e-4);
+}
+
+/* Botones. El rojo no rellena botones (referente Freshman, anexo 5). */
+.boton-ed {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-12);
+  min-height: 44px;
+  padding: var(--e-12) var(--e-24);
+  border: var(--filete) solid currentColor;
+  border-radius: var(--radio);
+  font-family: var(--font-archivo), sans-serif;
+  font-variation-settings: "wdth" 100;
+  font-weight: 600;
+  font-size: var(--t-15);
+  line-height: 1.2;
+  text-decoration: none;
+}
+.sup-papel .boton-ed-primario {
+  background: var(--tinta);
+  border-color: var(--tinta);
+  color: var(--papel);
+}
+.sup-negro .boton-ed-primario {
+  background: var(--papel);
+  border-color: var(--papel);
+  color: var(--negro);
+}
+.boton-ed-secundario {
+  background: transparent;
+}
+.boton-ed .icono-ed {
+  transition: transform var(--dur-hover) var(--curva-salida);
+}
+.boton-ed:hover .icono-ed-diagonal {
+  transform: translate(var(--e-4), calc(-1 * var(--e-4)));
+}
+.boton-ed:hover .icono-ed-abajo {
+  transform: translateY(var(--e-4));
+}
+@media (prefers-reduced-motion: reduce) {
+  .boton-ed .icono-ed {
+    transition: none;
+  }
+  .boton-ed:hover .icono-ed {
+    transform: none;
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }

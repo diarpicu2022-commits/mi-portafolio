@@ -144,6 +144,35 @@ Reglas. Un solo bloque rojo por pantalla visible. Sobre el bloque rojo no va tex
 
 Escala de texto fija: 13, 15, 17, 21 y 28 px. El titular es fluido y se calcula desde la retícula, no a ojo. En portada la palabra DIEGO ocupa 7 de 12 columnas en escritorio y el ancho completo en celular. El tamaño exacto sale de medir el ancho real de la palabra con la fuente cargada en el paso de tokens y se anota aquí. Párrafos con un máximo de 62 caracteres por línea.
 
+**Tamaño medido del titular de portada.** Medido el 10 de noviembre de 2026 con Playwright y Chromium, con Archivo ya cargada (ancho 62, peso 900, mayúsculas). El método está en la sección 11.
+
+| Palabra | Avance | Tinta | Sangría izquierda de la tinta |
+|---|---|---|---|
+| DIEGO | 2.3310 em | 2.26 em | 0.04 em |
+| PINTA | 2.2110 em | 2.17 em | 0.04 em |
+
+El tamaño se calcula con el avance de DIEGO, que es la caja que ocupa la palabra en la retícula. La constante queda en `--titular-k: 2.331`.
+
+| Ancho | Retícula | DIEGO ocupa | Ancho objetivo | font-size |
+|---|---|---|---|---|
+| 1440 | 12 col, margen 64, canal 24 | 7 de 12 | 755.3 px | 324.0 px |
+| 768 | 8 col, margen 40, canal 24 | 8 de 8 | 688.0 px | 295.2 px |
+| 390 | 4 col, margen 20, canal 16 | 4 de 4 | 350.0 px | 150.1 px |
+
+En vez de un `clamp()` aproximado, el token es la fórmula exacta de la retícula sobre el ancho del contenedor de la portada (`100cqi`, con `container-type: inline-size`).
+
+- Celular y tablet: `(100cqi - 2 × margen) / 2.331`.
+- Escritorio desde 1024 px: `((min(100cqi, 1440px) - 2 × 64 - 11 × 24) × 7/12 + 6 × 24) / 2.331`.
+- Piso de 40 px, como fija esta sección.
+
+Con interlínea 0.82 las dos líneas caben con 72 px de navegación y 160 px de franja inferior.
+
+| Pantalla | Alto de las dos líneas | Disponible | Sobra |
+|---|---|---|---|
+| 1440 × 900 | 531.4 px | 668 px | 136.6 px |
+| 390 × 844 | 246.2 px | 612 px | 365.8 px |
+| 768 × 1024 | 484.0 px | 792 px | 308.0 px |
+
 ### 8.4 Retícula y espacio
 
 - 12 columnas en escritorio, 8 en tablet, 4 en celular. Margen lateral de 64, 40 y 20 px. Canal de 24 px, 16 en celular.
@@ -219,3 +248,72 @@ Tokens, portada (componente clave), esqueleto de la página, selector, resto de 
 ## 10. Verificación prevista
 
 Playwright en 390, 768 y 1440 px, consola limpia, contraste medido sobre la captura, recorrido por teclado, `prefers-reduced-motion`, y las pruebas existentes (`lint`, `test`, `e2e`, `build`). Los resultados se anotan aquí, incluidos los fallos.
+
+## 11. Verificación del paso 1
+
+Paso 1, tokens. 10 de noviembre de 2026. Rama `feature/rediseno-editorial`.
+
+### Qué se hizo
+
+- Fuentes con `next/font/google`. Archivo variable con eje `wdth` (62 a 125) y peso 100 a 900, e IBM Plex Mono 400 y 500. Quedan como `--font-archivo` y `--font-plex-mono` junto a Geist y Press Start 2P, que siguen en uso en la página actual.
+- Tokens del contrato en `app/globals.css` con nombres en español que no pisan los actuales. Color 8.2, escala de texto 8.3, espacio y retícula 8.4, radio 0, filete 1 px, curvas y duraciones 8.8, foco 8.9.
+- Clases de las tres voces: `.voz-titular`, `.voz-texto`, `.voz-texto-fuerte`, `.voz-dato`, `.voz-dato-fuerte`.
+- Iconos en `components/editorial/iconos.tsx`. Flecha diagonal y flecha abajo, trazo de 1.5 px que no escala, puntas rectas.
+- Hoja de especímenes en `/sistema`, con `noindex, nofollow`.
+
+### Cómo se comprobó que las fuentes cargan
+
+En el navegador, `document.fonts` lista Archivo con peso 100 a 900 y ancho 62 % a 125 %, e IBM Plex Mono 400 y 500, todas con estado `loaded`. El estilo calculado del titular da `font-family: Archivo`, `font-variation-settings: "wdth" 62` y peso 900.
+
+### Medición del titular
+
+Cada palabra se compuso a 400 px sobre fondo blanco. Se leyó su caja de avance con `getBoundingClientRect` y su caja de tinta recorriendo los píxeles de la captura. Después se cargó `/sistema` en cada ancho y se leyó el resultado real.
+
+| Ancho | font-size calculado | DIEGO medido | Objetivo | PINTA medido |
+|---|---|---|---|---|
+| 390 | 150.15 px | 350.0 px | 350.0 px | 332.0 px |
+| 768 | 295.15 px | 688.0 px | 688.0 px | 652.6 px |
+| 1440 | 324.04 px | 755.3 px | 755.3 px | 716.4 px |
+
+PINTA es más corta que DIEGO en todos los anchos, así que no desborda.
+
+### Contraste muestreado sobre el render
+
+Píxel del bloque de color y píxel del fondo de cada tarjeta, tomados de la captura de página completa a 1440 px.
+
+| Par | Frente | Fondo | Razón |
+|---|---|---|---|
+| tinta sobre papel | #121211 | #F1ECE2 | 15.92 |
+| gris sobre papel | #5A554C | #F1ECE2 | 6.28 |
+| rojo sobre papel | #D92B1F | #F1ECE2 | 4.13 |
+| rojo-texto sobre papel | #B81F14 | #F1ECE2 | 5.50 |
+| papel sobre negro | #F1ECE2 | #0D0D0C | 16.52 |
+| gris-claro sobre negro | #A39E94 | #0D0D0C | 7.29 |
+| rojo-claro sobre negro | #FF4A3D | #0D0D0C | 5.83 |
+
+Coinciden con la tabla 8.2. El rojo sobre papel solo vale para texto de 24 px o más.
+
+### Resto de comprobaciones
+
+- Capturas en `docs/pantallazos/rediseno/` con los nombres `Sistema 390.png`, `Sistema 768.png`, `Sistema 1440.png` y `Sistema 1440 foco.png`.
+- Consola sin errores ni avisos en 390, 768 y 1440.
+- Sin desplazamiento horizontal en los tres anchos. El ancho del documento es igual al de la ventana.
+- La retícula muestra 4, 8 y 12 columnas en los tres anchos.
+- Teclado. Los cuatro botones reciben foco en orden. Contorno de 2 px en papel sobre negro y en tinta sobre papel. Alto de 44 px.
+- `prefers-reduced-motion`. Con `reduce` la flecha del botón no se mueve al pasar el puntero. Sin él baja 4 px.
+- `npm run lint` sin errores. `npm test` 31 de 31. `npm run e2e` 16 de 16. `npm run build` correcto.
+
+### Fallos y puntos donde el contrato no cuadra
+
+1. Fallo propio corregido. En la primera versión de la hoja los datos de cada tarjeta iban en el color del par. El rojo sobre papel quedaba en texto de 13 px con 4.13, lo que 8.2 prohíbe. Ahora los datos van en el color de la superficie.
+2. El margen de 20 px en celular (8.4) no está en la escala de espacio de la misma sección. Se usó 20 px porque lo fija el contrato. Hace falta decidir si 20 entra en la escala.
+3. El contrato no dice desde qué ancho hay 12 columnas. Se tomó 1024 px. Entre 768 y 1023 px DIEGO ocupa todo el ancho y el titular crece hasta 404.5 px a 1023 px. Ahí las dos líneas miden 663 px y con navegación y franja piden 895 px de alto. En una tablet apaisada de menos de 1024 px de ancho no caben. Hay tres opciones. Limitar el tamaño también por el alto de la pantalla, pasar a 12 columnas antes, o aceptar que en ese rango la franja inferior quede bajo el pliegue.
+4. La tinta de DIEGO empieza 0.04 em a la derecha del borde de la columna (13 px a 1440) y termina unos 10 px antes del borde de la séptima columna. El tamaño se calculó con la caja de avance. Si se quiere alineación óptica hace falta una compensación negativa de 0.04 em, que no sale de la escala de espacio. Queda para decidir en la portada.
+5. La skill `design-taste-frontend` pide no dibujar iconos a mano. El contrato 8.5 fija dos iconos dibujados en SVG y manda el contrato.
+6. La hoja de especímenes enseña varios rojos a la vez. La regla de un solo bloque rojo por pantalla se aplica a las páginas del sitio, no a esta hoja interna.
+
+### Pendiente
+
+- Recorrido por teclado completo y reduced motion de la portada, que aún no existe.
+- La comparativa contra referentes se hace en el paso de portada, porque esta hoja no es una pieza de marca.
+
