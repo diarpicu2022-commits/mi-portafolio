@@ -255,6 +255,11 @@ Aprobada por Diego el 10 de noviembre de 2026, al revisar el paso 3.
 
 8. Experiencia y formación van como dos secciones seguidas, cada una con su enlace en la navegación.
 
+Aprobadas por Diego el 10 de noviembre de 2026, al revisar el paso 4.
+
+9. El número del proyecto elegido en el selector puede ir en titular condensado grande. Es la segunda y última excepción a la regla de que el titular solo nombra.
+10. Los proyectos con captura real van primero en el orden del selector. La numeración sigue ese orden en todo el sitio.
+
 Foto. Diego va a tomarse una nueva o a buscar el original. La portada debe aceptar el cambio con solo reemplazar el archivo en `public/retrato/`. Mientras tanto sigue el tope de 560 px de alto.
 
 ## 9. Legal y privacidad
@@ -553,4 +558,27 @@ Capturas en `docs/pantallazos/rediseno/`. Son `Selector 390 primero sin captura 
 3. Ocho de once proyectos no tienen captura. El selector se apoya mucho en la placa roja. Cuando lleguen capturas de esos repositorios se agregan en `data/projects.ts`.
 4. A 1024 px la ficha mide 206 px de ancho y la sección crece a 1156 px. Una ficha más ancha quitaría columnas al escenario.
 5. Las capturas ya no se cargan de golpe, pero sin JavaScript sí bajan las tres al llegar a la sección.
+
+## 15. Verificación de los ajustes del selector, el paso 5 y la privacidad
+
+### 15.1 Ajustes del selector
+
+- Enmienda 9. El número del elegido va en titular condensado, rojo claro sobre negro, encima del nombre en la ficha. Mide 80 px en celular, 104 px en tablet y 160 px desde 1280. Es la mitad del nombre de portada o menos en cada ancho.
+- Desde 1280 px el escenario ocupa 5 columnas y la ficha 4. Entre 768 y 1279 la ficha baja debajo del escenario. Los rótulos de dato van encima de su valor.
+- Medido en los once proyectos, el cargo y las tecnologías no pasan de dos líneas en ningún ancho. La ficha mide 350 px a 390, 421 a 768, 666 a 1024, 368 a 1280 y 421 a 1440.
+- El alto de la sección sigue constante con los once. Mide 1377 px a 390, 1522 a 768, 1501 a 1024 y 1082 a 1440.
+- Enmienda 10. El orden cambió en `data/projects.ts`. Primero van los proyectos con captura. SISCAN, Ecos de la Tierra, NotaScan, CampusWatch / Agenda y SETPasto+. Después AgroPulse, HidroMon, Harmonia, Proxy IA, EcoVolt y Tower Defense. La numeración, las páginas de caso («Siguiente proyecto») y el selector siguen ese orden. La experiencia se ordena por fecha y no cambia. El CV usa la experiencia y busca los proyectos por id, así que no depende del orden y no se regeneró.
+
+Capturas nuevas, tomadas de los repositorios públicos de Diego con `gh api`, sin clonar.
+
+| Proyecto | Origen | Archivo en el sitio | Medidas |
+|---|---|---|---|
+| CampusWatch / Agenda | `agenda-android`, `docs/capturas/cw-en-principal.png` | `public/projects/campuswatch-esferas.webp` | 1200 × 600 |
+| SETPasto+ | `Taller-Contenido--voz-y-internacionalizacion`, `shots/indicadores-es.png`, primer pantallazo recortado a 1440 × 900 | `public/projects/setpasto-indicadores.webp` | 1280 × 800 |
+
+- Se revisaron los repositorios de AgroPulse (firmware, backend y frontend), HidroMon, Harmonia, Proxy IA (backend y frontend), EcoVolt y Tower Defense. Ninguno trae capturas de la interfaz.
+- El README de HidroMon solo tiene insignias. `proxy-ai-frontend/src/assets/hero.png` es la ilustración de la plantilla de Vite, no una captura, y se descartó.
+- Esos seis proyectos siguen con la placa.
+- Resolución efectiva a 1440. CampusWatch se pinta a 493 × 246 y SETPasto+ a 493 × 308, los dos desde archivos de 640 px. Ninguna captura se amplía en ningún ancho.
+- Carga inicial. Bajan el retrato (31 KB) y la captura del primer proyecto, SISCAN (32 KB).
 

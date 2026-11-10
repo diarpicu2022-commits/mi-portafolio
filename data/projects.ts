@@ -42,19 +42,7 @@ type ProjectBase = Omit<Project, keyof CaseStudy | "image"> & {
 
 // Every fact below comes from the project's own repository (README, manifests or source tree).
 const base: ProjectBase[] = [
-  {
-    id: "agropulse",
-    name: "AgroPulse",
-    start: "2026-03",
-    end: "2026-05",
-    status: "complete",
-    technologies: ["ESP32", "C++", "PlatformIO", "Java 17", "Spring Boot", "Supabase", "Docker", "React", "TypeScript"],
-    links: [
-      { label: "Firmware", url: `${GH}/firmware-AgroPulse` },
-      { label: "Backend", url: `${GH}/backend-AgroPulse` },
-      { label: "Frontend", url: `${GH}/frontend-AgroPulse` },
-    ],
-  },
+  // Enmienda 10: primero los proyectos con captura real. La numeración del sitio sigue este orden.
   {
     id: "siscan",
     name: "SISCAN",
@@ -123,6 +111,48 @@ const base: ProjectBase[] = [
     status: "in-progress",
     technologies: ["Kotlin", "Jetpack Compose", "Wear OS", "Room", "SQLCipher"],
     links: [{ label: "GitHub", url: `${GH}/agenda-android` }],
+    // github.com/diarpicu2022-commits/agenda-android, docs/capturas/cw-en-principal.png (esferas del reloj, en inglés).
+    image: {
+      src: "/projects/campuswatch-esferas.webp",
+      width: 1200,
+      height: 600,
+      alt: {
+        es: "Ocho esferas de CampusWatch en el reloj: tiempo para salir, clase en curso, examen y turno, con la interfaz en inglés.",
+        en: "Eight CampusWatch watch faces: time to leave, class in progress, exam and shift.",
+      },
+    },
+  },
+  {
+    id: "setpasto",
+    name: "SETPasto+",
+    start: "2026-08",
+    end: "2026-08",
+    status: "complete",
+    technologies: ["Node.js", "Express", "EJS", "Tailwind"],
+    links: [{ label: "GitHub", url: `${GH}/Taller-Contenido--voz-y-internacionalizacion` }],
+    // github.com/diarpicu2022-commits/Taller-Contenido--voz-y-internacionalizacion, shots/indicadores-es.png (primer pantallazo recortado a 1440 × 900).
+    image: {
+      src: "/projects/setpasto-indicadores.webp",
+      width: 1280,
+      height: 800,
+      alt: {
+        es: "Página de indicadores de SETPasto+: cumplimiento de itinerario, espera promedio, satisfacción y PQRSD respondidas.",
+        en: "SETPasto+ indicators page: schedule compliance, average wait, satisfaction and answered requests.",
+      },
+    },
+  },
+  {
+    id: "agropulse",
+    name: "AgroPulse",
+    start: "2026-03",
+    end: "2026-05",
+    status: "complete",
+    technologies: ["ESP32", "C++", "PlatformIO", "Java 17", "Spring Boot", "Supabase", "Docker", "React", "TypeScript"],
+    links: [
+      { label: "Firmware", url: `${GH}/firmware-AgroPulse` },
+      { label: "Backend", url: `${GH}/backend-AgroPulse` },
+      { label: "Frontend", url: `${GH}/frontend-AgroPulse` },
+    ],
   },
   {
     id: "hidromon",
@@ -162,15 +192,6 @@ const base: ProjectBase[] = [
     status: "complete",
     technologies: ["Python", "FastAPI"],
     links: [{ label: "GitHub", url: `${GH}/EcoVolt` }],
-  },
-  {
-    id: "setpasto",
-    name: "SETPasto+",
-    start: "2026-08",
-    end: "2026-08",
-    status: "complete",
-    technologies: ["Node.js", "Express", "EJS", "Tailwind"],
-    links: [{ label: "GitHub", url: `${GH}/Taller-Contenido--voz-y-internacionalizacion` }],
   },
   {
     id: "tower-defense",

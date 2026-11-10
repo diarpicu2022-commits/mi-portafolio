@@ -122,7 +122,7 @@ export function SelectorProyectos({ locale }: { locale: Locale }) {
                         alt={p.image.alt}
                         width={p.image.width}
                         height={p.image.height}
-                        sizes="(min-width: 1024px) 600px, (min-width: 768px) 380px, 90vw"
+                        sizes="(min-width: 1280px) 500px, (min-width: 1024px) 630px, (min-width: 768px) 380px, 90vw"
                         loading="lazy"
                       />
                     ) : (
@@ -140,7 +140,9 @@ export function SelectorProyectos({ locale }: { locale: Locale }) {
               </div>
 
               <div className="selector-ficha voz-dato">
-                <p className="voz-dato-fuerte text-28">{numero(i)}</p>
+                <p aria-hidden="true" className="selector-numero voz-titular">
+                  {numero(i)}
+                </p>
                 <h3 className="selector-nombre voz-titular">{p.name}</h3>
                 <p className="voz-texto medida text-15 text-gris-claro">{p.summary}</p>
                 <dl className="selector-datos text-13">

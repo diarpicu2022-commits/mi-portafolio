@@ -559,10 +559,20 @@
 .selector-nombre {
   font-size: var(--titular-min);
 }
+/* Enmienda 9. Número del elegido en titular, la mitad del nombre de portada o menos.
+   Rojo claro sobre negro (5.83): el rojo señala al elegido, como el bloque. */
+.selector-numero {
+  font-size: 80px;
+  color: var(--rojo-claro);
+  margin-bottom: calc(-1 * var(--e-8));
+}
 .selector-datos {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--e-8) var(--e-16);
+  gap: var(--e-4);
+}
+/* Rótulo encima del valor: el valor usa todo el ancho y cargo y tecnologías caben en dos líneas. */
+.selector-datos dd {
+  margin-bottom: var(--e-8);
 }
 .selector-datos dt {
   color: var(--gris-claro);
@@ -603,7 +613,16 @@
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
+  .selector-numero {
+    font-size: 104px;
+  }
+}
+/* Desde 1280 hay sitio para tres columnas: escenario de 5 y ficha de 4. Entre 1024 y 1279 la ficha baja como en tablet. */
+@media (min-width: 1280px) {
+  .selector-numero {
+    font-size: 160px;
+  }
   .selector-paneles {
     grid-template-columns: subgrid;
   }
@@ -614,11 +633,13 @@
     align-items: start;
   }
   .selector-escenario {
-    grid-column: 1 / 7;
+    grid-column: 1 / 6;
   }
   .selector-ficha {
-    grid-column: 7 / -1;
+    grid-column: 6 / -1;
   }
+}
+@media (min-width: 1024px) {
   .selector-bloque,
   .selector-placa {
     inset: var(--e-40) 0 0 var(--e-40);

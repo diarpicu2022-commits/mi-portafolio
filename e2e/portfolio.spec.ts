@@ -79,6 +79,8 @@ test("unknown pages show the themed 404 and social image exists", async ({ page,
 test("case studies are reachable from the project list and keep the language", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
+  // AgroPulse ya no es el primero (enmienda 10): se elige en el selector antes de abrir su caso.
+  await page.getByRole("tab", { name: /AgroPulse/ }).click();
   await page.getByRole("link", { name: "Ver caso de estudio: AgroPulse" }).click();
   await expect(page).toHaveURL(/\/proyectos\/agropulse$/);
   await expect(page.getByRole("heading", { level: 1, name: "AgroPulse" })).toBeVisible();
@@ -86,7 +88,7 @@ test("case studies are reachable from the project list and keep the language", a
   await expect(page).toHaveURL(/\/en\/projects\/agropulse$/);
   await expect(page.getByRole("heading", { name: "The challenge" })).toBeVisible();
   await page.getByRole("navigation", { name: "Next project" }).getByRole("link").click();
-  await expect(page).toHaveURL(/\/en\/projects\/siscan$/);
+  await expect(page).toHaveURL(/\/en\/projects\/hidromon$/);
 });
 
 test("content stays visible with reduced motion", async ({ browser }) => {
@@ -153,9 +155,9 @@ test("project selector works with the keyboard and keeps the section height", as
   await primera.focus();
   const alto = await page.locator("#proyectos").evaluate((el) => el.getBoundingClientRect().height);
   await page.keyboard.press("ArrowDown");
-  await expect(lista.getByRole("tab", { name: /SISCAN/ })).toBeFocused();
-  await expect(lista.getByRole("tab", { name: /SISCAN/ })).toHaveAttribute("aria-selected", "true");
-  await expect(page.getByRole("tabpanel", { name: /SISCAN/ })).toBeVisible();
+  await expect(lista.getByRole("tab", { name: /Ecos de la Tierra/ })).toBeFocused();
+  await expect(lista.getByRole("tab", { name: /Ecos de la Tierra/ })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("tabpanel", { name: /Ecos de la Tierra/ })).toBeVisible();
   await page.keyboard.press("End");
   await expect(lista.getByRole("tab", { name: /Tower Defense/ })).toHaveAttribute("aria-selected", "true");
   await page.keyboard.press("Home");
@@ -164,7 +166,7 @@ test("project selector works with the keyboard and keeps the section height", as
   const anim = await page.locator(".selector-panel[data-activo] .selector-anima").evaluate((el) => getComputedStyle(el).animationName);
   expect(anim).toBe("none");
   expect(await page.locator("#proyectos").evaluate((el) => el.getBoundingClientRect().height)).toBe(alto);
-  await expect(page).toHaveURL(/#proyecto-agropulse$/);
+  await expect(page).toHaveURL(/#proyecto-siscan$/);
 });
 
 test("a direct link selects the project; missing capture and demo have their states", async ({ page }) => {
