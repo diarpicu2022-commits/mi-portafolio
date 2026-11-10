@@ -1,6 +1,8 @@
 import { FlechaAbajo, FlechaDiagonal } from "@/components/editorial/iconos";
 import { RetratoPortada } from "@/components/editorial/retrato-portada";
-import { getPortfolio, type Locale } from "@/data/portfolio";
+import type { CSSProperties } from "react";
+
+import { getPortfolio, retrato, retratoTope, type Locale } from "@/data/portfolio";
 
 /**
  * Portada del rediseño editorial (contrato 8.1, 8.5, 8.6 y 8.7 punto 2).
@@ -12,10 +14,15 @@ export function Portada({ locale, projectsHref = "#proyectos" }: { locale: Local
   const proyectos = projects.length;
   // Programas de ingeniería en la formación: «Ingeniería …» en español, «… Engineering …» en inglés.
   const ingenierias = education.filter((e) => /ingenier|engineering/i.test(e.title)).length;
+  const anchoTope = Math.round((retratoTope * retrato.ancho) / retrato.alto);
+  const variables = {
+    "--retrato-proporcion": `${retrato.ancho} / ${retrato.alto}`,
+    "--retrato-tope": `${retratoTope}px`,
+  } as CSSProperties;
 
   return (
     <section className="portada-medida sup-papel voz-texto overflow-hidden">
-      <div className="portada reticula">
+      <div className="portada reticula" style={variables}>
         {/* Fila 1: 72 px reservados para la navegación del paso 3. */}
 
         <div className="portada-cabeza">
@@ -32,16 +39,25 @@ export function Portada({ locale, projectsHref = "#proyectos" }: { locale: Local
         </div>
 
         <div aria-hidden="true" className="portada-bloque" />
-        <RetratoPortada alt={t.portada.portrait} />
+        <RetratoPortada
+          alt={t.portada.portrait}
+          src={retrato.src}
+          sizes={`(min-width: 1024px) ${anchoTope}px, 50vw`}
+        />
+
+        <p className="portada-cifra">
+          <span>
+            <span className="portada-cifra-numero voz-titular">{proyectos}</span>{" "}
+            <span className="portada-cifra-rotulo voz-dato">{t.portada.projects}</span>
+          </span>{" "}
+          <span>
+            <span className="portada-cifra-numero voz-titular">{ingenierias}</span>{" "}
+            <span className="portada-cifra-rotulo voz-dato">{t.portada.degrees}</span>
+          </span>
+        </p>
 
         <div className="portada-franja">
           <p className="portada-frase voz-texto-fuerte text-21 lg:text-28">{identity.tagline}</p>
-          <p className="portada-cifra voz-dato flex flex-wrap items-baseline gap-x-e8">
-            <span className="voz-dato-fuerte text-28">{proyectos}</span>{" "}
-            <span className="text-15">{t.portada.projects},</span>{" "}
-            <span className="voz-dato-fuerte text-28">{ingenierias}</span>{" "}
-            <span className="text-15">{t.portada.degrees}</span>
-          </p>
           <div className="portada-acciones">
             <a href={projectsHref} className="boton-ed boton-ed-primario">
               {t.portada.viewProjects}

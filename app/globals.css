@@ -182,7 +182,8 @@
 .portada-medida > * {
   --nav-alto: 72px;
   --rotulo-alto: calc(var(--t-13) * 1.45 + var(--e-16));
-  --franja-alto: 192px;
+  /* Alto de la franja inferior en celular: frase, un renglón de botones y relleno. */
+  --franja-alto: 136px;
   --escena-min: var(--e-168);
   --fs-ancho: calc((100cqi - 2 * var(--ret-margen)) / var(--titular-k));
   --fs-alto: calc(
@@ -191,6 +192,8 @@
   --fs-portada: max(var(--titular-min), min(var(--fs-ancho), var(--fs-alto)));
   /* Cuánto sube el retrato sobre la base de PINTA en tablet y celular: media línea. */
   --solape: calc(var(--fs-portada) * 0.41);
+  /* Cifra en titular (enmienda 5). Menor que el nombre para que este se lea primero. */
+  --fs-cifra: max(var(--titular-min), calc(var(--fs-portada) * 0.4));
 }
 @media (min-width: 768px) {
   .portada-medida > * {
@@ -200,6 +203,7 @@
 @media (min-width: 1024px) {
   .portada-medida > * {
     --escena-min: 0px;
+    --fs-cifra: max(var(--titular-min), calc(var(--fs-portada) * 0.5));
     /* 7 columnas más 6 canales de una retícula de 12 */
     --fs-ancho: calc(
       ((min(100cqi, var(--ret-max)) - 2 * var(--ret-margen) - 11 * var(--ret-canal)) * 7 / 12 + 6 * var(--ret-canal)) /
@@ -213,7 +217,8 @@
   margin-left: -0.04em;
 }
 
-/* Portada (paso 2). Capas: bloque rojo 0, nombre 1, retrato 2. */
+/* Portada (paso 2, ajustada con las enmiendas 4 a 7). Capas: bloque rojo 0, nombre y cifra 1, retrato 2.
+   Las proporciones y el tope de alto del retrato llegan como variables desde data/portfolio.ts (retrato). */
 .portada {
   position: relative;
   min-height: 100svh;
@@ -235,29 +240,50 @@
   z-index: 0;
   /* Las líneas van explícitas: en un elemento absoluto, «auto» es el borde del contenedor. */
   grid-row: 3 / 4;
-  grid-column: 2 / -1;
+  grid-column: 3 / -1;
   top: 0;
   bottom: 0;
   left: 0;
-  /* A sangre por la derecha, hasta el borde de la ventana. */
+  /* En celular y tablet va a sangre por la derecha. */
   right: calc(-1 * (var(--ret-margen) + max(0px, (100cqi - var(--ret-max)) / 2)));
   background: var(--rojo);
 }
 .portada-retrato {
   position: absolute;
   z-index: 2;
-  /* Las líneas van explícitas: en un elemento absoluto, «auto» es el borde del contenedor. */
   grid-row: 3 / 4;
-  grid-column: 2 / -1;
+  grid-column: 3 / -1;
   bottom: 0;
   left: 0;
   right: 0;
   margin-inline: auto;
-  height: min(560px, calc(100% + var(--solape)));
-  aspect-ratio: 409 / 843;
+  height: min(var(--retrato-tope), calc(100% + var(--solape)));
+  aspect-ratio: var(--retrato-proporcion);
+  max-width: 100%;
 }
 .portada-retrato[data-error] {
   display: none;
+}
+.portada-cifra {
+  grid-row: 3;
+  grid-column: 1 / 3;
+  align-self: end;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-16);
+  padding-bottom: var(--e-24);
+}
+.portada-cifra-numero {
+  display: block;
+  font-size: var(--fs-cifra);
+}
+.portada-cifra-rotulo {
+  display: block;
+  font-size: var(--t-13);
+  line-height: 1.45;
+  margin-top: var(--e-8);
 }
 .portada-franja {
   grid-row: 4;
@@ -265,14 +291,13 @@
   display: grid;
   grid-template-columns: subgrid;
   row-gap: var(--e-16);
-  align-items: start;
+  align-items: center;
   border-top: var(--filete) solid var(--tinta);
   padding-block: var(--e-24);
   position: relative;
   z-index: 1;
 }
 .portada-frase,
-.portada-cifra,
 .portada-acciones {
   grid-column: 1 / -1;
 }
@@ -281,19 +306,28 @@
   flex-wrap: wrap;
   gap: var(--e-12);
 }
+@media (max-width: 767px) {
+  /* Los dos botones caben en un renglón con 16 px de relleno lateral. */
+  .portada-acciones .boton-ed {
+    padding-inline: var(--e-16);
+  }
+}
 
 @media (min-width: 768px) {
-  .portada-bloque {
-    grid-column: 4 / -1;
-  }
+  .portada-bloque,
   .portada-retrato {
     grid-column: 4 / -1;
   }
-  .portada-frase {
-    grid-column: 1 / 5;
-  }
   .portada-cifra {
-    grid-column: 5 / -1;
+    grid-column: 1 / 4;
+  }
+  .portada-frase {
+    grid-column: 1 / 4;
+  }
+  /* Cinco columnas: los dos botones caben en un renglón. */
+  .portada-acciones {
+    grid-column: 4 / -1;
+    justify-content: flex-end;
   }
 }
 
@@ -305,35 +339,46 @@
     grid-column: 1 / 8;
     align-self: end;
   }
+  /* Enmienda 4. Sin sangre: el bloque enmarca la figura del pecho abajo y deja la cabeza fuera. */
   .portada-bloque {
     grid-row: 2 / 3;
-    grid-column: 7 / -1;
+    grid-column: 7 / 11;
+    top: auto;
+    right: 0;
+    height: calc(min(var(--retrato-tope), 100%) * 0.8);
   }
   .portada-retrato {
     grid-row: 2 / 3;
     /* Entre 1024 y 1279 el nombre es más estrecho. Una columna más a la derecha deja la O legible. */
     grid-column: 7 / 11;
-    height: min(560px, 100%);
+    height: min(var(--retrato-tope), 100%);
+  }
+  /* Enmienda 5. La cifra en la columna que libera el bloque. */
+  .portada-cifra {
+    grid-row: 2;
+    grid-column: 11 / -1;
+    padding-bottom: 0;
   }
   .portada-franja {
     grid-row: 3;
     min-height: 160px;
   }
   .portada-frase {
-    grid-column: 1 / 5;
-  }
-  .portada-cifra {
-    grid-column: 5 / 9;
+    grid-column: 1 / 7;
   }
   .portada-acciones {
-    grid-column: 9 / -1;
-    justify-content: flex-end;
+    grid-column: 7 / -1;
   }
 }
-
 @media (min-width: 1280px) {
+  .portada-bloque {
+    grid-column: 7 / 10;
+  }
   .portada-retrato {
     grid-column: 6 / 10;
+  }
+  .portada-cifra {
+    grid-column: 10 / -1;
   }
 }
 

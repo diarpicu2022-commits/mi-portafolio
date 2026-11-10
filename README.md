@@ -41,6 +41,15 @@ Tras cambiar los datos, regenera los dos CV (español e inglés):
 npm run cv
 ```
 
+## Cambiar la foto de la portada
+
+La portada lee el retrato de `retrato` en `data/portfolio.ts`. Para cambiar la foto:
+
+1. Copia el archivo nuevo en `public/retrato/`. Mejor en WebP, recortado y con fondo transparente.
+2. En `data/portfolio.ts` cambia `src` por la ruta nueva y pon en `ancho` y `alto` las medidas reales del archivo en píxeles.
+3. No hace falta tocar el CSS. La proporción y el tope de alto salen de esos datos. El tope es `alto / densidadMinima` (1.5), así la foto nunca se pinta más grande de lo que su resolución permite.
+4. Revisa `/sistema/portada` en 390, 768, 1024 y 1440 px.
+
 ## Pruebas
 
 ```bash

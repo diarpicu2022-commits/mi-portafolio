@@ -8,6 +8,20 @@ export const GITHUB_PROFILE = "https://github.com/diarpicu2022-commits";
 export const EMAIL = "diarpicu2022@gmail.com";
 export const NAME = "Diego Armando Pinta Cuasquen";
 
+/**
+ * Retrato de la portada. Para cambiar la foto se reemplaza el archivo y se actualizan ancho y alto
+ * con las medidas en píxeles del archivo nuevo. El layout se adapta solo (ver README).
+ */
+export const retrato = {
+  src: "/retrato/retrato-diego.webp",
+  ancho: 409,
+  alto: 843,
+  /** Densidad mínima de píxeles que se acepta en pantalla. Con 1.5 el tope de alto es alto / 1.5. */
+  densidadMinima: 1.5,
+};
+/** Alto máximo en px CSS al que se pinta el retrato sin perder nitidez. */
+export const retratoTope = Math.floor(retrato.alto / retrato.densidadMinima);
+
 export const homePath: Record<Locale, string> = { es: "/", en: "/en" };
 export const cvPath: Record<Locale, string> = {
   es: "/cv-diego-armando-pinta-cuasquen.pdf",
