@@ -208,7 +208,7 @@ test("privacy page is linked from the footer and deletes the map progress", asyn
   await page.getByRole("contentinfo").getByRole("link", { name: "Política de privacidad" }).click();
   await expect(page).toHaveURL(/\/privacidad$/);
   await expect(page.getByRole("heading", { level: 1, name: "Política de privacidad" })).toBeVisible();
-  await expect(page.getByText("Borrador técnico pendiente de revisión por un abogado.")).toBeVisible();
+  await expect(page.getByText(/borrador|draft/i)).toHaveCount(0);
   await expect(page.getByText(/no muestra un aviso de cookies/)).toBeVisible();
   await page.getByRole("button", { name: "Borrar el progreso del mapa" }).click();
   await expect(page.getByRole("status")).toHaveText(/se borraron/);

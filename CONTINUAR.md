@@ -47,7 +47,8 @@ Nunca publicar cédula, teléfono, dirección ni notas. Tampoco nombres de super
 3. **Capturas reales** de AgroPulse, HidroMon, Harmonia, Proxy IA, EcoVolt y Tower Defense, si las tiene. Hoy llevan ilustración y esquema.
 4. **Confirmar** que la frase «Abierto a prácticas y proyectos» de la portada es cierta.
 5. **Confirmar** que la secadora de la pasantía es la misma línea que SISCAN (el sitio lo dice así).
-6. **Revisión de un abogado** de la política de privacidad (`docs/legal/`), que es borrador técnico.
+6. **Revisión de un abogado** de la política de privacidad (`docs/legal/`). Diego pidió quitar el aviso de borrador del sitio porque lo presenta al profesor y a empresas. La revisión sigue siendo recomendable, pero no se muestra en las páginas.
+8. **Capturas nuevas de los proyectos (esperar autorización de Diego).** Las capturas actuales tienen baja calidad y SISCAN y otros proyectos tienen versiones más nuevas. Cuando Diego lo autorice, sacar capturas nuevas en alta resolución de cada proyecto (corriendo cada app desde su carpeta en `Proyectos Finales`) y poner varias por proyecto (galería en la página de caso y en el collage), porque con una sola se siente vacío.
 7. **Demos públicas** que funcionen, para poner el enlace en cada proyecto. Hoy todos dicen «Sin demo pública».
 
 ### Técnico

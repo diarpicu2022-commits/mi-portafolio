@@ -3,7 +3,7 @@ import { Pie } from "@/components/editorial/pie";
 import { getPortfolio, homePath, type Locale } from "@/data/portfolio";
 import { privacidad, privacyPath } from "@/data/privacidad";
 
-/** Política de privacidad (anexo, sección 9). Borrador técnico pendiente de revisión por un abogado. */
+/** Política de privacidad (anexo, sección 9). */
 export function PaginaPrivacidad({ locale }: { locale: Locale }) {
   const { t } = getPortfolio(locale);
   const p = privacidad[locale];
@@ -34,7 +34,6 @@ export function PaginaPrivacidad({ locale }: { locale: Locale }) {
               {es ? "Versión" : "Version"} {p.version}, {es ? "vigente desde el" : "effective"} {p.vigencia}
             </p>
             <h1 className="voz-titular titular-seccion">{p.titulo}</h1>
-            <p className="aviso-borrador voz-dato-fuerte text-15">{p.aviso}</p>
           </header>
           <div className="col-span-full flex flex-col gap-e40 lg:col-span-8">
             {p.bloques.map((b) => (

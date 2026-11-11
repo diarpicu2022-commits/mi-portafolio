@@ -11,7 +11,7 @@ import path from "node:path";
 
 import { Document, Font, Link, Page, StyleSheet, Text, View, renderToFile } from "@react-pdf/renderer";
 
-import { PORTFOLIO_URL, getPortfolio, locales, projectPath, type Locale } from "../data/portfolio";
+import { LINKEDIN_PROFILE, PORTFOLIO_URL, getPortfolio, locales, projectPath, type Locale } from "../data/portfolio";
 
 const fuente = (archivo: string) => path.join(process.cwd(), "assets", "fuentes", archivo);
 Font.register({
@@ -99,6 +99,9 @@ function Cv({ locale }: { locale: Locale }) {
           </Link>
           <Link src={identity.github} style={s.enlace}>
             {identity.github.replace("https://", "")}
+          </Link>
+          <Link src={LINKEDIN_PROFILE} style={s.enlace}>
+            LinkedIn
           </Link>
           <Link src={portafolio} style={s.enlace}>
             {portafolio.replace("https://", "")}

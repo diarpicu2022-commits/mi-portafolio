@@ -26,7 +26,7 @@ export const privacidad: Record<Locale, Politica> = {
     version: "1.0",
     vigencia: "10 de noviembre de 2026",
     titulo: "Política de privacidad",
-    aviso: "Borrador técnico pendiente de revisión por un abogado.",
+    aviso: "",
     bloques: [
       {
         titulo: "Responsable",
@@ -129,7 +129,7 @@ export const privacidad: Record<Locale, Politica> = {
     version: "1.0",
     vigencia: "November 10, 2026",
     titulo: "Privacy policy",
-    aviso: "Technical draft pending review by a lawyer.",
+    aviso: "",
     bloques: [
       {
         titulo: "Data controller",

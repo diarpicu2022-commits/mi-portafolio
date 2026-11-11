@@ -5,6 +5,7 @@ export type Locale = "es" | "en";
 export const locales: Locale[] = ["es", "en"];
 
 export const GITHUB_PROFILE = "https://github.com/diarpicu2022-commits";
+export const LINKEDIN_PROFILE = "https://www.linkedin.com/in/diego-armando-pinta-cuasquen-a1b908390/";
 export const EMAIL = "diarpicu2022@gmail.com";
 export const NAME = "Diego Armando Pinta Cuasquen";
 /** URL pública del portafolio, tomada del campo «homepage» del repositorio mi-portafolio en GitHub. La usa el CV. */
@@ -579,7 +580,7 @@ const localized = {
       },
       {
         quote:
-          "Diego hizo las plantillas editables de Pasto Noticias y el fondo animado de la pantalla del estudio. Respetó nuestro estilo al detalle, corrigió errores que nosotros no habíamos visto y nos dejó todo listo para usar sin depender de él.",
+          "Diego hizo las plantillas editables de Pasto Noticias y el fondo animado de la pantalla del estudio. Respetó nuestro estilo al detalle, corrigió errores que nosotros no habíamos visto y entregó plantillas que el equipo edita con facilidad.",
         author: "Sebastián Romero Solís",
         role: "Pasto Noticias",
         linkedin: "",
@@ -739,7 +740,7 @@ const localized = {
       },
       {
         quote:
-          "Diego made the editable templates for Pasto Noticias and the animated background for the studio screen. He matched our style in detail, fixed mistakes we had not noticed and left everything ready to use without depending on him.",
+          "Diego made the editable templates for Pasto Noticias and the animated background for the studio screen. He matched our style in detail, fixed mistakes we had not noticed and delivered templates our team edits with ease.",
         author: "Sebastián Romero Solís",
         role: "Pasto Noticias",
         linkedin: "",

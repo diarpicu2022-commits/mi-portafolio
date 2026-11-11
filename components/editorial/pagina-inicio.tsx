@@ -12,8 +12,9 @@ import { Seccion } from "@/components/editorial/seccion";
 import { GaleriaProyectos } from "@/components/editorial/galeria-proyectos";
 import { CintaTecnologias } from "@/components/editorial/cinta-tecnologias";
 import { Revelar } from "@/components/editorial/revelar";
+import { TransicionAnclas } from "@/components/editorial/transicion-anclas";
 import { siteUrl } from "@/app/site-metadata";
-import { getPortfolio, homePath, type Locale } from "@/data/portfolio";
+import { LINKEDIN_PROFILE, getPortfolio, homePath, type Locale } from "@/data/portfolio";
 
 /**
  * Página de inicio del rediseño. Orden de 8.7. Todo el texto sale de data/.
@@ -41,7 +42,7 @@ export function PaginaInicio({ locale }: { locale: Locale }) {
             name: identity.name,
             email: `mailto:${identity.email}`,
             url: `${siteUrl}${homePath[locale]}`,
-            sameAs: [identity.github],
+            sameAs: [identity.github, LINKEDIN_PROFILE].filter(Boolean),
             jobTitle: identity.role,
             alumniOf: education.map((e) => ({ "@type": "CollegeOrUniversity", name: e.place })),
             knowsLanguage: languages.map((l) => l.name),
@@ -53,6 +54,7 @@ export function PaginaInicio({ locale }: { locale: Locale }) {
         <Portada locale={locale} projectsHref={`#${anchors.projects}`} />
         <CintaTecnologias locale={locale} />
         <Revelar />
+        <TransicionAnclas />
 
         {/* Perfil: una entrada grande, la cita del lema al margen y los principios como índice editorial. */}
         <Seccion id={anchors.about} rotulo={`${identity.semester} · ${identity.university}`} titulo={s.aboutTitle}>
@@ -198,6 +200,14 @@ export function PaginaInicio({ locale }: { locale: Locale }) {
                   <FlechaDiagonal tamano={16} />
                 </a>
               </li>
+              {LINKEDIN_PROFILE && (
+                <li>
+                  <a className="nav-ed-enlace -ml-e8 gap-e4 text-17" href={LINKEDIN_PROFILE} target="_blank" rel="noopener noreferrer">
+                    LinkedIn
+                    <FlechaDiagonal tamano={16} />
+                  </a>
+                </li>
+              )}
               <li>
                 <a className="nav-ed-enlace -ml-e8 gap-e4 text-17" href={p.cvPath} download>
                   {t.hero.downloadCv}
