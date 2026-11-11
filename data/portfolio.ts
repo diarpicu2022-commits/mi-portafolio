@@ -481,7 +481,7 @@ const localized = {
         rotulo: "Monitoría · televisión universitaria",
         cargo: "Monitor de televisión",
         lugar: "Universidad de Nariño, CECUN",
-        periodo: "jun 2023 – 2026",
+        periodo: "jun 2023 – actualidad",
         logros: [
           "Edité capítulos del programa Chaski de la Universidad de Nariño en Premiere Pro, entre ellos los de la temporada 4.",
           "Hice el cabezote 2026 de Chaski, la animación de entrada del programa.",
@@ -492,7 +492,7 @@ const localized = {
           { src: "/experiencia/chaski-24.webp", width: 960, height: 540, alt: "Logo de Chaski Udenar al cierre del cabezote" },
           { src: "/experiencia/chaski-05.webp", width: 960, height: 540, alt: "Toma aérea del campus de la Universidad de Nariño en el cabezote" },
         ],
-        tecnologias: ["Premiere Pro", "After Effects", "Cámara", "Motion graphics", "Edición de video"],
+        tecnologias: ["Premiere Pro", "After Effects", "Photoshop", "Cámara", "Motion graphics", "Edición de video"],
       },
       pitch:
         "Estudio Ingeniería Electrónica e Ingeniería de Software, y me interesa justo donde las dos se cruzan: sistemas completos que empiezan en un sensor o un microcontrolador y terminan en una interfaz donde los datos se ven y se controlan.",
@@ -620,7 +620,7 @@ const localized = {
         rotulo: "Teaching assistantship · university TV",
         cargo: "Television assistant",
         lugar: "Universidad de Nariño, CECUN",
-        periodo: "Jun 2023 – 2026",
+        periodo: "Jun 2023 – present",
         logros: [
           "Edited episodes of Chaski, the Universidad de Nariño TV show, in Premiere Pro, including season 4.",
           "Made the 2026 Chaski opening sequence.",
@@ -631,7 +631,7 @@ const localized = {
           { src: "/experiencia/chaski-24.webp", width: 960, height: 540, alt: "Chaski Udenar logo at the end of the opening" },
           { src: "/experiencia/chaski-05.webp", width: 960, height: 540, alt: "Aerial shot of the Universidad de Nariño campus in the opening" },
         ],
-        tecnologias: ["Premiere Pro", "After Effects", "Camera", "Motion graphics", "Video editing"],
+        tecnologias: ["Premiere Pro", "After Effects", "Photoshop", "Camera", "Motion graphics", "Video editing"],
       },
       pitch:
         "I study Electronic Engineering and Software Engineering, and I work right where they meet: complete systems that start at a sensor or a microcontroller and end in an interface where data is seen and controlled.",
