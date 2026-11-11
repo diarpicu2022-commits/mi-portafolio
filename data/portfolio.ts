@@ -477,6 +477,23 @@ const localized = {
         ],
         tecnologias: ["Photoshop", "Motion graphics", "HTML a vídeo", "Montserrat"],
       },
+      monitoria: {
+        rotulo: "Monitoría · televisión universitaria",
+        cargo: "Monitor de televisión",
+        lugar: "Universidad de Nariño, CECUN",
+        periodo: "jun 2023 – actualidad",
+        logros: [
+          "Edité capítulos del programa Chaski de la Universidad de Nariño en Premiere Pro, entre ellos los de la temporada 4.",
+          "Hice el cabezote 2026 de Chaski, la animación de entrada del programa.",
+          "Grabé notas en campo con cámara y diseñé gráficos, títulos y piezas animadas para el canal.",
+        ],
+        imagenes: [
+          { src: "/experiencia/chaski-17.webp", width: 960, height: 540, alt: "Gráficos de colores del cabezote 2026 de Chaski" },
+          { src: "/experiencia/chaski-24.webp", width: 960, height: 540, alt: "Logo de Chaski Udenar al cierre del cabezote" },
+          { src: "/experiencia/chaski-05.webp", width: 960, height: 540, alt: "Toma aérea del campus de la Universidad de Nariño en el cabezote" },
+        ],
+        tecnologias: ["Premiere Pro", "After Effects", "Photoshop", "Cámara", "Motion graphics", "Edición de video"],
+      },
       pitch:
         "Estudio Ingeniería Electrónica e Ingeniería de Software, y me interesa justo donde las dos se cruzan: sistemas completos que empiezan en un sensor o un microcontrolador y terminan en una interfaz donde los datos se ven y se controlan.",
       motto:
@@ -518,6 +535,12 @@ const localized = {
         place: "SENA, Regional Nariño",
         detail:
           "Formación técnica en el proceso del café especial. Cursos cortos del SENA en soporte técnico de equipos de cómputo (2017), postcosecha de frutas y hortalizas (2018) e inglés básico (2022).",
+      },
+      {
+        period: "2022",
+        title: "Técnico en Soporte, Sistemas e Informática",
+        place: "INETCOL",
+        detail: "Programa técnico de cuatro semestres, terminado en octubre de 2022.",
       },
     ],
     languages: [
@@ -593,6 +616,23 @@ const localized = {
         ],
         tecnologias: ["Photoshop", "Motion graphics", "HTML to video", "Montserrat"],
       },
+      monitoria: {
+        rotulo: "Teaching assistantship · university TV",
+        cargo: "Television assistant",
+        lugar: "Universidad de Nariño, CECUN",
+        periodo: "Jun 2023 – present",
+        logros: [
+          "Edited episodes of Chaski, the Universidad de Nariño TV show, in Premiere Pro, including season 4.",
+          "Made the 2026 Chaski opening sequence.",
+          "Shot field stories on camera and designed graphics, titles and animated pieces for the channel.",
+        ],
+        imagenes: [
+          { src: "/experiencia/chaski-17.webp", width: 960, height: 540, alt: "Colourful graphics from the 2026 Chaski opening" },
+          { src: "/experiencia/chaski-24.webp", width: 960, height: 540, alt: "Chaski Udenar logo at the end of the opening" },
+          { src: "/experiencia/chaski-05.webp", width: 960, height: 540, alt: "Aerial shot of the Universidad de Nariño campus in the opening" },
+        ],
+        tecnologias: ["Premiere Pro", "After Effects", "Photoshop", "Camera", "Motion graphics", "Video editing"],
+      },
       pitch:
         "I study Electronic Engineering and Software Engineering, and I work right where they meet: complete systems that start at a sensor or a microcontroller and end in an interface where data is seen and controlled.",
       motto:
@@ -634,6 +674,12 @@ const localized = {
         place: "SENA, Nariño",
         detail:
           "Technical training in the specialty coffee process. Short SENA courses in computer maintenance (2017), fruit and vegetable post-harvest (2018) and basic English (2022).",
+      },
+      {
+        period: "2022",
+        title: "Technician in IT Support and Systems",
+        place: "INETCOL",
+        detail: "Four-semester technical program, completed in October 2022.",
       },
     ],
     languages: [
@@ -678,6 +724,7 @@ export function getPortfolio(locale: Locale) {
     skillGroups: text.skillGroups,
     pasantia: text.identity.pasantia,
     medios: text.identity.medios,
+    monitoria: text.identity.monitoria,
     education: text.education,
     experience: [...projects].sort(byRecency).map((project) => ({
       id: project.id,

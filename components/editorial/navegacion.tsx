@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 
 import { FlechaDiagonal } from "@/components/editorial/iconos";
+import { LogoDP } from "@/components/editorial/logo";
 import { NAME, getPortfolio, homePath, type Locale } from "@/data/portfolio";
 
 /**
@@ -47,10 +48,7 @@ export function Navegacion({ locale, alternate }: { locale: Locale; alternate?: 
       <nav aria-label={t.nav.label} className="reticula h-full items-center">
         <div className="col-span-full flex items-center justify-between gap-e16">
           <a href={alternate ? homePath[locale] : "#contenido"} className="marca2 -ml-e8">
-            <span aria-hidden="true" className="marca2-mono voz-titular">
-              {nombre[0]}
-              {apellido[0]}
-            </span>
+            <LogoDP className="marca2-logo" />
             <span className="marca2-nombre voz-titular">
               {nombre} {apellido}
               <span aria-hidden="true" className="marca2-punto" />

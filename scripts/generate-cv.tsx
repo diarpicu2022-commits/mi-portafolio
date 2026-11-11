@@ -78,7 +78,7 @@ function Cabeza({ children }: { children: string }) {
 }
 
 function Cv({ locale }: { locale: Locale }) {
-  const { identity, skillGroups, education, experience, projects, languages, pasantia, medios } = getPortfolio(locale);
+  const { identity, skillGroups, education, experience, projects, languages, pasantia, medios, monitoria } = getPortfolio(locale);
   const t = titulos[locale];
   const e = etiquetas[locale];
   const porId = new Map(projects.map((p) => [p.id, p]));
@@ -125,18 +125,20 @@ function Cv({ locale }: { locale: Locale }) {
               ))}
             </View>
           ))}
-          <View style={s.puesto} wrap={false}>
-            <View style={s.puestoCabeza}>
-              <Text style={s.puestoTitulo}>
-                {medios.cargo}, {medios.lugar}
-              </Text>
-              <Text style={s.dato}>{medios.periodo}</Text>
+          {[medios, monitoria].map((m) => (
+            <View key={m.lugar} style={s.puesto} wrap={false}>
+              <View style={s.puestoCabeza}>
+                <Text style={s.puestoTitulo}>
+                  {m.cargo}, {m.lugar}
+                </Text>
+                <Text style={s.dato}>{m.periodo}</Text>
+              </View>
+              {m.logros.map((l) => (
+                <Text key={l}>{l}</Text>
+              ))}
+              <Text style={s.tecnologias}>{m.tecnologias.join(", ")}</Text>
             </View>
-            {medios.logros.map((l) => (
-              <Text key={l}>{l}</Text>
-            ))}
-            <Text style={s.tecnologias}>{medios.tecnologias.join(", ")}</Text>
-          </View>
+          ))}
           {experience.map((item) => {
             const p = porId.get(item.id)!;
             return (
