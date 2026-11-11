@@ -43,7 +43,7 @@ Nunca publicar cédula, teléfono, dirección ni notas. Tampoco nombres de super
 ### Depende de Diego
 
 1. **Foto de portada mejor.** De busto, fondo liso, buena luz, archivo original del celular (no por WhatsApp). Se cambia en `public/retrato/` y las medidas en `retrato` de `data/portfolio.ts`. El README explica cómo.
-2. **Testimonios publicados** (PR #13): Germán Obando (director del trabajo de grado, con su LinkedIn), William Mora (CISNA) y Sebastián Romero Solís (Pasto Noticias). Los tres dieron permiso y pidieron que Diego redactara el texto. Falta que cada uno lea su texto y lo confirme. Si alguno pasa su LinkedIn, va en `linkedin` de `testimonials` en `data/portfolio.ts`.
+2. **Testimonios publicados** (PR #12): Germán Obando (director del trabajo de grado, con su LinkedIn), William Mora (CISNA) y Sebastián Romero Solís (Pasto Noticias). Los tres dieron permiso y pidieron que Diego redactara el texto. Falta que cada uno lea su texto y lo confirme. Si alguno pasa su LinkedIn, va en `linkedin` de `testimonials` en `data/portfolio.ts`.
 3. **Capturas reales** de AgroPulse, HidroMon, Harmonia, Proxy IA, EcoVolt y Tower Defense, si las tiene. Hoy llevan ilustración y esquema.
 4. **Confirmar** que la frase «Abierto a prácticas y proyectos» de la portada es cierta.
 5. **Confirmar** que la secadora de la pasantía es la misma línea que SISCAN (el sitio lo dice así).
