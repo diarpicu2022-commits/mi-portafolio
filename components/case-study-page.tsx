@@ -82,6 +82,21 @@ export function CaseStudyPage({ locale, id }: { locale: Locale; id: string }) {
                   }}
                   priority
                 />
+              ) : project.ilustracion ? (
+                <div className="caso-ilustrado">
+                  <Image
+                    src={project.ilustracion.src}
+                    alt={project.ilustracion.alt}
+                    width={project.ilustracion.width}
+                    height={project.ilustracion.height}
+                    sizes="(min-width: 1024px) 740px, 100vw"
+                    className="caso-ilustracion"
+                    priority
+                  />
+                  {project.esquema && (
+                    <EsquemaSistema esquema={project.esquema} rotulo={t.card.diagram} luego={t.card.then} className="caso-esquema" />
+                  )}
+                </div>
               ) : (
                 project.esquema && (
                   <EsquemaSistema esquema={project.esquema} rotulo={t.card.diagram} luego={t.card.then} className="caso-esquema" />
