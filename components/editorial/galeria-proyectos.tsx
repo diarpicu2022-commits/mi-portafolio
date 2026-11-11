@@ -86,7 +86,7 @@ export function GaleriaProyectos({ locale }: { locale: Locale }) {
         <div className="flex flex-col gap-e24">
           <div className="flex flex-wrap items-baseline justify-between gap-e16">
             <h3 className="voz-titular text-[clamp(40px,6vw,72px)] leading-[0.9]">{x.mas}</h3>
-            <p className="voz-dato text-13 text-gris-claro">{x.masIntro}</p>
+            {cartas.length > 1 && <p className="voz-dato text-13 text-gris-claro">{x.masIntro}</p>}
           </div>
           <ul className="abanico">
             {cartas.map((p, i) => {

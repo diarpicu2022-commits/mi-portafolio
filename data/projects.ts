@@ -217,6 +217,8 @@ const base: ProjectBase[] = [
       ],
     },
     // Ilustración generada con IA por Diego (hoja «Infografía tecnológica minimalista»), recortada en scripts y llevada al papel.
+    // Capturada del build del repo frontend-AgroPulse servido en local (pantalla de ingreso).
+    image: { src: "/projects/agropulse-login.webp", width: 1440, height: 900, alt: { es: "Pantalla de ingreso de AgroPulse, el sistema inteligente de invernaderos, en tema oscuro.", en: "AgroPulse sign-in screen, the smart greenhouse system, in dark theme." } },
     ilustracion: {
       src: "/projects/ilustraciones/agropulse.webp",
       width: 740,
@@ -275,6 +277,8 @@ const base: ProjectBase[] = [
       ],
     },
     // Ilustración generada con IA por Diego (hoja «Infografía tecnológica minimalista»), recortada en scripts y llevada al papel.
+    // Capturada del build del repo Harmonia (frontend/dist) servido en local.
+    image: { src: "/projects/harmonia-login.webp", width: 1440, height: 900, alt: { es: "Pantalla de ingreso de Harmonia con acceso por correo o con Google.", en: "Harmonia sign-in screen with email or Google access." } },
     ilustracion: {
       src: "/projects/ilustraciones/harmonia.webp",
       width: 740,
@@ -308,6 +312,11 @@ const base: ProjectBase[] = [
       ],
     },
     // Ilustración generada con IA por Diego (hoja «Infografía tecnológica minimalista»), recortada en scripts y llevada al papel.
+    // Capturada ejecutando el repo proxy-ai-frontend en local con Vite.
+    image: { src: "/projects/proxy-ia-chat.webp", width: 1440, height: 900, alt: { es: "Interfaz de chat de ThoughtFlow, el frontend de Proxy IA.", en: "ThoughtFlow chat interface, the Proxy IA frontend." } },
+    galeria: [
+      { src: "/projects/proxy-ia-entrada.webp", width: 1440, height: 900, alt: { es: "Pantalla de entrada de ThoughtFlow, donde se elige el nombre de usuario.", en: "ThoughtFlow entry screen where the username is chosen." } },
+    ],
     ilustracion: {
       src: "/projects/ilustraciones/proxy-ia.webp",
       width: 740,
@@ -337,6 +346,13 @@ const base: ProjectBase[] = [
       ],
     },
     // Ilustración generada con IA por Diego (hoja «Infografía tecnológica minimalista»), recortada en scripts y llevada al papel.
+    // Capturada ejecutando el frontend FastAPI del repo EcoVolt en local.
+    image: { src: "/projects/ecovolt-dashboard.webp", width: 1440, height: 900, alt: { es: "Dashboard solar de EcoVolt con potencia, generación, batería, temperatura y la curva horaria.", en: "EcoVolt solar dashboard with power, generation, battery, temperature and the hourly curve." } },
+    galeria: [
+      { src: "/projects/ecovolt-paneles.webp", width: 1440, height: 900, alt: { es: "Rendimiento por panel solar en EcoVolt.", en: "Per-panel solar performance in EcoVolt." } },
+      { src: "/projects/ecovolt-baterias.webp", width: 1440, height: 900, alt: { es: "Almacenamiento y autonomía de las baterías en EcoVolt.", en: "Battery storage and autonomy in EcoVolt." } },
+      { src: "/projects/ecovolt-alertas.webp", width: 1440, height: 900, alt: { es: "Registro de alertas del sistema en EcoVolt.", en: "System alert log in EcoVolt." } },
+    ],
     ilustracion: {
       src: "/projects/ilustraciones/ecovolt.webp",
       width: 740,
@@ -366,6 +382,11 @@ const base: ProjectBase[] = [
       ],
     },
     // Ilustración generada con IA por Diego (hoja «Infografía tecnológica minimalista»), recortada en scripts y llevada al papel.
+    // Capturada jugando la versión web del repo TowerDefenseDecorator (web/index.html).
+    image: { src: "/projects/tower-defense-oleada.webp", width: 1440, height: 900, alt: { es: "Tower Defense en plena oleada, con torres decoradas defendiendo el camino.", en: "Tower Defense mid-wave, with decorated towers defending the path." } },
+    galeria: [
+      { src: "/projects/tower-defense-tablero.webp", width: 1440, height: 900, alt: { es: "Tablero de Tower Defense con la tienda de torres y el registro de batalla.", en: "Tower Defense board with the tower shop and the battle log." } },
+    ],
     ilustracion: {
       src: "/projects/ilustraciones/tower-defense.webp",
       width: 740,
@@ -736,7 +757,7 @@ const linkLabels: Record<string, string> = {
 };
 
 export function getProjects(locale: Locale): Project[] {
-  return base.map((project) => ({
+  return [...base].sort((x, y) => Number(Boolean(y.image)) - Number(Boolean(x.image))).map((project) => ({
     ...project,
     image: project.image && { ...project.image, alt: project.image.alt[locale] },
     galeria: project.galeria?.map((g) => ({ ...g, alt: g.alt[locale] })),
