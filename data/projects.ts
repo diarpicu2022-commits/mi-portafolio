@@ -32,6 +32,8 @@ export type Project = {
   demo?: string;
   /** Captura real bajo public/projects/, con sus medidas en píxeles y texto alternativo. */
   image?: ProjectImage;
+  /** Capturas adicionales, de la misma calidad, para la galería del caso y el collage. */
+  galeria?: ProjectImage[];
   /** Esquema de sistema cuando no hay captura. Si llega una captura, manda la captura. */
   esquema?: Esquema;
   /** Ilustración cuando no hay captura. Manda sobre el esquema en selector, experiencia e imagen para redes. */
@@ -61,8 +63,9 @@ export type Esquema = {
   etapas: { nodos: { etiqueta: string; detalle: string }[]; enlace?: string }[];
 };
 
-type ProjectBase = Omit<Project, keyof CaseStudy | "image" | "esquema" | "ilustracion"> & {
+type ProjectBase = Omit<Project, keyof CaseStudy | "image" | "esquema" | "ilustracion" | "galeria"> & {
   image?: Omit<ProjectImage, "alt"> & { alt: Record<Locale, string> };
+  galeria?: (Omit<ProjectImage, "alt"> & { alt: Record<Locale, string> })[];
   ilustracion?: Omit<ProjectIlustracion, "alt"> & { alt: Bilingue };
   esquema?: EsquemaBase;
 };
@@ -81,13 +84,18 @@ const base: ProjectBase[] = [
     // App Mobile/docs/sustentacion/img/apk-02-inicio.png (APK en un teléfono, datos de un secador de prueba).
     image: {
       src: "/projects/siscan-inicio.webp",
-      width: 720,
-      height: 1600,
+      width: 900,
+      height: 1948,
       alt: {
         es: "Pantalla de inicio de SISCAN en el celular: humedad del grano al 10,6 %, temperatura y humedad del secador.",
         en: "SISCAN home screen on a phone: grain moisture at 10.6 %, dryer temperature and humidity.",
       },
     },
+    galeria: [
+      { src: "/projects/siscan-pesaje.webp", width: 900, height: 1948, alt: { es: "Registro de pesaje de un lote en SISCAN con la humedad calculada de cada muestra.", en: "SISCAN batch weighing log with the computed moisture of each sample." } },
+      { src: "/projects/siscan-equipo.webp", width: 900, height: 1948, alt: { es: "Pantalla de equipo de SISCAN con ventiladores y calefactores en modo automático o manual.", en: "SISCAN equipment screen with fans and heaters in automatic or manual mode." } },
+      { src: "/projects/siscan-lotes.webp", width: 900, height: 1948, alt: { es: "Lista de lotes de café en SISCAN, en secador y al aire libre.", en: "SISCAN list of coffee batches, in the dryer and in open air." } },
+    ],
   },
   {
     id: "ecos",
@@ -99,14 +107,19 @@ const base: ProjectBase[] = [
     links: [{ label: "GitHub", url: `${GH}/ecos-de-la-tierra` }],
     // Videojuego/docs/ux/capturas/2026-11-04-accion-purifica.png (resolución nativa del juego, 640 × 360).
     image: {
-      src: "/projects/ecos-de-la-tierra-combate.webp",
-      width: 640,
-      height: 360,
+      src: "/projects/ecos-combate.webp",
+      width: 1280,
+      height: 720,
       alt: {
         es: "Combate de Ecos de la Tierra en pixel art: el grupo purifica a la Llama de la Deforestación.",
         en: "Ecos de la Tierra pixel-art battle: the party purifies the Deforestation Flame.",
       },
     },
+    galeria: [
+      { src: "/projects/ecos-titulo.webp", width: 1280, height: 720, alt: { es: "Pantalla de título de Ecos de la Tierra en pixel art.", en: "Ecos de la Tierra pixel art title screen." } },
+      { src: "/projects/ecos-pueblo.webp", width: 1280, height: 720, alt: { es: "Plaza de Valdehoja, el pueblo de inicio del juego.", en: "Valdehoja square, the game's starting village." } },
+      { src: "/projects/ecos-victoria.webp", width: 1280, height: 720, alt: { es: "Pantalla de victoria tras purificar a un jefe.", en: "Victory screen after purifying a boss." } },
+    ],
   },
   {
     id: "notascan",
@@ -121,14 +134,18 @@ const base: ProjectBase[] = [
     ],
     // NotaScan oscuro/notascan-desktop/verify-out/oscuro-login-1440.png (inicio de sesión, sin datos personales).
     image: {
-      src: "/projects/notascan-inicio-de-sesion.webp",
-      width: 1280,
-      height: 800,
+      src: "/projects/notascan-login.webp",
+      width: 1440,
+      height: 900,
       alt: {
         es: "Inicio de sesión de NotaScan en escritorio, tema oscuro, con selector de rol docente, secretaría o rectoría.",
         en: "NotaScan desktop sign-in, dark theme, with a teacher, secretary or principal role selector.",
       },
     },
+    galeria: [
+      { src: "/projects/notascan-panel-claro.webp", width: 1440, height: 900, alt: { es: "Panel docente de NotaScan en tema claro con evaluaciones en curso y notas por verificar.", en: "NotaScan teacher dashboard in light theme with ongoing assessments and grades to verify." } },
+      { src: "/projects/notascan-panel-oscuro.webp", width: 1440, height: 900, alt: { es: "Panel docente de NotaScan en tema oscuro.", en: "NotaScan teacher dashboard in dark theme." } },
+    ],
   },
   {
     id: "campuswatch",
@@ -148,6 +165,10 @@ const base: ProjectBase[] = [
         en: "Eight CampusWatch watch faces: time to leave, class in progress, exam and shift.",
       },
     },
+    galeria: [
+      { src: "/projects/campuswatch-salir.webp", width: 300, height: 300, alt: { es: "Aviso de CampusWatch en el reloj: es hora de salir hacia la clase.", en: "CampusWatch watch alert: time to leave for class." } },
+      { src: "/projects/campuswatch-horario.webp", width: 454, height: 454, alt: { es: "Horario del día en la esfera de CampusWatch.", en: "Today's schedule on the CampusWatch watch face." } },
+    ],
   },
   {
     id: "setpasto",
@@ -167,6 +188,11 @@ const base: ProjectBase[] = [
         en: "SETPasto+ indicators page: schedule compliance, average wait, satisfaction and answered requests.",
       },
     },
+    galeria: [
+      { src: "/projects/setpasto-inicio.webp", width: 1440, height: 900, alt: { es: "Portada de SETPasto+ con el buscador de rutas.", en: "SETPasto+ home page with the route finder." } },
+      { src: "/projects/setpasto-rutas.webp", width: 1440, height: 900, alt: { es: "Tabla de rutas del sistema de transporte de Pasto en SETPasto+.", en: "Pasto transit routes table in SETPasto+." } },
+      { src: "/projects/setpasto-indicadores-oscuro.webp", width: 1440, height: 900, alt: { es: "Indicadores de SETPasto+ en tema oscuro.", en: "SETPasto+ indicators in dark theme." } },
+    ],
   },
   {
     id: "agropulse",
@@ -713,6 +739,7 @@ export function getProjects(locale: Locale): Project[] {
   return base.map((project) => ({
     ...project,
     image: project.image && { ...project.image, alt: project.image.alt[locale] },
+    galeria: project.galeria?.map((g) => ({ ...g, alt: g.alt[locale] })),
     ilustracion: project.ilustracion && { ...project.ilustracion, alt: project.ilustracion.alt[locale] },
     esquema: project.esquema && {
       titulo: project.esquema.titulo[locale],

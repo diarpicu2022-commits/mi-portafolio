@@ -105,6 +105,25 @@ export function CaseStudyPage({ locale, id }: { locale: Locale; id: string }) {
             </div>
           </div>
 
+          {project.galeria && project.galeria.length > 0 && (
+            <section aria-label={locale === "es" ? "Galería" : "Gallery"} className="reticula pb-e64">
+              <ul className={`caso-galeria col-span-full ${project.image && project.image.height > project.image.width ? "caso-galeria-vertical" : ""}`}>
+                {project.galeria.map((extra) => (
+                  <li key={extra.src}>
+                    <Image
+                      src={extra.src}
+                      alt={extra.alt}
+                      width={extra.width}
+                      height={extra.height}
+                      sizes="(min-width: 1024px) 460px, 90vw"
+                      loading="lazy"
+                    />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
           <div className="reticula gap-y-e64 pb-e104">
             <div className="col-span-full flex flex-col gap-e64 lg:col-span-8">
               <section aria-labelledby="contexto" className="caso-bloque-texto">

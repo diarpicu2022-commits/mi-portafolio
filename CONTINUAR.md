@@ -42,13 +42,13 @@ Nunca publicar cédula, teléfono, dirección ni notas. Tampoco nombres de super
 
 ### Depende de Diego
 
-1. **Foto de portada mejor.** De busto, fondo liso, buena luz, archivo original del celular (no por WhatsApp). Se cambia en `public/retrato/` y las medidas en `retrato` de `data/portfolio.ts`. El README explica cómo.
+1. **Fotos de Diego (hecho).** La portada usa `D:/IMAGENES/Pictures/IMG_0200.JPG` (sesión con chaqueta de cuero, recortada en busto y en blanco y negro) y el perfil una polaroid de `IMG_0243.JPG`. La original de la foto vieja no está en los discos. Si cambia la foto, poner un nombre de archivo nuevo en `public/retrato/` para que no la sirva la caché.
 2. **Testimonios publicados** (PR #12): Germán Obando (director del trabajo de grado, con su LinkedIn), William Mora (CISNA) y Sebastián Romero Solís (Pasto Noticias). Los tres dieron permiso y pidieron que Diego redactara el texto. Falta que cada uno lea su texto y lo confirme. Si alguno pasa su LinkedIn, va en `linkedin` de `testimonials` en `data/portfolio.ts`.
 3. **Capturas reales** de AgroPulse, HidroMon, Harmonia, Proxy IA, EcoVolt y Tower Defense, si las tiene. Hoy llevan ilustración y esquema.
 4. **Confirmar** que la frase «Abierto a prácticas y proyectos» de la portada es cierta.
 5. **Confirmar** que la secadora de la pasantía es la misma línea que SISCAN (el sitio lo dice así).
 6. **Revisión de un abogado** de la política de privacidad (`docs/legal/`). Diego pidió quitar el aviso de borrador del sitio porque lo presenta al profesor y a empresas. La revisión sigue siendo recomendable, pero no se muestra en las páginas.
-8. **Capturas nuevas de los proyectos (esperar autorización de Diego).** Las capturas actuales tienen baja calidad y SISCAN y otros proyectos tienen versiones más nuevas. Cuando Diego lo autorice, sacar capturas nuevas en alta resolución de cada proyecto (corriendo cada app desde su carpeta en `Proyectos Finales`) y poner varias por proyecto (galería en la página de caso y en el collage), porque con una sola se siente vacío.
+8. **Capturas de proyectos (hecho en parte).** SISCAN, Ecos de la Tierra, NotaScan, CampusWatch y SETPasto+ tienen captura principal en mejor calidad y galería de 2 o 3 imágenes (campo `galeria` en `data/projects.ts`), tomadas de sus carpetas de pruebas y de sus repos. Siguen sin capturas reales AgroPulse, HidroMon, Harmonia, Proxy IA, EcoVolt y Tower Defense (usan ilustración y esquema). En NotaScan no se usan pantallas con nombres y documentos de estudiantes.
 7. **Demos públicas** que funcionen, para poner el enlace en cada proyecto. Hoy todos dicen «Sin demo pública».
 
 ### Técnico

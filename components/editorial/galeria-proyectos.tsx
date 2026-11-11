@@ -37,6 +37,22 @@ export function GaleriaProyectos({ locale }: { locale: Locale }) {
                   sizes={vertical ? "240px" : "(min-width: 1024px) 560px, 90vw"}
                   className="collage-img"
                 />
+                {p.galeria && p.galeria.length > 0 && (
+                  <div className="collage-extras">
+                    {p.galeria.slice(0, 2).map((extra) => (
+                      <Image
+                        key={extra.src}
+                        src={extra.src}
+                        alt={extra.alt}
+                        width={extra.width}
+                        height={extra.height}
+                        sizes="200px"
+                        loading="lazy"
+                        className="collage-extra"
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
               <div className="collage-texto">
                 <p className="voz-dato text-13 text-rojo-claro">

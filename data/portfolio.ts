@@ -16,9 +16,9 @@ export const PORTFOLIO_URL = "https://mi-portafolio-beta-kohl.vercel.app";
  * con las medidas en píxeles del archivo nuevo. El layout se adapta solo (ver README).
  */
 export const retrato = {
-  src: "/retrato/retrato-diego.webp",
-  ancho: 409,
-  alto: 843,
+  src: "/retrato/retrato-diego-busto.webp",
+  ancho: 1063,
+  alto: 1237,
   /** Densidad mínima de píxeles que se acepta en pantalla. Con 1.5 el tope de alto es alto / 1.5. */
   densidadMinima: 1.5,
 };
