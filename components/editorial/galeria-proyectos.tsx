@@ -78,7 +78,7 @@ export function GaleriaProyectos({ locale }: { locale: Locale }) {
               const giro = (i - (cartas.length - 1) / 2) * 5;
               return (
                 <li key={p.id} id={`proyecto-${p.id}`} className="carta" style={{ ["--giro" as string]: `${giro}deg`, ["--alto" as string]: `${Math.abs(giro) * 2.4}px` }}>
-                  <Link href={projectPath(locale, p.id)} aria-label={`${x.casoLargo}: ${p.name}`} className="carta-enlace">
+                  <div className="carta-enlace">
                     <span className="carta-cabeza voz-dato text-13">
                       <span>{n}</span>
                       <span>{x.ilus}</span>
@@ -95,10 +95,14 @@ export function GaleriaProyectos({ locale }: { locale: Locale }) {
                     )}
                     <h3 className="voz-titular carta-nombre">{p.name}</h3>
                     <span className="carta-resumen text-15">{p.summary}</span>
-                    <span aria-hidden="true" className="carta-pie voz-dato text-13">
+                    <Link
+                      href={projectPath(locale, p.id)}
+                      aria-label={`${x.casoLargo}: ${p.name}`}
+                      className="carta-pie voz-dato text-13"
+                    >
                       {x.caso} <FlechaDiagonal tamano={12} />
-                    </span>
-                  </Link>
+                    </Link>
+                  </div>
                 </li>
               );
             })}

@@ -1,5 +1,5 @@
 import { Analytics } from "@vercel/analytics/next";
-import { Archivo, IBM_Plex_Mono, Mr_Dafoe, Permanent_Marker } from "next/font/google";
+import { Archivo, Permanent_Marker } from "next/font/google";
 import type { ReactNode } from "react";
 
 import type { Locale } from "@/data/portfolio";
@@ -13,19 +13,13 @@ const archivo = Archivo({
   axes: ["wdth"],
 });
 
-const plexMono = IBM_Plex_Mono({
-  variable: "--font-plex-mono",
-  weight: ["400", "500"],
-  subsets: ["latin", "latin-ext"],
-});
 
-const firma = Mr_Dafoe({ variable: "--font-firma", weight: "400", subsets: ["latin"] });
-const marcador = Permanent_Marker({ variable: "--font-marcador", weight: "400", subsets: ["latin"] });
+const marcador = Permanent_Marker({ variable: "--font-marcador", weight: "400", subsets: ["latin"], preload: false });
 
 /** Shared <html> shell for the Spanish and English root layouts. */
 export function RootShell({ lang, children }: { lang: Locale; children: ReactNode }) {
   return (
-    <html lang={lang} className={`${archivo.variable} ${plexMono.variable} ${firma.variable} ${marcador.variable} h-full antialiased`}>
+    <html lang={lang} className={`${archivo.variable} ${marcador.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         {children}
         {/* Only report analytics from Vercel deployments; elsewhere the script would 404. */}

@@ -7,7 +7,7 @@ export function Revelar() {
   useEffect(() => {
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
     const els = Array.from(document.querySelectorAll<HTMLElement>(
-        "[data-revelar], .seccion-ed .filete-seccion, .seccion-ed h2, .cronologia-fila, .skills2-logo, .skills2-chip, .perfil-entrada, .perfil-margen, .pasantia-logros li, .seccion-ed .reticula > p, #testimonios li, #testimonials li, #formacion article, #education article",
+        "[data-revelar], .seccion-ed .filete-seccion, .seccion-ed h2, .cronologia-fila, .skills2-logo, .skills2-chip, .perfil-entrada, .perfil-margen, .pasantia-logros li, .seccion-ed .reticula > p, #testimonios li, #testimonials li, #formacion article, #education article, .franja-hardware, .franja-software, .franja-lema",
       ));
     if (!("IntersectionObserver" in window)) return;
     document.documentElement.classList.add("revelar-on");
@@ -21,10 +21,12 @@ export function Revelar() {
       },
       { rootMargin: "0px 0px -10% 0px" },
     );
-    els.forEach((el) => {
+    const alto = window.innerHeight;
+    const tops = els.map((el) => el.getBoundingClientRect().top);
+    els.forEach((el, i) => {
       const hermanos = el.parentElement ? Array.from(el.parentElement.children) : [];
       el.style.transitionDelay = `${Math.min(hermanos.indexOf(el), 8) * 70}ms`;
-      if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add("revelado");
+      if (tops[i] < alto) el.classList.add("revelado");
       else io.observe(el);
     });
     return () => io.disconnect();
