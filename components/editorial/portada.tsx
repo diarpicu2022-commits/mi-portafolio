@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { FlechaAbajo, FlechaDiagonal } from "@/components/editorial/iconos";
+import { Redes } from "@/components/editorial/redes";
 import { getPortfolio, retrato, type Locale } from "@/data/portfolio";
 
 const texto = {
@@ -67,6 +68,7 @@ export function Portada({ locale, projectsHref = "#proyectos" }: { locale: Local
             <span aria-hidden="true" className="hero2-punto" />
             {x.disponible}
           </p>
+          <Redes />
         </div>
 
         <div className="hero2-intro">

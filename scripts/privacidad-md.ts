@@ -13,8 +13,7 @@ for (const [locale, nombre] of [
   const lineas = [
     `# ${p.titulo}`,
     "",
-    `**${p.aviso}**`,
-    "",
+    ...(p.aviso ? [`**${p.aviso}**`, ""] : []),
     `${es ? "Versión" : "Version"} ${p.version}. ${es ? "Vigente desde el" : "Effective"} ${p.vigencia}.`,
     "",
   ];
