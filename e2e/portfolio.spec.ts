@@ -88,7 +88,7 @@ test("case studies are reachable from the project list and keep the language", a
   await expect(page).toHaveURL(/\/en\/projects\/agropulse$/);
   await expect(page.getByRole("heading", { name: "The challenge" })).toBeVisible();
   await page.getByRole("navigation", { name: "Next project" }).getByRole("link").click();
-  await expect(page).toHaveURL(/\/en\/projects\/hidromon$/);
+  await expect(page).toHaveURL(/\/en\/projects\/harmonia$/);
 });
 
 test("content stays visible with reduced motion", async ({ browser }) => {
@@ -150,9 +150,9 @@ test("the 2D map loads at /quest and links back to the portfolio", async ({ page
 
 test("projects show as collage and illustrated cards with working links", async ({ page }) => {
   await page.goto("/#proyectos");
-  await expect(page.locator(".collage-item")).toHaveCount(5);
-  await expect(page.locator(".carta")).toHaveCount(6);
-  await expect(page.locator("#proyecto-agropulse")).toContainText("Ilustración");
+  await expect(page.locator(".collage-item")).toHaveCount(10);
+  await expect(page.locator(".carta")).toHaveCount(1);
+  await expect(page.locator("#proyecto-hidromon")).toContainText("Ilustración");
   const repos = page.locator('.collage-item a[aria-label$="(GitHub)"]');
   expect(await repos.count()).toBeGreaterThan(0);
   for (const href of await repos.evaluateAll((els) => els.map((e) => e.getAttribute("href"))))
