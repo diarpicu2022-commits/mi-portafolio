@@ -463,10 +463,10 @@ const localized = {
         tecnologias: ["ESP32", "Autodesk Inventor", "Impresión 3D", "PCB", "Sensores", "Control automático", "Web", "Realidad virtual"],
       },
       medios: {
-        rotulo: "Diseño para medios",
-        cargo: "Diseño gráfico y motion",
+        rotulo: "Medios · diseño gráfico y motion",
+        cargo: "Monitor",
         lugar: "Pasto Noticias",
-        periodo: "oct 2026",
+        periodo: "oct 2026 – actualidad",
         logros: [
           "Tres plantillas editables en Photoshop para redes y transmisión (1920×1080 y 1080×1080), con capas de texto reales, recortes para fotos y el contraste corregido a AA.",
           "Fondo animado vertical 9:16 en 4K y en loop para la pantalla del estudio, hecho con 31 fotos reales de Pasto con licencia libre y sus créditos.",
@@ -579,10 +579,10 @@ const localized = {
         tecnologias: ["ESP32", "Autodesk Inventor", "3D printing", "PCB", "Sensors", "Automatic control", "Web", "Virtual reality"],
       },
       medios: {
-        rotulo: "Design for media",
-        cargo: "Graphic and motion design",
+        rotulo: "Media · graphic and motion design",
+        cargo: "Monitor",
         lugar: "Pasto Noticias",
-        periodo: "Oct 2026",
+        periodo: "Oct 2026 – present",
         logros: [
           "Three editable Photoshop templates for social and broadcast (1920×1080 and 1080×1080), with live text layers, photo clipping masks and contrast fixed to AA.",
           "A vertical 9:16 4K looping animated background for the studio screen, built with 31 openly licensed photos of Pasto and their credits.",
