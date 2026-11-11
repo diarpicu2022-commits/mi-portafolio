@@ -29,7 +29,6 @@ const texto = {
 export function Portada({ locale, projectsHref = "#proyectos" }: { locale: Locale; projectsHref?: string }) {
   const { identity, projects, education, cvPath, t } = getPortfolio(locale);
   const x = texto[locale];
-  const [nombre, , apellido] = identity.name.split(" ");
   const ingenierias = education.filter((e) => /ingenier|engineering/i.test(e.title)).length;
 
   return (

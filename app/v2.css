@@ -455,3 +455,34 @@ main > .seccion-ed:first-of-type { margin-top: 0; }
 
 /* Con el busto, la cinta va sobre el pecho y no sobre la cara. */
 .hero2-cinta { top: auto !important; bottom: 12%; }
+
+/* ================= Carrusel y visor de capturas ================= */
+.carrusel { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 12px; }
+.carrusel-marco { position: relative; display: block; width: 100%; overflow: hidden; background: #fff; padding: 8px; border-radius: 14px; cursor: zoom-in; transform: rotate(-2deg); transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1); }
+.collage-item:nth-child(even) .carrusel-marco { transform: rotate(2deg); }
+.carrusel:hover .carrusel-marco, .carrusel-marco:focus-visible { transform: rotate(0deg) scale(1.02); }
+.carrusel-foto { position: absolute; inset: 8px; width: calc(100% - 16px) !important; height: calc(100% - 16px) !important; object-fit: contain; border-radius: 8px; opacity: 0; transform: translateX(8%) scale(1.04); transition: opacity 700ms ease, transform 900ms cubic-bezier(0.16, 1, 0.3, 1); }
+.carrusel-foto.es-actual { opacity: 1; transform: none; }
+.carrusel-contador { position: absolute; right: 16px; bottom: 16px; background: var(--tinta); color: var(--papel); font-size: 12px; padding: 4px 10px; border-radius: 999px; }
+.carrusel-miniaturas { display: flex; gap: 8px; flex-wrap: wrap; }
+.carrusel-mini { width: 64px; height: 44px; border-radius: 8px; overflow: hidden; background: #fff; padding: 2px; opacity: 0.55; transition: opacity 200ms, transform 200ms; }
+.carrusel-mini img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
+.carrusel-mini:hover, .carrusel-mini.es-actual { opacity: 1; transform: translateY(-3px); }
+.carrusel-mini.es-actual { box-shadow: 0 0 0 2px var(--rojo-claro); }
+.collage-vertical .carrusel { width: min(100%, 300px); }
+.collage-vertical .carrusel-mini { width: 40px; height: 64px; }
+.collage-extras { display: none; }
+.rejilla-boton { display: block; width: 100%; cursor: zoom-in; }
+/* Visor a pantalla completa. */
+.visor { position: fixed; inset: 0; z-index: 95; background: rgba(13, 13, 12, 0.94); display: grid; grid-template-rows: auto 1fr; padding: 16px; animation: visorEntra 250ms ease-out; }
+.visor-cabeza { display: flex; justify-content: space-between; align-items: center; color: var(--papel); }
+.visor-figura { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; min-height: 0; color: var(--gris-claro); text-align: center; }
+.visor-foto { max-width: min(92vw, 1600px); max-height: 78vh; width: auto !important; height: auto !important; object-fit: contain; border-radius: 10px; animation: visorFoto 350ms cubic-bezier(0.16, 1, 0.3, 1); }
+.visor-boton { width: 48px; height: 48px; border-radius: 50%; background: var(--papel); color: var(--tinta); font-size: 20px; display: grid; place-items: center; }
+.visor-boton:hover { background: var(--rojo-claro); }
+.visor-anterior, .visor-siguiente { position: absolute; top: 50%; translate: 0 -50%; }
+.visor-anterior { left: 16px; }
+.visor-siguiente { right: 16px; }
+@keyframes visorEntra { from { opacity: 0; } to { opacity: 1; } }
+@keyframes visorFoto { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .carrusel-foto, .carrusel-marco, .visor, .visor-foto { transition: none; animation: none; } }
