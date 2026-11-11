@@ -290,7 +290,7 @@ const ui = {
       hardware: "Hardware",
       software: "Software",
     },
-    testimonialsNote: "Se publica cuando la persona lo autorice.",
+    testimonialsNote: "Publicado con autorización de cada persona.",
     questImageAlt: "Mapa 2D en pixel art con el personaje de Diego entre los edificios del laboratorio y la academia.",
   },
   en: {
@@ -419,7 +419,7 @@ const ui = {
       hardware: "Hardware",
       software: "Software",
     },
-    testimonialsNote: "Published once the person authorizes it.",
+    testimonialsNote: "Published with each person's permission.",
     questImageAlt: "2D pixel-art map with Diego's character between the laboratory and academy buildings.",
   },
 };
@@ -561,9 +561,30 @@ const localized = {
       },
     ],
     testimonials: [
-      { quote: "Testimonio pendiente de un docente.", author: "Docente · UCC", pending: true },
-      { quote: "Testimonio pendiente de un compañero de proyecto.", author: "Compañero de equipo", pending: true },
-      { quote: "Testimonio pendiente de un usuario o cliente.", author: "Usuario de un proyecto", pending: true },
+      {
+        quote:
+          "Dirigí el trabajo de grado de Diego, un secador de café híbrido solar-eléctrico con control automatizado. Lo llevó de la idea a un prototipo probado en campo, con un ensayo de 221 horas y datos bien medidos, y lo sustentó con calificación Meritoria. Es constante, aprende rápido y no se queda en la teoría.",
+        author: "Germán Obando",
+        role: "Director del trabajo de grado · Ingeniería Electrónica, Universidad de Nariño",
+        linkedin: "https://www.linkedin.com/in/german-obando-975434221/",
+        pending: false,
+      },
+      {
+        quote:
+          "Diego trabajó con nosotros en el dispositivo NPK y después en el secador de café. Diseñó carcasas, reparó tarjetas y armó la página con el dashboard de datos. Resuelve por su cuenta, pregunta cuando hace falta y entrega lo que promete.",
+        author: "William Mora",
+        role: "Ingeniero · Centro de Innovación Social de Nariño (CISNA)",
+        linkedin: "",
+        pending: false,
+      },
+      {
+        quote:
+          "Diego hizo las plantillas editables de Pasto Noticias y el fondo animado de la pantalla del estudio. Respetó nuestro estilo al detalle, corrigió errores que nosotros no habíamos visto y nos dejó todo listo para usar sin depender de él.",
+        author: "Sebastián Romero Solís",
+        role: "Pasto Noticias",
+        linkedin: "",
+        pending: false,
+      },
     ],
   },
   en: {
@@ -700,14 +721,35 @@ const localized = {
       },
     ],
     testimonials: [
-      { quote: "Testimonial pending from a professor.", author: "Professor · UCC", pending: true },
-      { quote: "Testimonial pending from a project teammate.", author: "Teammate", pending: true },
-      { quote: "Testimonial pending from a user or client.", author: "Project user", pending: true },
+      {
+        quote:
+          "I supervised Diego's degree project, a hybrid solar-electric coffee dryer with automated control. He took it from idea to a field-tested prototype, with a 221-hour trial and carefully measured data, and defended it with a Meritorious grade. He is consistent, learns fast and does not stop at theory.",
+        author: "Germán Obando",
+        role: "Degree project supervisor · Electronic Engineering, Universidad de Nariño",
+        linkedin: "https://www.linkedin.com/in/german-obando-975434221/",
+        pending: false,
+      },
+      {
+        quote:
+          "Diego worked with us on the NPK device and then on the coffee dryer. He designed enclosures, repaired boards and built the page with the data dashboard. He solves things on his own, asks when needed and delivers what he promises.",
+        author: "William Mora",
+        role: "Engineer · Nariño Social Innovation Center (CISNA)",
+        linkedin: "",
+        pending: false,
+      },
+      {
+        quote:
+          "Diego made the editable templates for Pasto Noticias and the animated background for the studio screen. He matched our style in detail, fixed mistakes we had not noticed and left everything ready to use without depending on him.",
+        author: "Sebastián Romero Solís",
+        role: "Pasto Noticias",
+        linkedin: "",
+        pending: false,
+      },
     ],
   },
 };
 
-export type Testimonial = { quote: string; author: string; pending: boolean };
+export type Testimonial = { quote: string; author: string; role: string; linkedin: string; pending: boolean };
 
 export function getPortfolio(locale: Locale) {
   const text = localized[locale];
