@@ -23,7 +23,7 @@
 
 .hero2-acciones { display: flex; flex-wrap: wrap; gap: 12px; }
 .hero2-disponible { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--gris); }
-.hero2-punto { width: 10px; height: 10px; border-radius: 50%; background: #1f9d55; box-shadow: 0 0 0 0 rgba(31, 157, 85, 0.5); animation: latido 2s infinite; }
+.hero2-punto { width: 10px; height: 10px; border-radius: 50%; background: var(--verde-estado); box-shadow: 0 0 0 0 var(--verde-estado-halo); animation: latido 2s infinite; }
 
 .hero2-cifras { display: flex; gap: 40px; border-top: 1px solid var(--tinta); padding-top: 16px; }
 .hero2-cifras dd { font-size: 72px; line-height: 0.9; }
@@ -37,17 +37,17 @@
 .hero2-retrato {
   position: absolute; bottom: 0; left: 50%; height: 100%; width: auto; max-width: none;
   transform: translateX(-50%);
-  filter: drop-shadow(4px 0 0 #fff) drop-shadow(-4px 0 0 #fff) drop-shadow(0 4px 0 #fff) drop-shadow(0 -4px 0 #fff);
+  filter: drop-shadow(4px 0 0 var(--marco)) drop-shadow(-4px 0 0 var(--marco)) drop-shadow(0 4px 0 var(--marco)) drop-shadow(0 -4px 0 var(--marco));
   animation: entraFoto 900ms 400ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .hero2-cinta {
   position: absolute; left: 2%; top: 52%; z-index: 2;
-  background: #f6f1e4; color: var(--tinta); padding: 8px 16px;
+  background: var(--cinta-papel); color: var(--tinta); padding: 8px 16px;
   font-family: var(--font-marcador), cursive; font-size: 18px;
-  transform: rotate(-7deg); box-shadow: 2px 3px 0 rgba(18, 18, 17, 0.2);
+  transform: rotate(-7deg); box-shadow: 2px 3px 0 var(--sombra-cinta);
   animation: pega 600ms 1000ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
-.hero2-cinta::before, .hero2-cinta::after { content: ""; position: absolute; top: -10px; width: 44px; height: 18px; background: rgba(255, 255, 255, 0.7); }
+.hero2-cinta::before, .hero2-cinta::after { content: ""; position: absolute; top: -10px; width: 44px; height: 18px; background: var(--cinta-adhesiva); }
 .hero2-cinta::before { left: -12px; transform: rotate(-30deg); }
 .hero2-cinta::after { right: -12px; transform: rotate(30deg); }
 .hero2-firma {
@@ -92,7 +92,7 @@
 }
 .collage-bloque { position: absolute; inset: 56px 0 0 44px; background: var(--rojo); z-index: 0; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
 .collage-img {
-  position: relative; z-index: 1; width: 100%; height: auto; background: #fff; padding: 8px;
+  position: relative; z-index: 1; width: 100%; height: auto; background: var(--marco); padding: 8px;
   transform: rotate(-2.5deg); transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .collage-vertical { display: flex; justify-content: center; }
@@ -146,10 +146,10 @@
 /* ---------- Habilidades con logos ---------- */
 .skills2 { display: grid; gap: 1px; background: var(--tinta); border: 1px solid var(--tinta); grid-template-columns: 1fr; }
 .skills2-grupo { background: var(--papel); padding: 24px; display: flex; flex-direction: column; gap: 14px; transition: background 200ms; }
-.skills2-grupo:hover { background: #fff; }
+.skills2-grupo:hover { background: var(--tarjeta); }
 .skills2-cifra { font-size: 40px; line-height: 0.8; color: var(--rojo); }
 .skills2-items { display: flex; flex-wrap: wrap; gap: 10px; }
-.skills2-logo { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 76px; padding: 10px 4px; background: #fff; border: 1px solid #ddd6c8; text-align: center; transition: transform 200ms ease-out; }
+.skills2-logo { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 76px; padding: 10px 4px; background: var(--marco); border: 1px solid var(--marco-borde); text-align: center; transition: transform 200ms ease-out; }
 .skills2-logo:hover { transform: translateY(-4px); }
 .skills2-chip { border: 1px solid var(--gris); padding: 6px 10px; display: flex; align-items: center; }
 @media (min-width: 768px) { .skills2 { grid-template-columns: repeat(2, 1fr); } }
@@ -164,7 +164,7 @@
 @keyframes pega { from { opacity: 0; transform: rotate(-7deg) scale(1.6); } to { opacity: 1; transform: rotate(-7deg) scale(1); } }
 @keyframes aparece { from { opacity: 0; } to { opacity: 1; } }
 @keyframes corre { to { transform: translateX(-50%); } }
-@keyframes latido { 70% { box-shadow: 0 0 0 10px rgba(31, 157, 85, 0); } 100% { box-shadow: 0 0 0 0 rgba(31, 157, 85, 0); } }
+@keyframes latido { 70% { box-shadow: 0 0 0 10px var(--verde-estado-0); } 100% { box-shadow: 0 0 0 0 var(--verde-estado-0); } }
 
 @media (prefers-reduced-motion: reduce) {
   .hero2 *, .cinta-pista, .collage-img, .collage-bloque, .carta, .skills2-logo { animation: none !important; transition: none !important; }
@@ -177,7 +177,7 @@
 :root { --filete: 0px; --suave: rgba(18, 18, 17, 0.1); }
 
 /* Encabezado: monograma + nombre condensado con punto rojo, sin línea inferior, fondo translúcido. */
-.nav-ed { border-bottom: 0 !important; background: rgba(241, 236, 226, 0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.nav-ed { border-bottom: 0 !important; background: var(--nav-fondo); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 .marca2 { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 8px; color: var(--tinta); }
 .marca2-mono { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--tinta); color: var(--papel); font-size: 18px; letter-spacing: 0.02em; transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1); }
 .marca2:hover .marca2-mono { transform: rotate(-12deg) scale(1.08); }
@@ -193,8 +193,8 @@
 @media (hover: hover) and (pointer: fine) { .boton-ed:hover { transform: translateY(-2px); } }
 .boton-ed svg { transition: transform 200ms ease-out; }
 .boton-ed:hover svg { transform: translate(2px, -2px); }
-.boton-ed-primario { background: var(--rojo-texto) !important; color: var(--papel) !important; }
-.boton-ed-primario:hover { background: var(--tinta) !important; }
+.boton-ed-primario { background: var(--rojo-texto-fijo) !important; color: var(--papel-fijo) !important; }
+.boton-ed-primario:hover { background: var(--tinta-fija) !important; }
 .boton-ed-secundario { background: transparent !important; color: var(--tinta) !important; padding: 0 4px 0 0; }
 .boton-ed-secundario svg { box-sizing: content-box; width: 16px; height: 16px; padding: 12px; border-radius: 50%; background: var(--tinta); color: var(--papel); }
 .sup-negro .boton-ed-secundario { color: var(--papel) !important; }
@@ -216,18 +216,18 @@
 
 /* Habilidades: tarjetas claras separadas, sin rejilla negra. */
 .skills2 { background: transparent; border: 0; gap: 16px; }
-.skills2-grupo { background: #f7f3ea; border-radius: 20px; }
+.skills2-grupo { background: var(--papel-elevado); border-radius: 20px; }
 .skills2-logo { border: 0; border-radius: 14px; box-shadow: 0 1px 0 var(--suave); }
-.skills2-chip { border: 0; border-radius: 999px; background: #e9e2d4; padding: 6px 14px; }
+.skills2-chip { border: 0; border-radius: 999px; background: var(--papel-chip); padding: 6px 14px; }
 
 /* Collage y cartas: etiquetas en píldora, sin marcos negros. */
-.collage-tags li { border: 0; border-radius: 999px; background: rgba(241, 236, 226, 0.1); }
+.collage-tags li { border: 0; border-radius: 999px; background: var(--velo-claro); }
 .carta-enlace { border-radius: 20px; border: 0 !important; overflow: hidden; }
 .carta-img { border: 0; border-radius: 12px; }
 .carta:hover .carta-enlace, .carta:focus-within .carta-enlace { box-shadow: 0 0 0 2px var(--rojo-claro); }
 
 /* Formularios: campo relleno con línea suave abajo (el borde de 3:1 lo da el fondo). */
-input, textarea, select { border: 0 !important; border-radius: 12px; background: #fffdf8 !important; box-shadow: inset 0 0 0 1px rgba(18, 18, 17, 0.35); }
+input, textarea, select { border: 0 !important; border-radius: 12px; background: var(--campo) !important; box-shadow: inset 0 0 0 1px var(--campo-borde); }
 input:focus-visible, textarea:focus-visible { box-shadow: inset 0 0 0 2px var(--tinta); }
 
 /* ================= Versión 4: tipografía de rótulos, movimiento y pasantía ================= */
@@ -279,7 +279,7 @@ input:focus-visible, textarea:focus-visible { box-shadow: inset 0 0 0 2px var(--
 .pasantia-cabeza { display: flex; justify-content: space-between; gap: 16px; color: var(--gris-claro); }
 .pasantia-rotulo { color: var(--papel); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; }
 .pasantia-cargo { font-size: clamp(44px, 7vw, 88px); line-height: 0.88; }
-.pasantia-logros { display: grid; gap: 12px; color: #d8d2c6; max-width: 70ch; }
+.pasantia-logros { display: grid; gap: 12px; color: var(--pasantia-texto); max-width: 70ch; }
 .pasantia-logros li { padding-left: 22px; position: relative; }
 .pasantia-logros li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 10px; height: 10px; background: var(--rojo-claro); border-radius: 50%; }
 @media (min-width: 900px) { .pasantia { padding: 48px; } }
@@ -292,19 +292,19 @@ input:focus-visible, textarea:focus-visible { box-shadow: inset 0 0 0 2px var(--
 .franja { overflow: clip; }
 
 .pasantia-etapas { display: grid; gap: 28px; }
-.pasantia-etapa { display: flex; flex-direction: column; gap: 10px; border-radius: 20px; background: rgba(241, 236, 226, 0.06); padding: 20px; }
+.pasantia-etapa { display: flex; flex-direction: column; gap: 10px; border-radius: 20px; background: var(--pasantia-etapa); padding: 20px; }
 .pasantia-periodo { color: var(--rojo-claro); font-weight: 700; }
 @media (min-width: 900px) { .pasantia-etapas { grid-template-columns: 1fr 1fr; } }
 
 /* Diseño para medios: tarjeta clara con las piezas reales. */
-.medios { background: #e8e1d3; border-radius: 28px; padding: 28px 24px; display: grid; gap: 28px; overflow: hidden; }
+.medios { background: var(--papel-2); border-radius: 28px; padding: 28px 24px; display: grid; gap: 28px; overflow: hidden; }
 .medios .pasantia-cabeza { color: var(--gris); }
 .medios .pasantia-rotulo { color: var(--rojo-texto); }
 .medios .pasantia-logros { color: var(--tinta); }
 .medios .pasantia-logros li::before { background: var(--rojo); }
 .medios-texto { display: flex; flex-direction: column; gap: 14px; }
 .medios-cargo { font-size: clamp(40px, 6vw, 72px); line-height: 0.9; }
-.medios-tags li { color: var(--tinta); background: rgba(18, 18, 17, 0.08); }
+.medios-tags li { color: var(--tinta); background: var(--velo); }
 .medios-imagenes { display: flex; align-items: flex-end; gap: 16px; }
 .medios-imagenes img { border-radius: 14px; height: auto; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
 .medios-imagenes img:first-child { width: 72%; transform: rotate(-2deg); }
@@ -317,7 +317,7 @@ input:focus-visible, textarea:focus-visible { box-shadow: inset 0 0 0 2px var(--
 @keyframes sube { from { transform: translateY(0.35em); } to { transform: none; } }
 /* Punto de disponibilidad: pulso con transform y opacity, sin repintar sombras. */
 .hero2-punto { position: relative; box-shadow: none; animation: none; }
-.hero2-punto::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #1f9d55; animation: pulso 2s ease-out infinite; }
+.hero2-punto::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--verde-estado); animation: pulso 2s ease-out infinite; }
 @keyframes pulso { from { transform: scale(1); opacity: 0.6; } to { transform: scale(2.6); opacity: 0; } }
 /* Etiquetas sobre el bloque rojo: píldora oscura para que el texto pequeño pase AA. */
 .hero2-bloque-lista span { background: var(--tinta); color: var(--papel); padding: 3px 8px; border-radius: 999px; align-self: flex-end; }
@@ -342,13 +342,13 @@ input:focus-visible, textarea:focus-visible { box-shadow: inset 0 0 0 2px var(--
 }
 
 /* Esquema sin filetes: las cajas claras llevan fondo blanco y esquinas redondeadas. */
-.esquema { border-radius: 20px; background: #f7f3ea; }
+.esquema { border-radius: 20px; background: var(--papel-elevado); }
 .esquema-cabeza { border-bottom: 0; }
-.esquema-nodo { background: #fff; border-radius: 12px; }
+.esquema-nodo { background: var(--tarjeta); border-radius: 12px; }
 .esquema-etapa:first-child .esquema-nodo, .esquema-etapa:last-child .esquema-nodo { background: var(--tinta); }
 /* Caso ilustrado: la ilustración arriba, el esquema debajo. */
 .caso-ilustrado { display: grid; gap: 24px; position: relative; z-index: 1; }
-.caso-ilustracion { width: 100%; max-width: 740px; height: auto; border-radius: 20px; background: #fff; padding: 10px; transform: rotate(-1.5deg); }
+.caso-ilustracion { width: 100%; max-width: 740px; height: auto; border-radius: 20px; background: var(--marco); padding: 10px; transform: rotate(-1.5deg); }
 
 /* Monograma DP con pista de circuito. */
 .logo-dp-fondo { fill: var(--tinta); }
@@ -373,14 +373,14 @@ input:focus-visible, textarea:focus-visible { box-shadow: inset 0 0 0 2px var(--
 
 /* ================= Testimonios reales ================= */
 .testimonios2 { display: grid; gap: 20px; }
-.testimonio2 { position: relative; background: #fff; border-radius: 24px; padding: 32px 24px 24px; display: flex; flex-direction: column; gap: 20px; overflow: hidden; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
+.testimonio2 { position: relative; background: var(--tarjeta); border-radius: 24px; padding: 32px 24px 24px; display: flex; flex-direction: column; gap: 20px; overflow: hidden; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
 @media (hover: hover) { .testimonio2:hover { transform: translateY(-6px) rotate(-0.6deg); } }
 .testimonio2-comilla { display: block; height: 44px; font-size: 110px; line-height: 0.9; color: var(--rojo); margin-bottom: -6px; }
 .testimonio2-cita { position: relative; color: var(--tinta); }
 .testimonio2-autor { display: flex; align-items: center; gap: 14px; margin-top: auto; }
 .testimonio2-inicial { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--tinta); color: var(--papel); font-size: 20px; flex-shrink: 0; }
 .testimonio2-inicial.es-rojo { background: var(--rojo-texto); }
-.testimonio2-linkedin { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: #0a66c2; color: #fff; flex-shrink: 0; transition: transform 200ms ease-out; }
+.testimonio2-linkedin { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--linkedin); color: var(--marco); flex-shrink: 0; transition: transform 200ms ease-out; }
 .testimonio2-linkedin:hover { transform: scale(1.08); }
 @media (min-width: 900px) { .testimonios2 { grid-template-columns: repeat(3, 1fr); } .testimonio2:nth-child(2) { translate: 0 32px; } }
 
@@ -389,8 +389,8 @@ input:focus-visible, textarea:focus-visible { box-shadow: inset 0 0 0 2px var(--
    Las secciones claras alternan dos tonos de papel para que el cambio se note también entre ellas. */
 main > .seccion-ed, main > .franja, body footer.sup-negro { position: relative; z-index: 1; margin-top: -40px; border-radius: 40px 40px 0 0; }
 main > .seccion-ed:first-of-type { margin-top: 0; }
-#experiencia, #experience, #testimonios, #testimonials, #contacto, #contact { background-color: #e8e1d3; }
-#experiencia .medios, #experience .medios { background: #f1ece2; }
+#experiencia, #experience, #testimonios, #testimonials, #contacto, #contact { background-color: var(--papel-2); }
+#experiencia .medios, #experience .medios { background: var(--papel); }
 .franja { overflow: clip; }
 @supports (animation-timeline: view()) {
   main > .seccion-ed, main > .franja, body footer.sup-negro { animation: lamina linear both; animation-timeline: view(); animation-range: entry 0% entry 75%; }
@@ -432,13 +432,13 @@ main > .seccion-ed:first-of-type { margin-top: 0; }
 /* Retrato de busto: se ajusta por ancho y se apoya abajo. */
 .hero2-retrato { height: auto !important; width: min(100%, 470px) !important; max-height: 100%; object-fit: contain; object-position: bottom; }
 /* Polaroid del perfil. */
-.polaroid { background: #fff; padding: 12px 12px 0; border-radius: 6px; box-shadow: 0 18px 40px -24px rgba(18, 18, 17, 0.45); transform: rotate(3deg); max-width: 300px; margin-bottom: 24px; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
+.polaroid { background: var(--marco); padding: 12px 12px 0; border-radius: 6px; box-shadow: 0 18px 40px -24px var(--sombra-polaroid); transform: rotate(3deg); max-width: 300px; margin-bottom: 24px; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
 .polaroid:hover { transform: rotate(0deg) scale(1.02); }
 .polaroid img { width: 100%; height: auto; border-radius: 2px; }
 .polaroid-pie { font-family: var(--font-marcador), cursive; font-size: 18px; text-align: center; padding: 10px 0 14px; color: var(--tinta); }
 /* Collage: miniaturas extra superpuestas. */
 .collage-extras { position: absolute; right: -8px; bottom: -28px; z-index: 2; display: flex; gap: 10px; align-items: flex-end; }
-.collage-extra { width: 150px; height: auto; background: #fff; padding: 5px; border-radius: 8px; transform: rotate(4deg); transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
+.collage-extra { width: 150px; height: auto; background: var(--marco); padding: 5px; border-radius: 8px; transform: rotate(4deg); transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
 .collage-extra:nth-child(2) { transform: rotate(-5deg) translateY(-20px); }
 .collage-vertical .collage-extras { right: 4%; }
 .collage-vertical .collage-extra { width: 110px; }
@@ -448,7 +448,7 @@ main > .seccion-ed:first-of-type { margin-top: 0; }
 /* Galería del caso. */
 .caso-galeria { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 .caso-galeria-vertical { grid-template-columns: repeat(auto-fit, minmax(200px, 280px)); }
-.caso-galeria img { width: 100%; height: auto; border-radius: 16px; background: #fff; padding: 6px; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
+.caso-galeria img { width: 100%; height: auto; border-radius: 16px; background: var(--marco); padding: 6px; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
 .caso-galeria li:nth-child(odd) img { transform: rotate(-1deg); }
 .caso-galeria li:nth-child(even) img { transform: rotate(1deg); }
 .caso-galeria img:hover { transform: none; }
@@ -458,14 +458,14 @@ main > .seccion-ed:first-of-type { margin-top: 0; }
 
 /* ================= Carrusel y visor de capturas ================= */
 .carrusel { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 12px; }
-.carrusel-marco { position: relative; display: block; width: 100%; overflow: hidden; background: #fff; padding: 8px; border-radius: 14px; cursor: zoom-in; transform: rotate(-2deg); transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1); }
+.carrusel-marco { position: relative; display: block; width: 100%; overflow: hidden; background: var(--marco); padding: 8px; border-radius: 14px; cursor: zoom-in; transform: rotate(-2deg); transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1); }
 .collage-item:nth-child(even) .carrusel-marco { transform: rotate(2deg); }
 .carrusel:hover .carrusel-marco, .carrusel-marco:focus-visible { transform: rotate(0deg) scale(1.02); }
 .carrusel-foto { position: absolute; inset: 8px; width: calc(100% - 16px) !important; height: calc(100% - 16px) !important; object-fit: contain; border-radius: 8px; opacity: 0; transform: translateX(8%) scale(1.04); transition: opacity 700ms ease, transform 900ms cubic-bezier(0.16, 1, 0.3, 1); }
 .carrusel-foto.es-actual { opacity: 1; transform: none; }
 .carrusel-contador { position: absolute; right: 16px; bottom: 16px; background: var(--tinta); color: var(--papel); font-size: 12px; padding: 4px 10px; border-radius: 999px; }
 .carrusel-miniaturas { display: flex; gap: 8px; flex-wrap: wrap; }
-.carrusel-mini { width: 64px; height: 44px; border-radius: 8px; overflow: hidden; background: #fff; padding: 2px; opacity: 0.55; transition: opacity 200ms, transform 200ms; }
+.carrusel-mini { width: 64px; height: 44px; border-radius: 8px; overflow: hidden; background: var(--marco); padding: 2px; opacity: 0.55; transition: opacity 200ms, transform 200ms; }
 .carrusel-mini img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
 .carrusel-mini:hover, .carrusel-mini.es-actual { opacity: 1; transform: translateY(-3px); }
 .carrusel-mini.es-actual { box-shadow: 0 0 0 2px var(--rojo-claro); }
@@ -474,7 +474,7 @@ main > .seccion-ed:first-of-type { margin-top: 0; }
 .collage-extras { display: none; }
 .rejilla-boton { display: block; width: 100%; cursor: zoom-in; }
 /* Visor a pantalla completa. */
-.visor { position: fixed; inset: 0; z-index: 95; background: rgba(13, 13, 12, 0.94); display: grid; grid-template-rows: auto 1fr; padding: 16px; animation: visorEntra 250ms ease-out; }
+.visor { position: fixed; inset: 0; z-index: 95; background: var(--visor-fondo); display: grid; grid-template-rows: auto 1fr; padding: 16px; animation: visorEntra 250ms ease-out; }
 .visor-cabeza { display: flex; justify-content: space-between; align-items: center; color: var(--papel); }
 .visor-figura { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; min-height: 0; color: var(--gris-claro); text-align: center; }
 .visor-foto { max-width: min(92vw, 1600px); max-height: 78vh; width: auto !important; height: auto !important; object-fit: contain; border-radius: 10px; animation: visorFoto 350ms cubic-bezier(0.16, 1, 0.3, 1); }
@@ -490,3 +490,113 @@ main > .seccion-ed:first-of-type { margin-top: 0; }
 /* Vuelve la foto original de cuerpo entero: se ajusta por alto y la cinta va a media altura. */
 .hero2-retrato { height: 100% !important; width: auto !important; max-width: none; }
 .hero2-cinta { top: 52% !important; bottom: auto; }
+
+/* ================= Selector de tema (anexo 18.6, enmienda 15) ================= */
+/* Píldora de texto en el encabezado y menú de tres opciones. En celular, tres píldoras de radio en el panel. */
+.tema { position: relative; }
+.tema-boton { display: inline-flex; align-items: center; gap: 0; min-height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: var(--velo); color: var(--tinta); font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; }
+.tema-boton:hover { background: var(--papel-chip); }
+.tema-valor { display: none; }
+:root[data-tema-eleccion="claro"] .tema-valor[data-v="claro"],
+:root[data-tema-eleccion="oscuro"] .tema-valor[data-v="oscuro"],
+:root:not([data-tema-eleccion="claro"]):not([data-tema-eleccion="oscuro"]) .tema-valor[data-v="sistema"] { display: inline; }
+.tema-menu { position: absolute; right: 0; top: calc(100% + 8px); z-index: 41; display: flex; flex-direction: column; gap: 4px; min-width: 200px; padding: 8px; border-radius: 20px; background: var(--tarjeta); box-shadow: 0 18px 40px -24px var(--sombra-polaroid); }
+.tema-menu[hidden] { display: none; }
+.tema-opcion { display: flex; align-items: center; min-height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: transparent; color: var(--tinta); font-size: 15px; text-align: left; cursor: pointer; }
+.tema-opcion:hover { background: var(--velo); }
+.tema-opcion[aria-checked="true"] { background: var(--tinta); color: var(--papel); font-weight: 600; }
+.tema-radios { margin: var(--e-24) 0 0; padding: 0; border: 0; }
+.tema-leyenda { margin-bottom: var(--e-8); font-size: 13px; color: var(--gris); }
+.tema-radios-fila { display: flex; flex-wrap: wrap; gap: 8px; }
+.tema-radio { position: relative; display: inline-flex; }
+.tema-radio input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+.tema-radio span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 999px; background: var(--velo); color: var(--tinta); font-size: 15px; font-weight: 600; }
+.tema-radio input:checked + span { background: var(--tinta); color: var(--papel); }
+.tema-radio input:focus-visible + span { outline: var(--foco) solid var(--color-foco); outline-offset: var(--e-4); }
+@media (prefers-reduced-motion: no-preference) { .tema-boton, .tema-opcion, .tema-radio span { transition: background-color 150ms ease-out; } }
+/* Entre 1024 y 1279 px la fila no cabe con «Tema: Sistema» (desbordaba 113 px, medido): la píldora dice solo «Tema»
+   y el estado va en aria-label, y los enlaces de sección bajan su relleno a 4 px y sin separación (escala e-4). */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .tema-dos, .tema-boton .tema-valor { display: none !important; }
+  .nav-ed ul.lg\:flex { gap: 0; }
+  .nav-ed ul.lg\:flex .nav-ed-enlace { padding-inline: var(--e-4); }
+}
+/* Sin JavaScript el selector no funciona: se oculta y manda el sistema. */
+html:not([data-tema]) :is(.tema, .tema-radios) { display: none; }
+
+/* ================= Tema oscuro (anexo 18, dirección A «Escalera de grafito») ================= */
+/* El script del <head> (app/root-shell.tsx) escribe data-tema="claro" u "oscuro" en <html> antes de pintar.
+   En oscuro, --papel y --tinta pasan a significar «suelo» y «texto sobre el suelo». Las superficies que no
+   cambian (salas negras, composición de portada, pasantía, objetos con marco blanco) recuperan los valores
+   del claro, así el rojo, el sticker y las fichas de logos quedan idénticos. */
+:root[data-tema="oscuro"] {
+  color-scheme: dark;
+  --papel: #262420;            /* suelo de las secciones que en claro son papel */
+  --papel-2: #302d28;          /* suelo alterno, donde en claro va la arena */
+  --tinta: #f1ece2;            /* texto sobre el suelo */
+  --gris: #a39e94;             /* texto secundario */
+  --rojo-texto: #ff6257;       /* rojo de texto pequeño sobre grafito */
+  --papel-elevado: #302d28;
+  --papel-chip: #3a3732;
+  --tarjeta: #3a3732;
+  --campo: #262420;
+  --campo-borde: rgba(241, 236, 226, 0.35);
+  --nav-fondo: rgba(38, 36, 32, 0.86);
+  --velo: rgba(241, 236, 226, 0.1);
+  --suave: rgba(241, 236, 226, 0.12);
+}
+:root[data-tema="oscuro"] :is(.sup-negro, .hero2-foto, .pasantia, .telon-negro, .skills2-logo, .polaroid, .collage-extra) {
+  --papel: var(--papel-fijo);
+  --tinta: var(--tinta-fija);
+  --gris: var(--gris-fijo);
+  --rojo-texto: var(--rojo-texto-fijo);
+  --papel-2: #e8e1d3;
+  --papel-elevado: #f7f3ea;
+  --papel-chip: #e9e2d4;
+  --tarjeta: #ffffff;
+  --campo: #fffdf8;
+  --campo-borde: rgba(18, 18, 17, 0.35);
+  --velo: rgba(18, 18, 17, 0.08);
+  --suave: rgba(18, 18, 17, 0.1);
+}
+
+/* La etiqueta de la ficha de logo hereda el color del grupo: se le devuelve la tinta de la ficha blanca. */
+:root[data-tema="oscuro"] .skills2-logo { color: var(--tinta); }
+/* El rojo de bloque sobre el suelo alterno da 2.82 en la cifra de habilidades: se usa el rojo de texto (4.66, AAA para texto grande). */
+:root[data-tema="oscuro"] .skills2-cifra { color: var(--rojo-texto); }
+
+/* Respaldo sin JavaScript: si el script no corrió, manda la preferencia del sistema. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema]) {
+    color-scheme: dark;
+    --papel: #262420;            /* suelo de las secciones que en claro son papel */
+    --papel-2: #302d28;          /* suelo alterno, donde en claro va la arena */
+    --tinta: #f1ece2;            /* texto sobre el suelo */
+    --gris: #a39e94;             /* texto secundario */
+    --rojo-texto: #ff6257;       /* rojo de texto pequeño sobre grafito */
+    --papel-elevado: #302d28;
+    --papel-chip: #3a3732;
+    --tarjeta: #3a3732;
+    --campo: #262420;
+    --campo-borde: rgba(241, 236, 226, 0.35);
+    --nav-fondo: rgba(38, 36, 32, 0.86);
+    --velo: rgba(241, 236, 226, 0.1);
+    --suave: rgba(241, 236, 226, 0.12);
+  }
+  :root:not([data-tema]) :is(.sup-negro, .hero2-foto, .pasantia, .telon-negro, .skills2-logo, .polaroid, .collage-extra) {
+    --papel: var(--papel-fijo);
+    --tinta: var(--tinta-fija);
+    --gris: var(--gris-fijo);
+    --rojo-texto: var(--rojo-texto-fijo);
+    --papel-2: #e8e1d3;
+    --papel-elevado: #f7f3ea;
+    --papel-chip: #e9e2d4;
+    --tarjeta: #ffffff;
+    --campo: #fffdf8;
+    --campo-borde: rgba(18, 18, 17, 0.35);
+    --velo: rgba(18, 18, 17, 0.08);
+    --suave: rgba(18, 18, 17, 0.1);
+  }
+  :root:not([data-tema]) .skills2-logo { color: var(--tinta); }
+  :root:not([data-tema]) .skills2-cifra { color: var(--rojo-texto); }
+}

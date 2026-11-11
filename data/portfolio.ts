@@ -176,6 +176,7 @@ const ui = {
       contact: "Contacto",
       switchLanguage: "English",
       menu: "Menú",
+      tema: { label: "Tema", claro: "Claro", oscuro: "Oscuro", sistema: "Sistema", sistemaLargo: "Como el sistema" },
       home: "Inicio",
     },
     hero: {
@@ -306,6 +307,7 @@ const ui = {
       contact: "Contact",
       switchLanguage: "Español",
       menu: "Menu",
+      tema: { label: "Theme", claro: "Light", oscuro: "Dark", sistema: "System", sistemaLargo: "Same as system" },
       home: "Home",
     },
     hero: {

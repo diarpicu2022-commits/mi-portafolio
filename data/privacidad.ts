@@ -7,6 +7,7 @@ import { EMAIL, NAME, type Locale } from "@/data/portfolio";
  */
 
 export const QUEST_KEYS = ["diecu-visited", "diecu-sound", "diecu-night"] as const;
+export const TEMA_KEY = "tema";
 
 const VERCEL_DOC = "https://vercel.com/docs/analytics/privacy-policy";
 
@@ -23,8 +24,8 @@ export type Politica = {
 
 export const privacidad: Record<Locale, Politica> = {
   es: {
-    version: "1.0",
-    vigencia: "10 de noviembre de 2026",
+    version: "1.1",
+    vigencia: "11 de noviembre de 2026",
     titulo: "Política de privacidad",
     aviso: "",
     bloques: [
@@ -44,12 +45,13 @@ export const privacidad: Record<Locale, Politica> = {
           "Formulario de contacto. No envía nada a ningún servidor. Abre la aplicación de correo del visitante con el mensaje redactado. Si el visitante decide enviarlo, el responsable recibe el nombre, la dirección de correo y el contenido del mensaje.",
           `Medición de visitas con Vercel Web Analytics, solo en el sitio publicado. No usa cookies. Cada visita registra fecha y hora, página y ruta, página de origen, parámetros de la dirección filtrados, ubicación aproximada (país, región y ciudad), sistema operativo, navegador y tipo de dispositivo. La visita se identifica con un valor calculado a partir de la petición que se descarta a las 24 horas. La dirección IP no se asocia a los registros. Fuente: ${VERCEL_DOC}.`,
           `Mapa 2D (/quest). Guarda en el almacenamiento local del navegador las zonas visitadas, la preferencia de sonido y el modo noche, con las claves ${QUEST_KEYS.join(", ")}. Estos datos no salen del dispositivo.`,
+          `Tema del sitio. Si el visitante elige «Claro» u «Oscuro» en el selector del encabezado, el navegador guarda esa elección en el almacenamiento local con la clave ${TEMA_KEY}. Elegir «Como el sistema» la borra. No sale del dispositivo.`,
         ],
       },
       {
         titulo: "Finalidad",
         parrafos: [
-          "Los mensajes se usan solo para responder a quien escribe. La medición de visitas sirve para conocer de forma agregada cuántas personas visitan el sitio y qué páginas consultan. El almacenamiento local sirve para recordar el progreso del mapa entre visitas.",
+          "Los mensajes se usan solo para responder a quien escribe. La medición de visitas sirve para conocer de forma agregada cuántas personas visitan el sitio y qué páginas consultan. El almacenamiento local sirve para recordar el progreso del mapa entre visitas y el tema que eligió el visitante.",
         ],
       },
       {
@@ -67,7 +69,7 @@ export const privacidad: Record<Locale, Politica> = {
       {
         titulo: "Conservación",
         parrafos: [
-          "Los mensajes se conservan mientras sean necesarios para responder y se eliminan cuando el titular lo solicite. El identificador de visita de Vercel se descarta a las 24 horas. El progreso del mapa permanece en el navegador hasta que el visitante lo borre.",
+          "Los mensajes se conservan mientras sean necesarios para responder y se eliminan cuando el titular lo solicite. El identificador de visita de Vercel se descarta a las 24 horas. El progreso del mapa permanece en el navegador hasta que el visitante lo borre. La elección de tema permanece hasta que el visitante elija «Como el sistema» o borre los datos del sitio.",
         ],
       },
       {
@@ -92,7 +94,7 @@ export const privacidad: Record<Locale, Politica> = {
         titulo: "Cómo ejercerlos",
         parrafos: [
           `Escriba a ${EMAIL} indicando su nombre y la solicitud. Las consultas se atienden en un máximo de diez días hábiles y los reclamos en un máximo de quince días hábiles, según los artículos 14 y 15 de la Ley 1581 de 2012.`,
-          "El progreso del mapa se puede borrar en cualquier momento con el botón de esta página o desde la configuración del navegador.",
+          "El progreso del mapa se puede borrar en cualquier momento con el botón de esta página o desde la configuración del navegador. La elección de tema se borra eligiendo «Como el sistema» en el selector del encabezado.",
         ],
       },
       {
@@ -126,8 +128,8 @@ export const privacidad: Record<Locale, Politica> = {
     volver: "Volver al portafolio",
   },
   en: {
-    version: "1.0",
-    vigencia: "November 10, 2026",
+    version: "1.1",
+    vigencia: "November 11, 2026",
     titulo: "Privacy policy",
     aviso: "",
     bloques: [
@@ -147,12 +149,13 @@ export const privacidad: Record<Locale, Politica> = {
           "Contact form. It sends nothing to any server. It opens the visitor's email app with the message drafted. If the visitor chooses to send it, the controller receives the name, the email address and the content of the message.",
           `Visit measurement with Vercel Web Analytics, only on the published site. It does not use cookies. Each visit records date and time, page and route, referrer, filtered query parameters, approximate location (country, region and city), operating system, browser and device type. The visit is identified by a value derived from the request that is discarded after 24 hours. The IP address is not associated with the records. Source: ${VERCEL_DOC}.`,
           `2D map (/en/quest). It stores in the browser's local storage the visited zones, the sound preference and night mode, under the keys ${QUEST_KEYS.join(", ")}. This data never leaves the device.`,
+          `Site theme. If the visitor picks «Light» or «Dark» in the header selector, the browser stores that choice in local storage under the key ${TEMA_KEY}. Picking «Same as system» deletes it. It never leaves the device.`,
         ],
       },
       {
         titulo: "Purpose",
         parrafos: [
-          "Messages are used only to reply to the sender. Visit measurement shows, in aggregate, how many people visit the site and which pages they read. Local storage remembers the map progress between visits.",
+          "Messages are used only to reply to the sender. Visit measurement shows, in aggregate, how many people visit the site and which pages they read. Local storage remembers the map progress between visits and the theme the visitor picked.",
         ],
       },
       {
@@ -170,7 +173,7 @@ export const privacidad: Record<Locale, Politica> = {
       {
         titulo: "Retention",
         parrafos: [
-          "Messages are kept while they are needed to reply and are deleted when the data subject asks. Vercel's visit identifier is discarded after 24 hours. Map progress stays in the browser until the visitor deletes it.",
+          "Messages are kept while they are needed to reply and are deleted when the data subject asks. Vercel's visit identifier is discarded after 24 hours. Map progress stays in the browser until the visitor deletes it. The theme choice stays until the visitor picks «Same as system» or clears the site data.",
         ],
       },
       {
@@ -193,7 +196,7 @@ export const privacidad: Record<Locale, Politica> = {
         titulo: "How to exercise them",
         parrafos: [
           `Write to ${EMAIL} with your name and your request. Inquiries are answered within ten business days and claims within fifteen business days, under articles 14 and 15 of Law 1581 of 2012.`,
-          "Map progress can be deleted at any time with the button on this page or from the browser settings.",
+          "Map progress can be deleted at any time with the button on this page or from the browser settings. The theme choice is deleted by picking «Same as system» in the header selector.",
         ],
       },
       {
