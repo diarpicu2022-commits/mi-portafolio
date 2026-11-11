@@ -243,3 +243,123 @@ test("search engines get a sitemap with both languages, robots, structured data 
   const cv = await request.get("/cv-diego-armando-pinta-cuasquen.pdf");
   expect(cv.ok()).toBe(true);
 });
+
+/* ---------- Selector de tema (anexo 18.6, enmienda 15) ---------- */
+
+const tema = (page: Page) => page.evaluate(() => [document.documentElement.dataset.tema, localStorage.getItem("tema")]);
+
+test("theme menu works with the keyboard, saves the choice and returns focus", async ({ page, isMobile }) => {
+  test.skip(isMobile, "En celular el selector va en el panel del menú.");
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/");
+  const boton = page.getByRole("button", { name: "Tema: Sistema" });
+  const menu = page.getByRole("menu", { name: "Tema" });
+  await expect(boton).toHaveAttribute("aria-expanded", "false");
+
+  // Enter abre y el foco cae en la opción marcada; las flechas recorren en ciclo.
+  await boton.focus();
+  await page.keyboard.press("Enter");
+  await expect(menu).toBeVisible();
+  await expect(page.getByRole("menuitemradio", { name: "Como el sistema" })).toBeFocused();
+  await expect(page.getByRole("menuitemradio", { name: "Como el sistema" })).toHaveAttribute("aria-checked", "true");
+  await page.keyboard.press("ArrowDown");
+  await expect(page.getByRole("menuitemradio", { name: "Claro" })).toBeFocused();
+  await page.keyboard.press("ArrowDown");
+  await page.keyboard.press("Enter");
+  await expect(menu).toBeHidden();
+  expect(await tema(page)).toEqual(["oscuro", "oscuro"]);
+  await expect(page.getByRole("button", { name: "Tema: Oscuro" })).toBeFocused();
+
+  // La elección sobrevive a la recarga y ya está puesta antes de que cargue React.
+  await page.goto("/", { waitUntil: "commit" });
+  await page.waitForSelector("html[data-tema]", { state: "attached" });
+  expect(await page.evaluate(() => document.documentElement.dataset.tema)).toBe("oscuro");
+  await page.waitForLoadState("networkidle");
+
+  // Flecha abajo también abre; Escape cierra sin cambiar nada y devuelve el foco.
+  const oscuro = page.getByRole("button", { name: "Tema: Oscuro" });
+  await oscuro.focus();
+  await page.keyboard.press("ArrowDown");
+  await expect(menu).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(menu).toBeHidden();
+  await expect(oscuro).toBeFocused();
+  expect(await tema(page)).toEqual(["oscuro", "oscuro"]);
+
+  // «Como el sistema» borra la clave y sigue al sistema, también si cambia con la página abierta.
+  await page.keyboard.press("Enter");
+  await page.keyboard.press("End");
+  await page.keyboard.press(" ");
+  expect(await tema(page)).toEqual(["claro", null]);
+  await page.emulateMedia({ colorScheme: "dark" });
+  await expect(page.locator("html")).toHaveAttribute("data-tema", "oscuro");
+  await expect(page.getByRole("button", { name: "Tema: Sistema" })).toBeVisible();
+
+  // Tab sale del menú y lo cierra.
+  await page.getByRole("button", { name: "Tema: Sistema" }).click();
+  await expect(menu).toBeVisible();
+  await page.keyboard.press("Tab");
+  await expect(menu).toBeHidden();
+});
+
+test("theme selector targets are at least 44 px and English labels work", async ({ page, isMobile }) => {
+  await page.goto("/en");
+  if (isMobile) {
+    await page.getByRole("button", { name: "Menu" }).click();
+    const radios = page.locator(".tema-radio span");
+    await expect(radios).toHaveCount(3);
+    for (const caja of await radios.evaluateAll((els) => els.map((e) => e.getBoundingClientRect()))) {
+      expect(caja.height).toBeGreaterThanOrEqual(44);
+      expect(caja.width).toBeGreaterThanOrEqual(44);
+    }
+    await page.getByRole("radio", { name: "Dark" }).check();
+    expect(await tema(page)).toEqual(["oscuro", "oscuro"]);
+    await expect(page.getByRole("radio", { name: "Dark" })).toBeChecked();
+    await page.getByRole("radio", { name: "Same as system" }).check();
+    expect((await tema(page))[1]).toBeNull();
+    return;
+  }
+  const boton = page.getByRole("button", { name: "Theme: System" });
+  expect((await boton.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  await boton.click();
+  for (const nombre of ["Light", "Dark", "Same as system"]) {
+    const caja = (await page.getByRole("menuitemradio", { name: nombre }).boundingBox())!;
+    expect(caja.height).toBeGreaterThanOrEqual(44);
+  }
+  await page.getByRole("menuitemradio", { name: "Light" }).click();
+  expect(await tema(page)).toEqual(["claro", "claro"]);
+});
+
+test("the header stays on one line at 1024 px with the theme selector", async ({ browser }) => {
+  const page = await browser.newPage({ viewport: { width: 1024, height: 800 } });
+  for (const ruta of ["/", "/en", "/proyectos/siscan"]) {
+    await page.goto(ruta);
+    const medida = await page.evaluate(() => {
+      const fila = document.querySelector(".nav-ed nav > div") as HTMLElement;
+      const hijos = Array.from(fila.children).filter((h) => getComputedStyle(h).display !== "none");
+      const cajas = hijos.map((h) => h.getBoundingClientRect());
+      const items = Array.from(fila.querySelectorAll("a, button")).filter((e) => (e as HTMLElement).offsetParent).map((e) => e.getBoundingClientRect());
+      return {
+        alto: fila.getBoundingClientRect().height,
+        desborda: fila.scrollWidth > fila.clientWidth,
+        derecha: Math.max(...cajas.map((c) => c.right)),
+        ancho: document.documentElement.clientWidth,
+        filas: new Set(items.map((c) => Math.round(c.top + c.height / 2))).size,
+      };
+    });
+    expect(medida.desborda, ruta).toBe(false);
+    expect(medida.derecha, ruta).toBeLessThanOrEqual(medida.ancho);
+    expect(medida.alto, ruta).toBeLessThanOrEqual(72);
+    expect(medida.filas, ruta).toBe(1);
+  }
+  await page.close();
+});
+
+test("without JavaScript the theme selector is hidden and the system theme applies", async ({ browser }) => {
+  const contexto = await browser.newContext({ javaScriptEnabled: false, colorScheme: "dark" });
+  const page = await contexto.newPage();
+  await page.goto("/");
+  await expect(page.locator(".tema")).toBeHidden();
+  expect(await page.evaluate(() => getComputedStyle(document.body).backgroundColor)).toBe("rgb(38, 36, 32)");
+  await contexto.close();
+});

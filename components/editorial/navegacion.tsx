@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 
 import { FlechaDiagonal } from "@/components/editorial/iconos";
 import { LogoDP } from "@/components/editorial/logo";
+import { SelectorTemaMenu, SelectorTemaRadios } from "@/components/editorial/selector-tema";
 import { NAME, getPortfolio, homePath, type Locale } from "@/data/portfolio";
 
 /**
@@ -67,6 +68,7 @@ export function Navegacion({ locale, alternate }: { locale: Locale; alternate?: 
 
           <div className="hidden items-center gap-e12 lg:flex">
             {idioma}
+            <SelectorTemaMenu textos={t.nav.tema} />
             <a href={cvPath} download className="boton-ed boton-ed-nav">
               {t.hero.downloadCv}
               <FlechaDiagonal tamano={16} />
@@ -99,6 +101,7 @@ export function Navegacion({ locale, alternate }: { locale: Locale; alternate?: 
             </li>
           ))}
         </ul>
+        <SelectorTemaRadios textos={t.nav.tema} />
         <div className="mt-e40 flex flex-wrap items-center gap-e16 pt-e24">
           <a href={cvPath} download className="boton-ed boton-ed-primario" onClick={() => setAbierto(false)}>
             {t.hero.downloadCv}

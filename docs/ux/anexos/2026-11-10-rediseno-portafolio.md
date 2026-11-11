@@ -1029,3 +1029,37 @@ Pendiente.
 - Selector, recorrido por teclado y anulación de transiciones al cambiar de tema. Son el paso 2.
 
 Captura combinada: `docs/pantallazos/modo-oscuro/Paso 1 tokens claro y oscuro.jpg`.
+
+Nota del 11 de noviembre de 2026. Diego dio el visto bueno al paso 1. Sobre el titular rojo de portada en oscuro (3.18, AA para texto grande) no decidió, así que se deja como está y queda pendiente de él.
+
+### 18.11 Verificación del paso 2, selector de tema
+
+11 de noviembre de 2026. Diego pidió llevar el modo oscuro a producción sin más paradas de visto bueno.
+
+Qué se hizo.
+
+- `components/editorial/selector-tema.tsx`. En escritorio es la píldora «Tema: …» de 44 px entre el idioma y «Descargar CV», que abre un menú con `role="menu"` y tres `menuitemradio`. Flecha abajo o arriba abre y recorre en ciclo, Inicio y Fin saltan, Enter o Espacio eligen, Escape cierra y devuelve el foco al botón, Tab cierra. En celular son tres píldoras de radio nativas dentro del panel del menú. Textos en español e inglés en `data/portfolio.ts`.
+- Al elegir se anulan las transiciones durante dos cuadros, para que el cambio sea instantáneo. «Como el sistema» borra la clave `tema`.
+- El script del `<head>` escribe también `data-tema-eleccion`. La palabra visible de la píldora la elige el CSS desde el HTML, así que no cambia al hidratar.
+- Sin JavaScript el selector se oculta y manda el sistema.
+- La política de privacidad sube a la versión 1.1, vigente desde el 11 de noviembre de 2026, en español, en inglés y en `docs/legal/`. Explica la clave `tema`, para qué sirve, cuánto dura y cómo se borra. Al regenerar `docs/legal/` el script quitaba la línea de borrador técnico, y se restauró a mano.
+
+Ajuste que salió al medir. A 1024 px la fila del encabezado desbordaba 113 px con «Tema: Sistema» (37 px a 1100). Sin el selector cabía exacta. Entre 1024 y 1279 px la píldora dice solo «Tema», con el estado completo en `aria-label`, y los enlaces de sección bajan su relleno de 8 a 4 px sin separación entre ellos (escala `e-4`). No se añadió icono porque el contrato 8.5 solo admite las dos flechas. Medido después, la fila mide lo mismo que su contenedor a 1024, 1100 y 1280 px en `/` y `/en`.
+
+Cómo se comprobó.
+
+- Pruebas nuevas en `e2e/portfolio.spec.ts`, todas en verde:
+  - recorrido por teclado del menú, con la elección guardada y la recarga ya oscura antes de que cargue React
+  - Escape y Tab, «Como el sistema» y el cambio del sistema con la página abierta
+  - toque de 44 px o más en la píldora, en las opciones del menú y en los radios de celular, con los textos en inglés
+  - encabezado en una sola fila a 1024 px en `/`, `/en` y el caso SISCAN
+  - sin JavaScript, el selector oculto y el tema del sistema aplicado
+- Lint limpio, 41 unitarias, build y 45 e2e en verde (1 omitida a propósito, la del menú de teclado en el proyecto de celular).
+- Consola sin errores ni avisos en las capturas.
+- Captura combinada a 1440 y 390 px, en claro y oscuro, cerrado y abierto: `docs/pantallazos/modo-oscuro/Paso 2 selector abierto y cerrado.jpg`.
+
+Pendiente.
+
+- A 1024 px el nombre «Diego Pinta» del encabezado se parte en dos líneas. Ya pasaba en el sitio publicado antes de este cambio (medido en producción, 44 px de alto contra 22 de línea). No lo causa el selector y queda para otra rama.
+- El titular rojo de portada en oscuro (ver la nota de arriba).
+- Probar en un celular real el escalón entre suelo y suelo alterno.
