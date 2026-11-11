@@ -36,6 +36,38 @@
   --gris-claro: #a39e94;
   --rojo-claro: #ff4a3d;
 
+  /* Colores que antes estaban escritos a mano en v2.css (anexo 18.2). Mismo valor en claro. */
+  --papel-2: #e8e1d3;          /* segundo tono de papel: experiencia, testimonios, contacto, medios */
+  --papel-elevado: #f7f3ea;    /* grupos de habilidades y esquema */
+  --papel-chip: #e9e2d4;       /* chips de habilidades */
+  --tarjeta: #ffffff;          /* tarjeta de testimonio, nodo de esquema, grupo de habilidades al pasar */
+  --campo: #fffdf8;            /* campos del formulario */
+  --campo-borde: rgba(18, 18, 17, 0.35);
+  --nav-fondo: rgba(241, 236, 226, 0.82);
+  --velo: rgba(18, 18, 17, 0.08);
+
+  /* Fijos: no cambian con el tema. */
+  --marco: #ffffff;            /* borde de sticker y marcos de capturas e ilustraciones */
+  --marco-borde: #ddd6c8;
+  --cinta-papel: #f6f1e4;      /* cinta pegada de portada */
+  --cinta-adhesiva: rgba(255, 255, 255, 0.7);
+  --sombra-cinta: rgba(18, 18, 17, 0.2);
+  --sombra-polaroid: rgba(18, 18, 17, 0.45);
+  --velo-claro: rgba(241, 236, 226, 0.1);
+  --pasantia-texto: #d8d2c6;
+  --pasantia-etapa: rgba(241, 236, 226, 0.06);
+  --verde-estado: #1f9d55;
+  --verde-estado-halo: rgba(31, 157, 85, 0.5);
+  --verde-estado-0: rgba(31, 157, 85, 0);
+  --linkedin: #0a66c2;
+  --visor-fondo: rgba(13, 13, 12, 0.94);
+
+  /* Copias fijas de los tokens que el tema oscuro redefine, para restaurarlos donde no cambian. */
+  --papel-fijo: #f1ece2;
+  --tinta-fija: #121211;
+  --gris-fijo: #5a554c;
+  --rojo-texto-fijo: #b81f14;
+
   /* 8.3 Escala de texto fija */
   --t-13: 13px;
   --t-15: 15px;

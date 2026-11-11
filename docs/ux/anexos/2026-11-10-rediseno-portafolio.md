@@ -110,6 +110,8 @@ Tesis: un cuaderno de laboratorio hecho a mano, con fotos recortadas, cinta y no
 
 Vigente desde el 10 de noviembre de 2026. Nada de color, tipografía, espaciado o efecto fuera de esta lista. Si algo no funciona se para y se avisa. Cada enmienda lleva fecha y permiso de Diego.
 
+> **Nota del 11 de noviembre de 2026.** Este contrato describe la primera versión editorial, la que Diego rechazó por estática y poco parecida a sus referencias. Quedó reemplazado por la dirección que hoy está publicada y que resume `CONTINUAR.md` (titular condensado con palabras en rojo, retrato sticker con borde blanco sobre el bloque rojo, cinta negra de tecnologías, proyectos en collage sobre negro, botones en píldora, láminas de esquinas redondeadas y segundo tono de papel). Lo que sigue valiendo de aquí son los tokens de color de 8.2, la escala de espacio y las reglas de accesibilidad. Ya no valen el radio 0, el filete de 1 px ni la monoespaciada en rótulos, que Diego pidió quitar. Las decisiones de modo oscuro están en la sección 18.
+
 ### 8.1 Design Read
 
 - Registro y audiencia: marca. Docente con rúbrica, reclutador con prisa, cliente en celular.
@@ -774,3 +776,256 @@ Las comparativas están en `docs/pantallazos/rediseno/Comparativa final 1440.png
 - Hecho. Seis recortes de 740 × 330 px desde la hoja de 1586 × 992 px, sin la decoración de las esquinas, con el crema llevado al papel del sitio (`scripts/recortar-ilustraciones.py`). Campo `ilustracion` en `data/projects.ts`. Prioridad captura, ilustración, esquema y placa en selector, experiencia e imagen para redes, con el rótulo «Ilustración».
 - Verificado. Lint, test, e2e y build, y una captura del selector a 1440 con un proyecto ilustrado (`Selector 1440 con ilustración.png`).
 - Sin hacer. La ilustración como cabecera secundaria de la página de caso, la verificación completa (resolución, alto, contraste y anchos) y la actualización de ESTADO e HISTORIAL.
+
+
+## 18. Modo oscuro y selector de tema
+
+11 de noviembre de 2026. Petición del profesor para todos sus proyectos. Diego pidió añadir un tema oscuro con selector (Claro, Oscuro y Como el sistema), guardado en el dispositivo y sin parpadeo al cargar. El resto del portafolio no se toca. Estado actual, investigación y direcciones. No hay código todavía y falta que Diego elija.
+
+### 18.1 Encuadre
+
+- Quién lo usa. Los mismos tres de la sección 2. El que más gana es el reclutador o el cliente que abre el enlace de noche desde el celular, con el teléfono en oscuro. El docente lo revisa en escritorio y va a probar el selector a propósito.
+- Qué decide. Nada nuevo. La decisión dominante sigue siendo abrir un proyecto o bajar el CV. El tema solo tiene que no estorbar.
+- Restricción que manda. El sitio claro ya vive de alternar papel y negro (portada, cinta negra, perfil, proyectos sobre negro, franja, habilidades, experiencia, formación, testimonios, mapa, contacto y pie negro). Si en oscuro todo pasa a negro, se pierde el ritmo y las láminas que suben una sobre otra dejan de verse.
+- Lectura voluntaria. Registro de marca, igual que el resto del anexo.
+
+### 18.2 Inventario medido
+
+Comprobado con grep el 11 de noviembre de 2026 sobre `app/v2.css`, `app/globals.css` y los componentes.
+
+Tokens de color (definidos en `app/globals.css`, líneas 30 a 37, y usados por `v2.css`):
+
+| Token | Valor | Usos en v2.css | Usos en globals.css |
+|---|---|---|---|
+| `--papel` | `#F1ECE2` | 28 | 17 |
+| `--tinta` | `#121211` | 35 | 30 |
+| `--gris` | `#5A554C` | 8 | 5 |
+| `--rojo` | `#D92B1F` | 12 | 6 |
+| `--rojo-texto` | `#B81F14` | 6 | 3 |
+| `--negro` | `#0D0D0C` | 0 | 4 |
+| `--gris-claro` | `#A39E94` | 4 | 3 |
+| `--rojo-claro` | `#FF4A3D` | 16 | 2 |
+
+Los tokens viejos del mapa (`--ink`, `--forest`, `--emerald`, `--paper`, `--amber`) y los colores de `components/pixel-sprites.tsx` son del mapa 2D de `/quest`. Son pixel art con su propia paleta y no cambian con el tema.
+
+Colores escritos a mano en `v2.css` que hoy no pasan por ningún token y habrá que convertir en token antes de tocar el tema:
+
+| Valor | Dónde | Trabajo |
+|---|---|---|
+| `#E8E1D3` | Experiencia, testimonios y contacto (línea 392), bloque de medios (300) | Segundo tono de papel, el que hace notar el cambio entre secciones claras |
+| `#F7F3EA`, `#E9E2D4` | Grupos y chips de habilidades (219, 221), esquema (345) | Superficie elevada sobre papel |
+| `#FFFFFF` | Borde de sticker del retrato (40), marcos de capturas, polaroid, carrusel, galería, ilustración de caso, testimonios, logos de habilidades, nodos de esquema | Marco blanco de objeto pegado |
+| `#F6F1E4` | Cinta «Electrónica + Software» (45) | Cinta de papel pegada |
+| `#FFFDF8` y sombra interior `rgba(18,18,17,.35)` | Campos del formulario (230) | Campo de texto |
+| `rgba(241,236,226,.82)` y desenfoque | Encabezado fijo (180) | Fondo del encabezado |
+| `#D8D2C6`, `rgba(241,236,226,.06)` | Pasantía (282, 295) | Texto y etapas sobre la tarjeta negra |
+| `#1F9D55` | Punto «Abierto a prácticas» (26, 320) | Estado real, verde |
+| `#0A66C2` | Botón de LinkedIn en testimonios (383) | Color de marca de LinkedIn |
+| `rgba(13,13,12,.94)` | Visor de imágenes (477) | Ya es oscuro, no cambia |
+
+Superficies y qué les pasa en oscuro:
+
+| Superficie | En claro | En oscuro |
+|---|---|---|
+| Portada (`.sup-papel` en `portada.tsx`) | Papel con bloque rojo y retrato sticker | Cambia el suelo. El bloque rojo y el borde blanco se quedan |
+| Encabezado (`.nav-ed`) | Papel translúcido con desenfoque | Cambia |
+| Cinta de tecnologías (`.sup-negro`) | Negro | Se queda negra y tiene que separarse del suelo nuevo |
+| Perfil, habilidades, formación, mapa (`.sup-papel` de `seccion.tsx`) | Papel | Cambia |
+| Experiencia, testimonios, contacto (por id) | Arena `#E8E1D3` | Cambia, un escalón distinto del anterior |
+| Proyectos (`seccion.tsx` con `oscura`) | Negro | Se queda y tiene que seguir siendo «la sala oscura» |
+| Franja Hardware / Software (`franja-dual.tsx`) | Mitad papel y mitad negro | La mitad clara cambia |
+| Pasantía (`.pasantia`) | Tarjeta tinta sobre arena | Necesita un tono propio para no fundirse |
+| Pie (`pie.tsx`, `.sup-negro`) | Negro | Se queda |
+| Logos de habilidades (`habilidades.tsx`, `fill` con el color de marca de simple-icons) | Sobre ficha blanca | Se queda la ficha clara. Varios logos son negros (GitHub, Next.js, Vercel) y desaparecerían sobre fondo oscuro |
+| Ilustraciones de proyecto | Recortes con el crema horneado al papel del sitio | Se quedan como objeto con marco, no como fondo |
+| Capturas | Marco blanco | Se quedan con marco |
+| Mapa 2D de `/quest` | Pixel art | No cambia |
+| Imagen para redes y CV en PDF | Fijos | Fuera de alcance |
+
+Foco. `globals.css` ya cambia el color del anillo por superficie (`--color-foco` en `.sup-papel` y `.sup-negro`), así que el foco sigue al tema si sigue a la superficie.
+
+Riesgo técnico anotado para la implementación. No hay nada de tema hoy (cero coincidencias de `color-scheme`, `prefers-color-scheme` o `data-theme`). La etiqueta `<html>` está en `app/root-shell.tsx`, compartida por las rutas en español e inglés. Este Next.js trae cambios respecto a lo conocido (ver `AGENTS.md`), así que el script del `<head>` se escribe leyendo antes la guía de `node_modules/next/dist/docs/`.
+
+### 18.3 Referentes
+
+Investigación proporcional a un cambio sobre un sistema que ya existe. Capturas en `docs/ux/anexos/ref/`.
+
+- styles.refero.design, búsqueda «red black editorial poster», vista en Chrome el 11 de noviembre de 2026 (https://styles.refero.design/?q=red%20black%20editorial%20poster). Las fichas de Cards Against Humanity e Impossible Foods resuelven el oscuro sin apagar el rojo. Una lo deja como trazo sobre negro y la otra lo convierte en campo granate con texto rojo vivo encima. → Decisión. El rojo de marca no se desatura en oscuro, el bloque de portada sigue siendo `#D92B1F`. → Límite. No copio el campo granate como suelo general. Rompe la regla de un solo bloque rojo por pantalla. La captura guardada por Playwright (`2026-11-11 refero rojo negro.png`) salió con el aviso «búsqueda no disponible», así que la observación viene de la vista en Chrome. Chrome se desconectó antes de guardar esa imagen.
+- The Verge, portada en oscuro (https://www.theverge.com/, `2026-11-11 the verge oscuro.png`). El suelo es casi negro y la marca vive en campos de color sólido y en el logotipo gigante girado. La foto va sin marco y se recorta contra el negro. → Decisión. En oscuro el color de marca carga la identidad y el suelo se queda neutro. Las fotos y capturas conservan su marco blanco, porque en este sitio el marco es el gesto de objeto pegado. → Límite. No tomo el verde menta de acento ni el titular girado.
+- Vercel, pie de página (https://vercel.com/, `2026-11-11 vercel pie selector tema.png`). El tema se elige con tres iconos seguidos (sistema, claro, oscuro) en una pastilla de unos 20 px en la esquina del pie. → Decisión. Tres estados explícitos, con «Como el sistema» como uno más. → Límite. No lo pongo en el pie ni lo dejo en iconos de 20 px. Está por debajo de 44 px, no se encuentra y los iconos de sol y luna son el selector de tema por defecto.
+- Lea Verou, «Dark mode toggles: two states are enough», 2026 (https://lea.verou.me/blog/2026/dark-mode-toggles/). Defiende que el botón muestre solo lo que se puede cambiar y que el modo del sistema exista como estado que no se guarda. Solo se guarda la elección explícita y nunca se borra sola si el sistema cambia. → Decisión. «Como el sistema» no escribe nada en `localStorage`, se borra la clave. «Claro» y «Oscuro» se guardan tal cual. → Límite. El encargo pide los tres estados visibles, así que no adopto su botón de dos estados.
+- Emil Kowalski, «You don't need animations» (https://emilkowal.ski/ui/you-dont-need-animations), y la opción `disableTransitionOnChange` de next-themes (https://github.com/pacocoursey/next-themes). Kowalski mide la animación por la frecuencia y la intención. Una acción de preferencia no gana nada con un fundido. next-themes apaga todas las transiciones un instante al cambiar de tema para que no se vea cada elemento cambiar a destiempo. → Decisión. El cambio de tema es instantáneo. Al cambiar se inyecta `*{transition:none!important}` y se quita en el cuadro siguiente. Hoy hay transiciones de 150 a 400 ms en fondos (grupos de habilidades, láminas, botones) que harían un barrido desordenado. → Límite. No hago el círculo que se expande desde el botón con View Transitions. Es el efecto llamativo de moda y aquí no comunica nada.
+- Fuente no accesible. https://emilkowal.ski/ui/the-magic-of-clip-path y https://www.joshwcomeau.com/react/dark-mode/ no abrieron con WebFetch el 11 de noviembre de 2026 (dominio no verificable). La página de Kowalski se leyó por terminal. Josh Comeau no se usa.
+- Mobbin, Pinterest y motionsites no se consultaron. El cambio es de paleta sobre un sistema cerrado y Chrome se desconectó.
+
+La captura de partida del sitio en claro está en `2026-11-11 portafolio diego claro portada.png` y `2026-11-11 portafolio diego claro proyectos.png`.
+
+### 18.4 Lo que vale para las tres direcciones
+
+- Tokens. Los ocho tokens se redefinen bajo `html[data-tema="oscuro"]`. Antes se convierten en token los colores escritos a mano de la tabla 18.2. Ningún componente lleva color de tema propio.
+- Sin parpadeo. Un script pequeño en el `<head>` de `root-shell.tsx`, antes de pintar, lee `localStorage` (clave `tema`). Si vale `claro` u `oscuro` lo aplica. Si no hay nada, mira `prefers-color-scheme`. Escribe `data-tema` y `color-scheme` en `<html>`. `<html>` lleva `suppressHydrationWarning`. En modo sistema se escucha el cambio del sistema operativo.
+- Lo que no cambia de color. Bloque rojo de portada, borde blanco del sticker, cinta pegada, marcos blancos de capturas e ilustraciones, fichas claras de los logos, pixel art del mapa, punto verde y botón de LinkedIn.
+- Contraste. Piso AA en todo texto. AAA en cifras (proyectos, ingenierías y cifras de habilidades).
+- Movimiento. El cambio de tema no se anima. Las láminas y entradas que ya existen siguen igual y siguen respetando `prefers-reduced-motion`.
+- Prohibiciones de Diego que siguen. Ninguna línea negra de 1 px (en oscuro tampoco se cambian por líneas claras de 1 px), botones en píldora, sin monoespaciada en rótulos.
+- Privacidad. La preferencia se guarda solo en el navegador, con una clave que no identifica a nadie, y no viaja a ningún servidor. Es almacenamiento técnico necesario para una función que la persona pidió, no rastreo. Hay que añadir una línea a la política de `docs/legal/` y a la página de privacidad, en la parte de almacenamiento local, con la clave, para qué sirve y cómo borrarla (elegir «Como el sistema» la borra).
+
+### 18.5 Direcciones
+
+#### A. Escalera de grafito (recomendada)
+
+Una frase. Las secciones que eran papel pasan a dos grafitos cálidos y las que ya eran negras se quedan en el negro más hondo, así el oscuro conserva el mismo orden de escalones que el claro, solo que más corto.
+
+| Token en oscuro | Valor | Sustituye a | Medido |
+|---|---|---|---|
+| Suelo | `#262420` | `--papel` como fondo | Texto `#F1ECE2` 13.16 |
+| Suelo alterno | `#302D28` | Arena `#E8E1D3` | Texto 11.65, gris 5.14 |
+| Sala negra | `#0D0D0C` | Se queda (cinta, proyectos, pie) | Escalón con el suelo 1.26 |
+| Texto | `#F1ECE2` | `--tinta` como texto | |
+| Texto secundario | `#A39E94` | `--gris` | 5.14 sobre suelo alterno |
+| Rojo de texto | `#FF6257` | `--rojo-texto` | 5.26 sobre suelo, 4.66 sobre suelo alterno |
+| Rojo de bloque | `#D92B1F` | Se queda | Titular rojo grande sobre negro 4.00 |
+| Tarjeta de pasantía | `#0D0D0C` | `--tinta` como fondo | Contrasta con el suelo alterno |
+
+Ritmo. En claro el escalón papel y arena mide 1.10 y el sitio lo nota gracias a las láminas de esquinas redondeadas. En oscuro el escalón entre suelo y suelo alterno mide 1.13 y entre suelo y sala negra 1.26, así que el orden se mantiene y los proyectos siguen siendo el lugar más oscuro de la página. El borde redondeado de cada lámina hace el resto del trabajo, igual que en claro.
+
+Respaldo. The Verge (suelo neutro, marca en el color), refero con Cards Against Humanity (rojo intacto sobre negro).
+
+Riesgos del presupuesto que gasta. Color como campo (el bloque rojo de portada queda aún más fuerte sobre grafito) y superposición (las láminas que suben una sobre otra se siguen viendo por el escalón).
+
+Riesgo propio. Los saltos son pequeños. En una pantalla barata con poco contraste el paso entre suelo y suelo alterno puede no verse. Se compensa porque cada sección empieza con la esquina redondeada de su lámina, y se verifica en un celular real.
+
+#### B. Mesa de luz
+
+Una frase. El ritmo se invierte, el sitio pasa a grafito y la sección de proyectos se vuelve la única superficie clara, como una mesa de luz donde se ponen las capturas.
+
+| Token | Valor | Medido |
+|---|---|---|
+| Suelo | `#1C1B19` | Texto 14.62 |
+| Mesa de luz (proyectos y cinta) | `#E8E1D3` | Tinta 14.41, rojo de texto 4.98, escalón con el suelo 13.23 |
+
+Ritmo. Conserva el salto grande de claro a oscuro, pero al revés. Es la que más se parece en fuerza al claro.
+
+Respaldo. Ninguno de los referentes lo hace. Sale de pensar el ritmo como contraste puro.
+
+Riesgos que gasta. Color como campo y asimetría estructural (todo el peso de luz cae en un punto).
+
+Riesgo propio. Quien eligió oscuro de noche recibe un bloque crema de varias pantallas de alto justo en la sección más larga. Es lo contrario de lo que pidió. Además la sección de proyectos fue diseñada como «sala oscura» con el número en rojo hueco, y en claro ese gesto ya existe en la portada.
+
+#### C. Brasa
+
+Una frase. Suelo casi negro neutro en todo el sitio y la sección de proyectos en un rojo muy oscuro, así el ritmo pasa de la luz al tono.
+
+| Token | Valor | Medido |
+|---|---|---|
+| Suelo | `#161514` | Texto 15.49 |
+| Brasa (proyectos) | `#24100D` | Texto 15.44, rojo de texto 5.45, escalón de luz con el suelo 1.00 |
+
+Respaldo. refero con Impossible Foods (campo granate con rojo encima).
+
+Riesgos que gasta. Color como campo.
+
+Riesgo propio. El escalón de luz entre suelo y brasa es 1.00. Solo se distingue por el tono, así que una persona con protanopía ve una sola superficie. El rojo deja de estar reservado al bloque de portada y a los titulares y se vuelve fondo, cosa que el contrato prohíbe (un solo bloque rojo por pantalla). Tira hacia la familia granate que la skill de taste marca como salida por defecto.
+
+### 18.6 Selector de tema
+
+Va en el encabezado, junto al enlace de idioma y antes del botón «Descargar CV», con la misma familia de píldoras.
+
+- Escritorio (1024 px o más). Una píldora de texto de 44 px de alto que dice el estado actual, «Tema: Sistema», «Tema: Claro» o «Tema: Oscuro». Abre un menú corto con las tres opciones en texto. Es un botón con `aria-expanded` y un grupo de opciones con `role="menuitemradio"` y `aria-checked`. Flechas para moverse, Enter o Espacio para elegir, Escape cierra y devuelve el foco al botón. Sin sol ni luna, porque el sitio es tipográfico y los iconos de tema son el selector por defecto.
+- Celular y tablet. Dentro del panel del menú, una fila de tres píldoras con texto, «Claro», «Oscuro» y «Sistema», cada una de 44 px de alto como mínimo. Es un `radiogroup` nativo (inputs de radio con etiqueta), así funciona con teclado y lector de pantalla sin código extra.
+- Ancho. La navegación tiene que seguir en una sola línea a 1024 px. Si la píldora no cabe, la etiqueta se acorta a «Tema» con el estado en `aria-label`. Se mide antes de elegir.
+- Idiomas. «Tema», «Claro», «Oscuro», «Como el sistema» y en inglés «Theme», «Light», «Dark», «System».
+- Alternativa descartada. Un botón que alterna en ciclo de tres estados. Obliga a pulsar hasta encontrar el que se quiere y no deja ver las opciones.
+
+### 18.7 Estados
+
+- Sin JavaScript. El script del `<head>` no corre, el sitio respeta `prefers-color-scheme` con una media query de respaldo y el selector se oculta.
+- Sin `localStorage` (modo privado o bloqueado). La elección vale para esa visita y no se guarda. No se muestra error.
+- Valor guardado inválido. Se trata como «Como el sistema».
+- Cambio del sistema con el sitio abierto. En «Como el sistema» se aplica al momento. En «Claro» u «Oscuro» no se toca.
+
+### 18.8 Recomendación
+
+La A. Es la única que cumple a la vez lo que pidió Diego y lo que pidió quien eligió oscuro. Mantiene el orden de las secciones, deja los proyectos como el lugar más oscuro y no toca el rojo ni el sticker. La B tiene el ritmo más fuerte pero castiga a quien eligió oscuro. La C se ve atractiva en una captura pero rompe la regla del rojo y depende solo del tono.
+
+Pendiente de la respuesta de Diego. Elegida la dirección, se escribe aquí como enmienda del contrato vigente, con fecha. Después se implementa paso a paso (tokens, selector, esqueleto con el script del `<head>`, secciones, página completa y estados), con capturas en claro y oscuro a 390, 768 y 1440 px.
+
+### 18.9 Enmienda 15. Contrato del modo oscuro
+
+Aprobada por Diego el 11 de noviembre de 2026, por pregunta directa. Eligió la dirección A, «Escalera de grafito», con el selector en el encabezado como se propuso en 18.6. Desde aquí es parte del contrato vigente. Lo que no esté en esta lista no entra en el tema oscuro.
+
+Color en oscuro. Se redefine en `<html data-tema="oscuro">`.
+
+| Token | Claro | Oscuro | Trabajo en oscuro |
+|---|---|---|---|
+| `--papel` | `#F1ECE2` | `#262420` | Suelo de las secciones que en claro son papel |
+| `--papel-2` | `#E8E1D3` | `#302D28` | Suelo alterno (experiencia, testimonios, contacto, medios) |
+| `--tinta` | `#121211` | `#F1ECE2` | Texto sobre el suelo |
+| `--gris` | `#5A554C` | `#A39E94` | Texto secundario |
+| `--rojo-texto` | `#B81F14` | `#FF6257` | Rojo de texto pequeño y cifra de habilidades |
+| `--papel-elevado` | `#F7F3EA` | `#302D28` | Grupos de habilidades y esquema |
+| `--papel-chip` | `#E9E2D4` | `#3A3732` | Chips de habilidades |
+| `--tarjeta` | `#FFFFFF` | `#3A3732` | Tarjeta de testimonio y nodo de esquema |
+| `--campo` | `#FFFDF8` | `#262420` | Campo del formulario, con borde crema al 35 % |
+| `--nav-fondo` | papel al 82 % | grafito al 86 % | Encabezado translúcido |
+
+Lo que se queda igual en los dos temas: `--rojo` (bloque, titulares rojos y cuadros de rótulo), `--negro` (cinta, proyectos, pie), `--rojo-claro` y `--gris-claro` (texto sobre negro), `--marco` (borde del sticker y marcos blancos), la cinta pegada, el verde de estado, el azul de LinkedIn, el botón primario (rojo `#B81F14` con texto papel) y el pixel art de `/quest`.
+
+Superficies que conservan los valores del claro dentro del oscuro: `.sup-negro`, la composición de portada (`.hero2-foto`), la tarjeta de pasantía, el telón negro y las fichas blancas de logos. Ahí los tokens se restauran desde copias fijas (`--papel-fijo`, `--tinta-fija`, `--gris-fijo`, `--rojo-texto-fijo`).
+
+Ajuste que salió al medir. La cifra de habilidades daba 2.82 en rojo de bloque sobre el suelo alterno. En oscuro usa `--rojo-texto` y da 4.66, AAA para texto grande. En claro no cambia.
+
+Mecánica. Un script en el `<head>` escribe `data-tema` antes de pintar. Lee la clave `tema` de `localStorage` («claro» u «oscuro») y, si no hay elección válida, sigue al sistema, también si cambia con la página abierta. Sin JavaScript manda `prefers-color-scheme`. El cambio de tema no se anima.
+
+Selector. Va en el encabezado, entre el idioma y «Descargar CV», como píldora de texto de 44 px con menú de tres opciones. En celular va dentro del panel del menú, como tres píldoras de radio. Elegir «Como el sistema» borra la clave.
+
+Fuera de alcance. Imagen para redes, CV en PDF, mapa 2D y cualquier cambio de composición, tipografía o espacio.
+
+### 18.10 Verificación del paso 1, tokens
+
+11 de noviembre de 2026. Rama `feature/modo-oscuro`.
+
+Qué se hizo.
+
+- Los colores escritos a mano en `v2.css` pasaron a tokens en `globals.css`, con el mismo valor en claro. Después del cambio, en `v2.css` fuera del bloque oscuro no queda ningún literal de color salvo la definición de `--suave`.
+- El bloque «Tema oscuro» va al final de `v2.css`, con el respaldo de `prefers-color-scheme` para cuando no hay `data-tema`.
+- El script va en el `<head>` de `app/root-shell.tsx` y `<html>` lleva `suppressHydrationWarning`. Se siguió la guía `node_modules/next/dist/docs/01-app/02-guides/preventing-flash-before-hydration.md`. El contenido del script es una constante del código, sin datos externos.
+- El selector todavía no existe. Para probar, Playwright guarda `tema` en `localStorage` antes de cargar.
+
+Cómo se comprobó.
+
+- El claro queda idéntico. Se hicieron capturas de página completa a 390, 768 y 1440 px del inicio, del caso SISCAN y de `/en`, antes y después, con movimiento reducido. Dos capturas de la línea base dieron 0 píxeles distintos entre sí, así que la comparación no tiene ruido. Después del cambio dieron 0 píxeles distintos en las 9 páginas, tanto con «claro» guardado como sin elección y el sistema en claro.
+- Estados del tema. Se probaron 9 casos: sistema oscuro o claro sin elección, elección contraria al sistema, valor inválido, sin JavaScript con el sistema en oscuro y en claro, y el sistema que cambia con la página abierta. Los 9 dan el tema esperado.
+- Sin parpadeo. El script queda dentro del `<head>`, antes del `<body>`, sin ningún script bloqueante antes. Solo lo precede una hoja de estilo.
+- Consola sin errores ni avisos en las 27 cargas de cada pasada.
+- Contraste medido sobre el render en oscuro a 1440, 768 y 390 px. Se recorta la caja de cada texto en la captura y se compara el fondo más frecuente con la tinta de mayor contraste.
+
+| Pareja | Medido |
+|---|---|
+| Titular, intro y cifras de portada (crema sobre suelo) | 13.16 |
+| Titular rojo de portada (rojo de bloque sobre suelo) | 3.18 |
+| Rótulo de sección y texto secundario (gris sobre suelo) | 5.81 |
+| Enlace de navegación | 13.17 |
+| Botón «Descargar CV» del encabezado (grafito sobre crema) | 13.17 |
+| Botón primario (papel sobre rojo) | 5.50 |
+| Meta de proyecto (rojo claro sobre negro) | 5.83 |
+| Cifra de habilidades (rojo de texto sobre suelo alterno) | 4.66 |
+| Chip de habilidad y texto de testimonio | 10.06 |
+| Etiqueta de logo (tinta sobre ficha blanca) | 18.74 |
+| Texto de pasantía | 11.09 |
+| Etiqueta de formulario | 11.65 |
+| Pie | 16.52 |
+
+Fallos encontrados y corregidos.
+
+- Las etiquetas bajo los logos de habilidades salían en crema sobre la ficha blanca. El `<span>` no tiene color propio y heredaba el ya calculado del grupo. Se le devolvió la tinta en oscuro y quedó en 18.74.
+- La cifra de habilidades daba 2.82, por debajo del AA para texto grande. Se corrigió con `--rojo-texto` (ver 18.9) y quedó en 4.66.
+- Error del propio script de medición. Marcó como fallo el «01» del caso (153 px, 3.18) y la cifra de habilidades (40 px, 4.66) porque los comparó con el piso de texto normal. A ese tamaño son texto grande y pasan.
+
+Pendiente.
+
+- El titular rojo de portada baja de 4.13 en claro a 3.18 en oscuro. Pasa AA para texto grande pero no AAA. Si Diego lo quiere más alto, la alternativa es usar `--rojo-claro` (`#FF4A3D`) en los titulares sobre grafito, sin tocar el bloque. Queda a su decisión.
+- Probar en un celular real que se vea el escalón entre suelo y suelo alterno (1.13).
+- Selector, recorrido por teclado y anulación de transiciones al cambiar de tema. Son el paso 2.
+
+Captura combinada: `docs/pantallazos/modo-oscuro/Paso 1 tokens claro y oscuro.jpg`.
