@@ -1,18 +1,26 @@
 # Portafolio de Diego Armando Pinta Cuasquen
 
-Portafolio de **Diego Armando Pinta Cuasquen**, estudiante de Ingeniería de Software (UCC) con formación en Ingeniería Electrónica. Diseño editorial con un selector de proyectos como pantalla de selección. Español en `/` e inglés en `/en`.
+Este es mi portafolio. Soy estudiante de Ingeniería de Software en la Universidad Cooperativa de Colombia y ya terminé Ingeniería Electrónica, así que mis proyectos van del sensor a la interfaz. Aquí están los trabajos de la carrera, la pasantía en la Gobernación de Nariño, la monitoría de televisión y mi hoja de vida.
 
-Stack: Next.js (App Router), React, TypeScript y Tailwind CSS 4. Tipografías Archivo e IBM Plex Mono.
+Está publicado en **https://mi-portafolio-beta-kohl.vercel.app**, en español (`/`) y en inglés (`/en`).
 
-Incluye:
+## Para qué sirve
 
-- Portada con nombre, retrato y cifras contadas desde los datos.
-- Selector de los 11 proyectos con captura real o esquema de sistema, ficha y enlaces.
-- Franja Hardware / Software, habilidades con cifras reales enlazadas a los proyectos, experiencia con miniatura, formación, testimonios pendientes y contacto.
-- Un caso de estudio por proyecto (`/proyectos/<id>` y `/en/projects/<id>`).
-- El mapa 2D en pixel art de la versión anterior, en `/quest`.
-- Política de privacidad en `/privacidad` y `/en/privacy`, borrador técnico pendiente de revisión.
-- Imagen para redes por idioma y por proyecto, sitemap, robots y CV en PDF en los dos idiomas.
+Es para que un profesor, un reclutador o un cliente vea en pocos minutos qué sé hacer y lo compruebe en los proyectos reales, con sus capturas, su repositorio y lo que aprendí en cada uno. No pide cuenta ni guarda nada de quien lo visita.
+
+## Cómo se usa
+
+- **Inicio.** Arranca con la portada y las cifras. Después vienen los proyectos en carrusel (con visor a pantalla completa para ver todas las capturas), la franja Hardware / Software, las habilidades con logos, la experiencia, la formación, los testimonios y el contacto.
+- **Caso de cada proyecto** en `/proyectos/<id>` (o `/en/projects/<id>`), con el problema, lo que hice, la galería y los enlaces al código.
+- **Hoja de vida** en PDF, en español y en inglés, desde el encabezado.
+- **El mapa en pixel art** de la versión anterior sigue en `/quest`, por si alguien quiere recorrerlo como juego.
+- **Privacidad** en `/privacidad` y `/en/privacy`.
+
+Las cuentas de prueba para revisar mis aplicaciones están en [`docs/Cuentas de prueba.md`](docs/Cuentas%20de%20prueba.md).
+
+## Cómo está hecho
+
+Next.js 16 (App Router), React 19, TypeScript y Tailwind CSS 4, publicado en Vercel. Las tipografías son Archivo y Permanent Marker. El estilo actual (portada roja con la foto tipo sticker, cinta de tecnologías y titulares condensados) está en `app/v2.css`, que se carga después de `globals.css` y manda sobre él. Los datos de todo el sitio están en `data/portfolio.ts` y `data/projects.ts`.
 
 Contrato de diseño y verificación de cada paso: [`docs/ux/anexos/2026-11-10-rediseno-portafolio.md`](docs/ux/anexos/2026-11-10-rediseno-portafolio.md). Estado del proyecto: [`docs/ESTADO-DEL-PROYECTO.md`](docs/ESTADO-DEL-PROYECTO.md).
 
@@ -52,7 +60,7 @@ npm run cv
 
 ## Añadir la captura, la ilustración o el esquema de un proyecto
 
-En el selector, en la miniatura de experiencia y en la imagen para redes, cada proyecto de `data/projects.ts` muestra lo primero que tenga:
+En el carrusel de proyectos, en la miniatura de experiencia y en la imagen para redes, cada proyecto de `data/projects.ts` muestra lo primero que tenga:
 
 1. `image`, una captura real.
 2. `ilustracion`, una ilustración rotulada «Ilustración» (enmienda 14).
@@ -68,7 +76,7 @@ Para añadir una captura:
 1. Guarda la imagen en `public/projects/` en WebP, con guion medio en el nombre (`agropulse-panel.webp`) y sin ampliarla. 1280 px de ancho bastan.
 2. En el proyecto, añade `image` con `src`, `width` y `height` reales del archivo, y `alt` en español e inglés que describa lo que se ve.
 3. Anota en un comentario de dónde salió la captura.
-4. Si el proyecto tenía `ilustracion` o `esquema`, puedes dejarlos: la captura manda. Los proyectos con captura van primero en la lista (enmienda 10), así que muévelo arriba en `base`.
+4. Si el proyecto tenía `ilustracion` o `esquema`, puedes dejarlos, porque la captura manda. Los proyectos con captura van primero en la lista (enmienda 10), así que muévelo arriba en `base`.
 
 ## Cambiar la foto de la portada
 
@@ -97,8 +105,8 @@ Las fuentes estáticas de `assets/fuentes` (para la imagen social y el CV) se re
 ## Despliegue
 
 1. Sube el repositorio a GitHub.
-2. En [Vercel](https://vercel.com/new), importa el repositorio; la configuración de Next.js se detecta sola.
+2. En [Vercel](https://vercel.com/new), importa el repositorio. La configuración de Next.js se detecta sola.
 3. Cada push a la rama principal publica una nueva versión.
-4. Opcional: activa **Analytics** en el panel del proyecto en Vercel. El componente ya está incluido y solo se carga en despliegues de Vercel.
+4. Si quieres, activa **Analytics** en el panel del proyecto en Vercel. El componente ya está incluido y solo se carga en despliegues de Vercel.
 
 La URL pública se toma de `VERCEL_PROJECT_PRODUCTION_URL` para las etiquetas de redes, el sitemap y robots. El CV enlaza a `PORTFOLIO_URL` de `data/portfolio.ts`, que hoy es la dirección que figura en el repositorio. Si cambia el dominio, actualiza esa constante y ejecuta `npm run cv`.
