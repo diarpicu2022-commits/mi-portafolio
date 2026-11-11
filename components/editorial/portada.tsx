@@ -9,7 +9,7 @@ const texto = {
     lineas: [["DEL ", "SENSOR"], ["A LA"], ["INTERFAZ", "."]],
     hola: "Hola, soy",
     intro:
-      "Diseño el circuito, escribo el firmware y le hago la interfaz a quien lo va a usar. Soy técnico del SENA en cafés especiales y mi trabajo de grado, hecho en mi pasantía en la Gobernación de Nariño, fue un secador de café solar-eléctrico que salió Meritorio.",
+      "Diseño el circuito, escribo el firmware y le hago la interfaz a quien lo va a usar. Me formé como técnico en sistemas y en cafés especiales, termino Ingeniería Electrónica y estudio Ingeniería de Software. Me gusta construir cosas que la gente use de verdad, como un secador de café para productores de Nariño.",
     cinta: "Electrónica + Software",
     disponible: "Abierto a prácticas y proyectos",
     bajar: "Bajar",
@@ -18,7 +18,7 @@ const texto = {
     lineas: [["FROM ", "SENSOR"], ["TO THE"], ["INTERFACE", "."]],
     hola: "Hi, I'm",
     intro:
-      "I design the circuit, write the firmware and build the interface for whoever will use it. I'm a SENA specialty coffee technician, and my degree project, built during my internship at the Government of Nariño, was a solar-electric coffee dryer graded Meritorious.",
+      "I design the circuit, write the firmware and build the interface for whoever will use it. I trained as an IT and specialty coffee technician, I'm finishing Electronic Engineering and I study Software Engineering. I like building things people actually use, like a coffee dryer for growers in Nariño.",
     cinta: "Electronics + Software",
     disponible: "Open to internships and projects",
     bajar: "Scroll",
@@ -73,7 +73,7 @@ export function Portada({ locale, projectsHref = "#proyectos" }: { locale: Local
 
         <div className="hero2-intro">
           <p className="text-17 leading-relaxed">
-            {x.hola} <strong>{nombre} {apellido}</strong>. {x.intro}
+            {x.hola} <strong>{identity.name}</strong>. {x.intro}
           </p>
           <dl className="hero2-cifras">
             <div>

@@ -457,7 +457,7 @@ const localized = {
               "Diseñé e implementé un secador híbrido solar-eléctrico con control automatizado para café pergamino, mi trabajo de grado.",
               "Ensayo piloto con 2 lotes pareados, 221 horas y cerca de 139.800 lecturas de sensores.",
               "El café se secó un 12 % más rápido que al aire libre, y el pronóstico del punto de retiro bajó el error mediano de 42,6 h a 7,6 h.",
-              "Trabajo de grado sustentado el 5 de noviembre de 2026 con calificación Meritoria (90/100).",
+              "Trabajo de grado sustentado el 5 de noviembre de 2026 ante jurados de la Universidad de Nariño.",
             ],
           },
         ],
@@ -564,7 +564,7 @@ const localized = {
     testimonials: [
       {
         quote:
-          "Dirigí el trabajo de grado de Diego, un secador de café híbrido solar-eléctrico con control automatizado. Lo llevó de la idea a un prototipo probado en campo, con un ensayo de 221 horas y datos bien medidos, y lo sustentó con calificación Meritoria. Es constante, aprende rápido y no se queda en la teoría.",
+          "Dirigí el trabajo de grado de Diego, un secador de café híbrido solar-eléctrico con control automatizado. Lo llevó de la idea a un prototipo probado en campo, con un ensayo de 221 horas y datos bien medidos, y lo sustentó con mucha claridad. Es constante, aprende rápido y no se queda en la teoría.",
         author: "Germán Obando",
         role: "Director del trabajo de grado · Ingeniería Electrónica, Universidad de Nariño",
         linkedin: "https://www.linkedin.com/in/german-obando-975434221/",
@@ -617,7 +617,7 @@ const localized = {
               "Designed and built a hybrid solar-electric dryer with automated control for parchment coffee, my degree project.",
               "Pilot trial with 2 paired batches, 221 hours and about 139,800 sensor readings.",
               "Coffee dried 12% faster than in open air, and the harvest point forecast cut the median error from 42.6 h to 7.6 h.",
-              "Degree project defended on 5 November 2026 with a Meritorious grade (90/100).",
+              "Degree project defended on 5 November 2026 before a Universidad de Nariño panel.",
             ],
           },
         ],
@@ -724,7 +724,7 @@ const localized = {
     testimonials: [
       {
         quote:
-          "I supervised Diego's degree project, a hybrid solar-electric coffee dryer with automated control. He took it from idea to a field-tested prototype, with a 221-hour trial and carefully measured data, and defended it with a Meritorious grade. He is consistent, learns fast and does not stop at theory.",
+          "I supervised Diego's degree project, a hybrid solar-electric coffee dryer with automated control. He took it from idea to a field-tested prototype, with a 221-hour trial and carefully measured data, and defended it very clearly. He is consistent, learns fast and does not stop at theory.",
         author: "Germán Obando",
         role: "Degree project supervisor · Electronic Engineering, Universidad de Nariño",
         linkedin: "https://www.linkedin.com/in/german-obando-975434221/",
