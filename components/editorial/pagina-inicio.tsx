@@ -60,6 +60,17 @@ export function PaginaInicio({ locale }: { locale: Locale }) {
         <Seccion id={anchors.about} rotulo={`${identity.semester} · ${identity.university}`} titulo={s.aboutTitle}>
           <p className="perfil-entrada voz-texto-fuerte col-span-full lg:col-span-8">{identity.pitch}</p>
           <div className="perfil-margen col-span-full lg:col-span-4 lg:col-start-9">
+            <figure className="polaroid">
+              <Image
+                src="/retrato/diego-perfil.webp"
+                alt={locale === "es" ? "Diego Armando Pinta Cuasquen sentado al aire libre con chaqueta de cuero" : "Diego Armando Pinta Cuasquen sitting outdoors in a leather jacket"}
+                width={900}
+                height={1125}
+                sizes="(min-width: 1024px) 320px, 70vw"
+                loading="lazy"
+              />
+              <figcaption className="polaroid-pie">Pasto, Nariño</figcaption>
+            </figure>
             <blockquote className="perfil-lema text-17">{identity.motto}</blockquote>
             <p className="perfil-contacto">
               <a className="nav-ed-enlace -ml-e8 text-15 underline underline-offset-4" href={`mailto:${identity.email}`}>
