@@ -129,18 +129,45 @@ export function PaginaInicio({ locale }: { locale: Locale }) {
 
         {/* Testimonios: estado pendiente diseñado (8.9), sin cita. */}
         <Seccion id={anchors.testimonials} rotulo={s.testimonialsIntro} titulo={s.testimonialsTitle}>
-          <ul className="col-span-full grid gap-e24 md:grid-cols-3">
-            {testimonials.map((testimonio) => (
-              <li key={testimonio.author} className="testimonio-pendiente">
-                <p className="voz-dato-fuerte text-13">{testimonio.pending ? s.pending : ""}</p>
-                {!testimonio.pending && <blockquote className="text-21">{testimonio.quote}</blockquote>}
-                <div>
-                  <p className="voz-texto-fuerte text-21">{testimonio.author}</p>
-                  <p className="text-13 text-gris">{t.testimonialsNote}</p>
+          <ul className="testimonios2 col-span-full">
+            {testimonials.map((testimonio, i) => (
+              <li key={testimonio.author} className="testimonio2" data-revelar>
+                <span aria-hidden="true" className="testimonio2-comilla voz-titular">“</span>
+                {testimonio.pending ? (
+                  <p className="voz-dato-fuerte text-13">{s.pending}</p>
+                ) : (
+                  <blockquote className="testimonio2-cita text-17">{testimonio.quote}</blockquote>
+                )}
+                <div className="testimonio2-autor">
+                  <span aria-hidden="true" className={`testimonio2-inicial voz-titular ${i === 1 ? "es-rojo" : ""}`}>
+                    {testimonio.author
+                      .split(" ")
+                      .slice(0, 2)
+                      .map((w) => w[0])
+                      .join("")}
+                  </span>
+                  <div className="flex-1">
+                    <p className="voz-texto-fuerte text-17">{testimonio.author}</p>
+                    <p className="text-13 text-gris">{testimonio.role}</p>
+                  </div>
+                  {testimonio.linkedin && (
+                    <a
+                      href={testimonio.linkedin}
+                      className="testimonio2-linkedin"
+                      aria-label={`LinkedIn de ${testimonio.author}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor">
+                        <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
+                      </svg>
+                    </a>
+                  )}
                 </div>
               </li>
             ))}
           </ul>
+          <p className="col-span-full text-13 text-gris">{t.testimonialsNote}</p>
         </Seccion>
 
         {/* Mapa: sección adicional con la captura real del mapa. */}
