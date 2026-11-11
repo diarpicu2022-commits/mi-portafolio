@@ -42,7 +42,7 @@ Nunca publicar cédula, teléfono, dirección ni notas. Tampoco nombres de super
 
 ### Depende de Diego
 
-1. **Fotos de Diego (hecho).** La portada usa `D:/IMAGENES/Pictures/IMG_0200.JPG` (sesión con chaqueta de cuero, recortada en busto y en blanco y negro) y el perfil una polaroid de `IMG_0243.JPG`. La original de la foto vieja no está en los discos. Si cambia la foto, poner un nombre de archivo nuevo en `public/retrato/` para que no la sirva la caché.
+1. **Foto de portada.** Se probó la sesión de `D:/IMAGENES/Pictures` (IMG_0193 a IMG_0251) y a Diego no le gustó ninguna. La portada volvió a `Pictures/foto perfil.jpeg` (recorte en `public/retrato/retrato-diego-original.webp`) y el perfil quedó sin foto. Si Diego trae una foto nueva, usar un nombre de archivo nuevo para no servir la caché.
 2. **Testimonios publicados** (PR #12): Germán Obando (director del trabajo de grado, con su LinkedIn), William Mora (CISNA) y Sebastián Romero Solís (Pasto Noticias). Los tres dieron permiso y pidieron que Diego redactara el texto. Falta que cada uno lea su texto y lo confirme. Si alguno pasa su LinkedIn, va en `linkedin` de `testimonials` en `data/portfolio.ts`.
 3. **Capturas reales** de AgroPulse, HidroMon, Harmonia, Proxy IA, EcoVolt y Tower Defense, si las tiene. Hoy llevan ilustración y esquema.
 4. **Confirmar** que la frase «Abierto a prácticas y proyectos» de la portada es cierta.
