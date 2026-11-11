@@ -486,3 +486,7 @@ main > .seccion-ed:first-of-type { margin-top: 0; }
 @keyframes visorEntra { from { opacity: 0; } to { opacity: 1; } }
 @keyframes visorFoto { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .carrusel-foto, .carrusel-marco, .visor, .visor-foto { transition: none; animation: none; } }
+
+/* Vuelve la foto original de cuerpo entero: se ajusta por alto y la cinta va a media altura. */
+.hero2-retrato { height: 100% !important; width: auto !important; max-width: none; }
+.hero2-cinta { top: 52% !important; bottom: auto; }
