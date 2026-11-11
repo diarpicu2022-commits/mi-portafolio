@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { CarruselProyecto } from "@/components/editorial/carrusel-proyecto";
 import { FlechaDiagonal } from "@/components/editorial/iconos";
 import { formatPeriod } from "@/data/projects";
 import { getPortfolio, projectPath, type Locale } from "@/data/portfolio";
@@ -29,30 +30,12 @@ export function GaleriaProyectos({ locale }: { locale: Locale }) {
               <div className={`collage-fig ${vertical ? "collage-vertical" : ""}`}>
                 <span aria-hidden="true" className="collage-num voz-titular">{n}</span>
                 <span aria-hidden="true" className="collage-bloque" />
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  width={img.width}
-                  height={img.height}
-                  sizes={vertical ? "240px" : "(min-width: 1024px) 560px, 90vw"}
-                  className="collage-img"
+                <CarruselProyecto
+                  fotos={[img, ...(p.galeria ?? [])]}
+                  nombre={p.name}
+                  locale={locale}
+                  sizes={vertical ? "300px" : "(min-width: 1024px) 560px, 90vw"}
                 />
-                {p.galeria && p.galeria.length > 0 && (
-                  <div className="collage-extras">
-                    {p.galeria.slice(0, 2).map((extra) => (
-                      <Image
-                        key={extra.src}
-                        src={extra.src}
-                        alt={extra.alt}
-                        width={extra.width}
-                        height={extra.height}
-                        sizes="200px"
-                        loading="lazy"
-                        className="collage-extra"
-                      />
-                    ))}
-                  </div>
-                )}
               </div>
               <div className="collage-texto">
                 <p className="voz-dato text-13 text-rojo-claro">
