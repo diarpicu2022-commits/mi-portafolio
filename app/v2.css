@@ -293,3 +293,19 @@ input:focus-visible, textarea:focus-visible { box-shadow: inset 0 0 0 2px var(--
 .pasantia-etapa { display: flex; flex-direction: column; gap: 10px; border-radius: 20px; background: rgba(241, 236, 226, 0.06); padding: 20px; }
 .pasantia-periodo { color: var(--rojo-claro); font-weight: 700; }
 @media (min-width: 900px) { .pasantia-etapas { grid-template-columns: 1fr 1fr; } }
+
+/* Diseño para medios: tarjeta clara con las piezas reales. */
+.medios { background: #e8e1d3; border-radius: 28px; padding: 28px 24px; display: grid; gap: 28px; overflow: hidden; }
+.medios .pasantia-cabeza { color: var(--gris); }
+.medios .pasantia-rotulo { color: var(--rojo-texto); }
+.medios .pasantia-logros { color: var(--tinta); }
+.medios .pasantia-logros li::before { background: var(--rojo); }
+.medios-texto { display: flex; flex-direction: column; gap: 14px; }
+.medios-cargo { font-size: clamp(40px, 6vw, 72px); line-height: 0.9; }
+.medios-tags li { color: var(--tinta); background: rgba(18, 18, 17, 0.08); }
+.medios-imagenes { display: flex; align-items: flex-end; gap: 16px; }
+.medios-imagenes img { border-radius: 14px; height: auto; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
+.medios-imagenes img:first-child { width: 72%; transform: rotate(-2deg); }
+.medios-imagenes img:last-child { width: 24%; transform: rotate(3deg); }
+.medios:hover .medios-imagenes img { transform: none; }
+@media (min-width: 900px) { .medios { grid-template-columns: 5fr 6fr; align-items: center; padding: 48px; } }

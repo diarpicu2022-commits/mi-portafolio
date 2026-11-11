@@ -11,7 +11,7 @@ import { getPortfolio, projectPath, type Locale } from "@/data/portfolio";
  * Con puntero fino la miniatura de la fila señalada se amplía (200 ms, transform). En táctil y teclado todo se ve igual.
  */
 export function Experiencia({ locale }: { locale: Locale }) {
-  const { experience, projects, pasantia, t } = getPortfolio(locale);
+  const { experience, projects, pasantia, medios, t } = getPortfolio(locale);
   const porId = new Map(projects.map((p) => [p.id, p]));
 
   return (
@@ -41,6 +41,31 @@ export function Experiencia({ locale }: { locale: Locale }) {
           <li key={tech}>{tech}</li>
         ))}
       </ul>
+    </article>
+    <article className="medios col-span-full" data-revelar>
+      <div className="medios-texto">
+        <div className="pasantia-cabeza">
+          <p className="voz-dato text-13 pasantia-rotulo">{medios.rotulo}</p>
+          <p className="voz-dato text-13">{medios.periodo}</p>
+        </div>
+        <h3 className="voz-titular medios-cargo">{medios.cargo}</h3>
+        <p className="text-21 voz-texto-fuerte">{medios.lugar}</p>
+        <ul className="pasantia-logros">
+          {medios.logros.map((l) => (
+            <li key={l} className="text-15">{l}</li>
+          ))}
+        </ul>
+        <ul className="collage-tags medios-tags voz-dato text-13">
+          {medios.tecnologias.map((tech) => (
+            <li key={tech}>{tech}</li>
+          ))}
+        </ul>
+      </div>
+      <div className="medios-imagenes">
+        {medios.imagenes.map((img) => (
+          <Image key={img.src} src={img.src} alt={img.alt} width={img.width} height={img.height} sizes="(min-width: 1024px) 420px, 80vw" loading="lazy" />
+        ))}
+      </div>
     </article>
     <ol className="cronologia col-span-full">
       {experience.map((item) => {
